@@ -208,7 +208,7 @@ class Booking_model extends MY_Model {
                 $todate = strtotime($dates->to_date);
                 for($date = $fromdate;$date < $todate;$date=$date+86400)
                 {
-                    $booked_dates[] = array(date('m,d,Y',$date));
+                    $booked_dates[] = array(date('m/d/Y',$date));
                 }
             }
         }

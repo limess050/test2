@@ -92,6 +92,71 @@ font-weight:bold;
 <!--<script type="text/javascript" language="javascript" src="<?php //echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
 <script>
 $(document).ready(function(){
+
+    $("#bookingform").validate({
+        /*rules: {
+            old_pwd: {
+                required: true,
+                minlength: 5
+            },
+            new_pwd: {
+                required: true,
+                minlength: 5
+            },
+            cnf_pwd: {
+                required: true,
+                minlength: 5,
+                equalTo: "#new_pwd"
+            }
+        },
+        messages: {
+            old_pwd: {
+                required: "Please provide old password",
+                minlength: "Your password must be at least 5 characters long"
+            },
+            new_pwd: {
+                required: "Please provide a password",
+                minlength: "Your password must be at least 5 characters long"
+            },
+            cnf_pwd: {
+                required: "Please provide a password",
+                minlength: "Your password must be at least 5 characters long",
+                equalTo: "Please enter the same password as above"
+            }
+        },*/
+        errorPlacement: function(error, element) {
+            error.insertAfter(element);
+        }/*,
+        submitHandler: function()
+        {
+           var chpwd_data = $('#chpwd_form').serialize();
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url();?>users/changePassword',
+                data: chpwd_data,
+                beforeSend : function(){
+                },
+                success: function(res){
+                    if(res == 'success')
+                    {
+                        $('.jmsg').html('Password Changed Successfully');
+                        setTimeout($.unblockUI, 2000);
+                    }
+                    else if(res == 'invalid')
+                    {
+                        $('.jmsg').html('Incorrect old password').show();
+                        $('#old_pwd').focus();
+                        $('.jmsg').fadeOut(5000, function() {
+                            // Animation complete.
+                        });
+                    }
+                },
+                complete: function(){
+                }
+           });
+        }*/
+    });
+
     advanced_booking = false;
     $('.jvip_quota').click(function(){
         if($(this).val() == '1')
@@ -138,7 +203,7 @@ $(document).ready(function(){
     $('#from').change(function(){
         blocks_rooms();
     });
-    
+
     $('#to').change(function(){
         blocks_rooms();
     });
@@ -169,6 +234,7 @@ $(document).ready(function(){
             },
             success: function(resdata){
                 natDays = resdata;
+                //natDays   = [[10,31,2012],[10,22,2012]];
             },
             complete: function(){
                 var d = new Date();
@@ -181,18 +247,18 @@ $(document).ready(function(){
             }
         });
     });
-    
+
     //$('#rooms_id').html('<option>asdf</option>');
-    
+
 });
 
 function nationalDays(date) {
     var m = date.getMonth();
     var d = date.getDate();
     var y = date.getFullYear();
-
     for (var i = 0; i < natDays.length-1; i++) {
-        var myDate = new Date(natDays[i]);
+        var datets = Date.parse(natDays[i]);
+        var myDate = new Date(datets);
         if ((m == (myDate.getMonth())) && (d == (myDate.getDate())) && (y == (myDate.getFullYear())))
         {
             return [false];
@@ -297,7 +363,7 @@ function blocks_rooms()
 		<td align="center" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0">
 		  <tr>
 		    <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
-		      <form id="form" name="form" method="post" action="<?php echo base_url();?>booking/roomBooking">
+		      <form id="bookingform" name="bookingform" method="post" action="<?php echo base_url();?>booking/roomBooking">
 		        <h1>Room Booking Details</h1>
 		        <p></p>
 		        <div class="iptxt">
