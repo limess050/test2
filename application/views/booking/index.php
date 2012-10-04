@@ -78,6 +78,9 @@ color:#FFFFFF;
 font-size:11px;
 font-weight:bold;
 }
+#myfileUploader {
+margin-left: 10px;
+}
 </style>
 <link href="<?php echo base_url(); ?>uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url();  ?>public/css/general/redmond/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css" />
@@ -490,7 +493,7 @@ document.oncontextmenu=new Function("alert(message);return false")
 									<input type="file" name="image_path" id="image_path" />
 								</div>-->
 		        <div class="iptxt">
-		          <label for="myfile">Photo:*</label>
+		          <label for="myfile">Photo: </label>
 		          <input name="files" id="myfile" class="myfile" value="" type="hidden"/>
 		          <input name="MAX_FILE_SIZE" value="10000" type="hidden" />
 	            </div>

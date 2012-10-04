@@ -34,7 +34,9 @@ class Booking extends MY_Controller {
 			$_POST['received_by'] = 1;
 			$_POST['received_date'] =  date("Y-m-d H:i:s");
 			$_POST['total_amount_paid'] =  $_POST['deposit_amt']+$_POST['rent_amount']+$_POST['advance_amount'];
-			$this->booking_model->save_booking($_POST);
+			$app_id = $this->booking_model->save_booking($_POST);
+			redirect("booking/ticket/$app_id");
+			//$this->ticket($app_id);
         }
         else {
             die('The form is not valid or has expired.');
@@ -132,6 +134,15 @@ class Booking extends MY_Controller {
 		//echo '<pre>'; print_r($data); die;
 		$this->load->view('reports/index',$data);
     }
+	public function ticket($app_id = 12)
+    {
+        $where_cond = ' ad.id='.$app_id;
+		$data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
+//echo '<pre>';		print_r($data);die;
+		$data['user_name'] = 'Kumar';
+		$this->load->view('booking/ticket',$data);
+    }
+	
 	public function checkOut()
     {
         $this->load->view('checkout/index');

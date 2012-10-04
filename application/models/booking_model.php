@@ -39,6 +39,7 @@ class Booking_model extends MY_Model {
 				$_POST['attachments_id'] = $this->fileupload_model->save_attachment($db_file_name,$original_file_name,$global_id);
 			}
 		}
+		return $post['application_details_id'];
     }
 
     function save_other_details($post)
@@ -295,19 +296,19 @@ class Booking_model extends MY_Model {
 		return $data;
 	}
 	
-	public function getBookingDetails($app_id)
+	public function getBookingDetails($where_cond = 1)
     {
 		$sql = "select ad.application_id, ad.customer_id, ad.applicant_name, ad.applicant_address,
 				date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
-				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date, bd.no_of_days, bd.booking_type,
-				b.name as blocak_name,r.name as room_name,
+				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, bd.no_of_days, bd.booking_type,
+				b.name as block_name,r.name as room_name,
 				rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
 				from application_details ad
 				left join booking_details bd on ad.id = bd.application_details_id
 				left join blocks b on bd.blocks_id = b.id
 				left join rooms r on bd.rooms_id = r.id
 				left join receipts rp on rp.application_details_id = ad.id
-				where ad.application_id=".$app_id;
+				where ".$where_cond;
 		$refundreport = $this->getDBResult($sql, 'object');
 		
 		return $refundreport;			

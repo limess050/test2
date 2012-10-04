@@ -16,7 +16,17 @@
 	          <td height="1" colspan="2" ></td>
 	          </tr>
 	        </table></td>
-	      <td width="10%"><table width="104" border="0" align="left" cellpadding="0" cellspacing="0">
+	      
+	      <td width="10%"><table width="120" border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td width="5" align="left" valign="middle">&nbsp;</td>
+	          <td width="132" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>booking" class="white_heading_txt_16px">Book a Room</a></td>
+	          </tr>
+	        <tr>
+	          <td height="1" colspan="2" ></td>
+	          </tr>
+	        </table></td>
+		  <td width="10%"><table width="104" border="0" align="left" cellpadding="0" cellspacing="0">
 	        <tr>
 	          <td width="5" align="left" valign="middle">&nbsp;</td>
 	          <td width="125" height="25" align="left" valign="middle" ><a href="#" class="white_heading_txt_16px">Check Out  </a></td>
@@ -24,16 +34,7 @@
 	        <tr>
 	          <td height="1" colspan="2" ></td>
 	          </tr>
-	        </table></td>
-	      <td width="10%"><table width="120" border="0" align="left" cellpadding="0" cellspacing="0">
-	        <tr>
-	          <td width="5" align="left" valign="middle">&nbsp;</td>
-	          <td width="132" height="25" align="left" valign="middle"  ><a href="#" class="white_heading_txt_16px">Book a Room</a></td>
-	          </tr>
-	        <tr>
-	          <td height="1" colspan="2" ></td>
-	          </tr>
-	        </table></td>
+	        </table></td>	
 	      <td width="39%"><table width="147" border="0" align="left" cellpadding="0" cellspacing="0">
 	        <tr>
 	          <td width="5" align="left" valign="middle">&nbsp;</td>

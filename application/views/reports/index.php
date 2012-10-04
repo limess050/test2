@@ -87,12 +87,6 @@ font-weight:bold;
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/viewPrint.js" ></script>
 
 <!--<script type="text/javascript" language="javascript" src="<?php //echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
-<script type="text/javascript" rel="javascript">
-    var base_url="<?php echo base_url();  ?>";
-    var main_url="<?php echo base_url();  ?>";
-    // window.onerror=function(){ return true; }
-</script>
-
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/jquery-ui-custom.min.js" ></script>
 
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/common.js" ></script>
@@ -152,12 +146,14 @@ document.oncontextmenu=new Function("alert(message);return false")
 				</tr>
     <tr>
 		<td align="center" valign="top">
+			<div id="stylized" class="myform">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
 				<tr>
 					<td align="left" valign="top">&nbsp;</td>
 				</tr>
 				<tr>
 					<td align="left" valign="top">
+					
 					<table width="98%" border="1" cellspacing="1" cellpadding="1" align="center" id="the_content" class="tabborder">
 						<tr>
 							<td align="center" valign="top" ><h1>Day Stats  Report</h1></td>
@@ -339,8 +335,10 @@ document.oncontextmenu=new Function("alert(message);return false")
 					<td align="left" valign="top">&nbsp;</td>
 				</tr>
 			</table>
+			</div>
 		</td>
     </tr>
+	
 	<?php $this->load->view('common/footer'); //include("footer.php"); ?>
 </table>
 </body>
