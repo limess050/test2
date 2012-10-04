@@ -25,7 +25,16 @@ class Booking extends MY_Controller {
                     $_POST[$val] = date('Y-m-d',strtotime($_POST[$val]));
                 }
             }
-            $this->booking_model->save_booking($_POST);
+            $_POST['checkout_date'] = $_POST['to_date'];
+			$_POST['created_by'] = 1;
+			$_POST['created_date'] =  date("Y-m-d H:i:s");
+			$_POST['modified_by'] = 1;
+			$_POST['modified_date'] = date("Y-m-d H:i:s");
+			$_POST['ipaddress'] = ipaddress();
+			$_POST['received_by'] = 1;
+			$_POST['received_date'] =  date("Y-m-d H:i:s");
+			$_POST['total_amount_paid'] =  $_POST['deposit_amt']+$_POST['rent_amount']+$_POST['advance_amount'];
+			$this->booking_model->save_booking($_POST);
         }
         else {
             die('The form is not valid or has expired.');
@@ -46,13 +55,6 @@ class Booking extends MY_Controller {
         echo json_encode($data);
     }
     
-    public function add_page($page_id=0)
-    {}
-    public function save_page()
-    {}
-    public function getpagesdata()
-    {}
-
     public function libhelp()
     {
         //$tbl_array = array('users','users_address','users_contacts','users_ecurrencies','users_settings');
@@ -118,8 +120,33 @@ class Booking extends MY_Controller {
         {
             $str .=$row[0].'';
         }
-        echo rtrim($str);
+        echo $str;
     }
+	
+	public function getDayReport()
+    {
+        $date = date('Y-m-d');
+		$data = $this->booking_model->getDayReport($date);
+		$data['user_name'] = 'Kumar';
+		$data['date'] = $date;
+		//echo '<pre>'; print_r($data); die;
+		$this->load->view('reports/index',$data);
+    }
+	public function checkOut()
+    {
+        $this->load->view('checkout/index');
+    }
+	public function getBookingDetails()
+    {
+        $app_id = 1231;//$_POST['application_id']
+		$booking_details = $this->booking_model->getBookingDetails($app_id);
+		$data['booking_details'] = $booking_details;
+		$this->load->view('checkout/checkout_details',$data,true);
+		echo '<pre>'; print_r($booking_details); die;
+		//$this->load->view('checkout/index');
+    }
+	
+
 }
 
 /* End of file welcome.php */

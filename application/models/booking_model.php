@@ -208,7 +208,7 @@ class Booking_model extends MY_Model {
                 $todate = strtotime($dates->to_date);
                 for($date = $fromdate;$date < $todate;$date=$date+86400)
                 {
-                    $booked_dates[] = array(date('m/d/Y',$date));
+                    $booked_dates[] = array(date('m,d,Y',$date));
                 }
             }
         }
@@ -231,4 +231,85 @@ class Booking_model extends MY_Model {
         }
         return $tbl_fields;
     }
+	public function getDayReport($date)
+    {
+		$user_id=1;
+		$data = array();
+		$sql = "select 
+				b.name as blockname,r.name as roomname, 
+				bd.blocks_id,bd.rooms_id,rc.advance_amount,rc.deposit_amt,rc.rent_amount,
+				rc.total_amount_paid 
+				from receipts rc
+				left join booking_details bd on bd.application_details_id = rc.application_details_id
+				left join blocks b on b.id=bd.blocks_id
+				left join rooms r on r.id=bd.rooms_id 
+				where rc.received_by=".$user_id." and DATE_FORMAT(rc.received_date,'%Y-%m-%d') = '".$date."' and rc.`status`=1
+				order by blockname,roomname";
+       // echo $sql; die;
+		$bookedreport = $this->getDBResult($sql, 'object');
+        
+		$booked_report_arr = array();
+		$con_total_amount = 0;
+		if(!empty($bookedreport))
+        {
+            foreach($bookedreport as $val)
+            {
+                $booked_report_arr[$val->blockname][] = array('room_name'=>$val->roomname,
+													   'advance_amount'=>$val->advance_amount,
+													   'deposit_amt'=>$val->deposit_amt,
+													   'rent_amount'=>$val->rent_amount,
+													   'total_amount_paid'=>$val->total_amount_paid);
+				$con_total_amount += $val->total_amount_paid;													   
+            }
+        }
+		
+		$sql1 = "select 
+				b.name as blockname,r.name as roomname, 
+				bd.blocks_id,bd.rooms_id,p.deposit_refund_amount
+				from payments p 
+				left join receipts rc on p.receipt_id = rc.id
+				left join booking_details bd on bd.application_details_id = rc.application_details_id
+				left join blocks b on b.id=bd.blocks_id
+				left join rooms r on r.id=bd.rooms_id 
+				where p.deposit_refund_by=".$user_id." and DATE_FORMAT(p.deposit_refund_date,'%Y-%m-%d') = '".$date."' and p.`status`=1
+				order by blockname,roomname";
+        //echo $sql1; die;
+		$refundreport = $this->getDBResult($sql1, 'object');
+        
+		$refund_report_arr = array();
+		$con_ref_total_amount = 0;
+		if(!empty($refundreport))
+        {
+            foreach($refundreport as $val)
+            {
+                $refund_report_arr[$val->blockname][] = array('room_name'=>$val->roomname,
+													   'deposit_refund_amount'=>$val->deposit_refund_amount);
+				$con_ref_total_amount += $val->deposit_refund_amount;													   
+            }
+        }
+		
+		$data['con_total_amount'] =$con_total_amount;
+		$data['booked_report_arr'] =$booked_report_arr;
+		$data['con_ref_total_amount'] =$con_ref_total_amount;
+		$data['refund_report_arr'] =$refund_report_arr;
+		return $data;
+	}
+	
+	public function getBookingDetails($app_id)
+    {
+		$sql = "select ad.application_id, ad.customer_id, ad.applicant_name, ad.applicant_address,
+				date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
+				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date, bd.no_of_days, bd.booking_type,
+				b.name as blocak_name,r.name as room_name,
+				rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
+				from application_details ad
+				left join booking_details bd on ad.id = bd.application_details_id
+				left join blocks b on bd.blocks_id = b.id
+				left join rooms r on bd.rooms_id = r.id
+				left join receipts rp on rp.application_details_id = ad.id
+				where ad.application_id=".$app_id;
+		$refundreport = $this->getDBResult($sql, 'object');
+		
+		return $refundreport;			
+	}
 }

@@ -7,21 +7,20 @@
 body{
 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
 font-size:12px;
-background-color: #E8E8E8;
 }
 p, h1, form, button{border:0; margin:0; padding:0;}
 .spacer{clear:both; height:1px;}
 /* ----------- My Form ----------- */
 .myform{
 margin:0 auto;
-width:970px;
+width:785px;
 padding:14px;
 }
 
 /* ----------- stylized ----------- */
 #stylized{
-border:solid 2px #F7F2EA;
-background:#E2D5BC;
+border:solid 2px #b7ddf2;
+background:#ebf4fb;
 }
 #stylized h1 {
 font-size:14px;
@@ -285,114 +284,145 @@ function blocks_rooms()
 </head>
 
 <body onunload="alert('hi')">
-<table width="1003" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-	
+<table width="1003" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
-					<td colspan="2" align="center" valign="bottom"></td>
-  </tr>
+		<td align="center" valign="top">
+			<table width="1000" border="0" cellspacing="0" cellpadding="0" align="center">
 				<tr>
-					<td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/header');//include("header.php"); ?></td>
+					<td colspan="2" align="center" valign="bottom"></td>
 				</tr>
-    <tr>
-		<td align="center" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0">
-		  <tr>
-		    <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
-		      <form id="form" name="form" method="post" action="<?php echo base_url();?>booking/roomBooking">
-		        <h1>Room Booking Details</h1>
-		        <p></p>
-		        <div class="iptxt">
-		          <label>Application ID:</label>
-		          <input type="text" name="application_id" id="application_id" />
-	            </div>
-		        <div class="iptxt">
-		          <label>Customer ID: </label>
-		          <input type="text" name="customer_id" id="customer_id" />
-	            </div>
-		        <div class="ipradio">
-		          <label>VIP Reference: </label>
-		          <input class="jvip_quota" type="radio" name="vip_quota" value="1" />
-		          Yes
-		          <input type="radio" class="jvip_quota" checked="checked" name="vip_quota" value="0" />
-		          No </div>
-		        <div class="iptxt jrefname" style="display:none">
-		          <label>VIP Reference Name: </label>
-		          <input type="text" name="vip_ref_by" id="vip_ref_by" />
-	            </div>
-		        <div class="ipradio">
-		          <label>Booking Type: </label>
-		          <input type="radio" name="booking_type" class="jbooktype" value="1" />
-		          Current
-		          <input type="radio" name="booking_type" class="jbooktype" value="2" />
-		          Advanced </div>
-		        <div class="iptxt jfromhtml">
-		          <label>Check-In Date:</label>
-		          <input type="text" name="from_date" class="jfrom" id="from" />
-	            </div>
-		        <div class="iptxt jtohtml">
-		          <label>Check-Out Date:</label>
-		          <input type="text" name="to_date" class="jto" id="to" />
-	            </div>
-		        <div class="iptxt">
-		          <label>Block: </label>
-		          <select name="blocks_id" id="blocks_id">
-		            <option value="0">Select Block</option>
-		            <?php
+				<tr>
+					<td height="20" colspan="2" align="left" valign="bottom"><?php $this->load->view('common/header');//include("header.php"); ?></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" valign="top">
+			<table width="800" border="0" align="center" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="225" align="left" valign="top"><?php $this->load->view('common/left'); //include("adminleft.php"); ?></td>
+					<td width="25" align="left" valign="top"  class="devider_bg" ><img src="images/devider.jpg" width="25" height="3" /></td>
+					<td width="735" align="left" valign="top">
+						<table width="735" border="0" cellspacing="0" cellpadding="0">					
+							<tr>
+								<td height="26" align="left" valign="middle" bgcolor="#8f8f8f">
+									<table width="725" border="0" align="center" cellpadding="0" cellspacing="0">
+										<tr>
+											<td width="17"><img src="images/list-icon_4.jpg" width="12" height="12" /></td>
+											<td width="708" class="white_bold_txt_12px uppercase_txt">Room Booking Details </td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+							<td align="left" valign="top" class="pannel_border">
+								<div id="stylized" class="myform">
+								<form id="form" name="form" method="post" action="<?php echo base_url();?>booking/roomBooking">
+								<h1>Room Booking Details</h1>
+								<p></p>
+								
+								<div class="iptxt">
+									<label>Application ID:</label>
+									<input type="text" name="application_id" id="application_id" />
+								</div>
+								<div class="iptxt">
+									<label>Customer ID: </label>
+									<input type="text" name="customer_id" id="customer_id" />
+								</div>
+								<div class="ipradio">
+									<label>VIP Reference: </label>
+										<input class="jvip_quota" type="radio" name="vip_quota" value="1" /> Yes <input type="radio" class="jvip_quota" checked name="vip_quota" value="0" /> No
+								</div>
+								<div class="iptxt jrefname" style="display:none">
+									<label>VIP Reference Name: </label>
+									<input type="text" name="vip_ref_by" id="vip_ref_by" />
+								</div>
+								<div class="ipradio">
+									<label>Booking Type: </label>
+										<input type="radio" name="booking_type" class="jbooktype" value="1" /> Current <input type="radio" name="booking_type" class="jbooktype" value="2" /> Advanced
+								</div>
+								<div class="iptxt jfromhtml">
+									<label>Check-In Date:</label>
+										<input type="text" name="from_date" class="jfrom" id="from" />
+								</div>
+								<div class="iptxt jtohtml">
+									<label>Check-Out Date:</label>
+									<input type="text" name="to_date" class="jto" id="to" />
+								</div>
+								<div class="iptxt">
+									<label>Block: </label>
+										<select name="blocks_id" id="blocks_id">
+											<option value="0">Select Block</option>
+											<?php
 											foreach($master_data['blocks'] as $block)
 											{
 												echo '<option value="'.$block->id.'">'.$block->name.'</option>';
 											}
 											?>
-	              </select>
-	            </div>
-		        <div class="iptxt">
-		          <label>Room: </label>
-		          <select name="rooms_id" id="rooms_id" disabled="disabled">
-		            <option value="0">Select Room</option>
-		            <?php
+									</select>
+								</div>
+								<div class="iptxt">
+									<label>Room: </label>
+										<select name="rooms_id" id="rooms_id" disabled>
+											<option value="0">Select Room</option>
+											<?php
 											/*foreach($master_data['rooms'] as $room)
 											{
 												echo '<option value="'.$room->id.'">'.$room->name.'</option>';
 											}*/
 											?>
-	              </select>
-		          <span class="dpcontainer"><span style="float:right" class="mydp"></span></span></div>
-		        <div class="iptxt jadvamt" style="display:none">
-		          <label>Advance Amount:</label>
-		          <input type="text" name="advance_amount" id="advance_amount" />
-	            </div>
-		        <div class="iptxt">
-		          <label>Amount:</label>
-		          <input type="text" name="rent_amount" id="rent_amount" />
-	            </div>
-		        <div class="iptxt">
-		          <label>Deposit:</label>
-		          <input type="text" name="deposit_amt" id="deposit_amt" />
-	            </div>
-		        <div class="iptxt">
-		          <label>Name: </label>
-		          <input type="text" name="applicant_name" id="applicant_name" />
-	            </div>
-		        <div class="iptxt">
-		          <label>Address: </label>
-		          <textarea name="applicant_address" id="applicant_address"></textarea>
-	            </div>
-		        <!--<div class="iptxt">
+									</select>
+										<span class="dpcontainer"><span style="float:right" class="mydp"></span></span>
+								</div>
+								
+								<div class="iptxt jadvamt" style="display:none">
+									<label>Advance Amount:</label>
+									<input type="text" name="advance_amount" id="advance_amount" />
+								</div>
+								<div class="iptxt">
+									<label>Amount:</label>
+									<input type="text" name="rent_amount" id="rent_amount" />
+								</div>
+								<div class="iptxt">
+									<label>Deposit:</label>
+									<input type="text" name="deposit_amt" id="deposit_amt" />
+								</div>
+								
+								<div class="iptxt">
+									<label>Name: </label>
+									<input type="text" name="applicant_name" id="applicant_name" />
+								</div>
+								<div class="iptxt">
+									<label>Address: </label>
+										<textarea name="applicant_address" id="applicant_address"></textarea>
+								</div>
+								<!--<div class="iptxt">
 									<label>Photo: </label>
 									<input type="file" name="image_path" id="image_path" />
 								</div>-->
-		        <div class="iptxt">
-		          <label for="myfile">Photo:*</label>
-		          <input name="files" id="myfile" class="myfile" value="" type="hidden"/>
-		          <input name="MAX_FILE_SIZE" value="10000" type="hidden" />
-	            </div>
-		        <?php echo formtoken::getField(); ?>
-		        <p></p>
-		        <button type="submit">Submit</button>
-		        <div class="spacer"></div>
-	          </form>
-		      </div></td>
-	      </tr>
-	    </table></td>
+								
+								<div class="iptxt">
+									<label for="myfile">Photo:*</label>
+									<input name="files" id="myfile" class="myfile" value="" type="hidden"/>
+									<input name="MAX_FILE_SIZE" value="10000" type="hidden" />
+								</div>
+								<?php echo formtoken::getField(); ?>
+								<p></p>	
+								<button type="submit">Submit</button>
+								<div class="spacer"></div>
+								</form>
+								</div>
+							</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" align="left" valign="top" height="15"></td>
+				</tr>
+			</table>
+		</td>
 	</tr>
 	<?php $this->load->view('common/footer'); //include("footer.php"); ?>
 </table>

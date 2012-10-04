@@ -321,14 +321,11 @@ function customRange_Year(input) {
     if($.trim($("#from").val())!=''){
             from_date=$("#from").datepicker("getDate");
             from_date.setDate(from_date.getDate()+2);
-
-            from_mindate = $("#from").datepicker("getDate");
-            from_mindate.setDate(from_mindate.getDate()+1);
             //from_date.setMonth(from_date.getMonth() + 12);
 
             return {
                     maxDate: (input.id == "to" ? from_date : null),
-                    minDate: (input.id == "to" ? from_mindate : null)
+                    minDate: (input.id == "to" ? $("#from").datepicker("getDate") : null)
             };
     }else{
             if(advanced_booking)
