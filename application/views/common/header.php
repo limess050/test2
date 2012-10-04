@@ -37,7 +37,7 @@
 	      <td width="39%"><table width="147" border="0" align="left" cellpadding="0" cellspacing="0">
 	        <tr>
 	          <td width="5" align="left" valign="middle">&nbsp;</td>
-	          <td width="142" height="25" align="left" valign="middle"  ><a href="#" class="white_heading_txt_16px">Daily Report</a></td>
+	          <td width="142" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>booking/getDayReport" class="white_heading_txt_16px">Day Report</a></td>
 	          </tr>
 	        <tr>
 	          <td height="1" colspan="2" ></td>

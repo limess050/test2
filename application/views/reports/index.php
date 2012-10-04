@@ -2,25 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Daily Report</title>
+<title>Untitled Document</title>
 <style>
 body{
 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
 font-size:12px;
+background-color: #E8E8E8;
 }
 p, h1, form, button{border:0; margin:0; padding:0;}
 .spacer{clear:both; height:1px;}
 /* ----------- My Form ----------- */
 .myform{
 margin:0 auto;
-width:1000px;
+width:970px;
 padding:14px;
 }
 
 /* ----------- stylized ----------- */
 #stylized{
-border:solid 2px #b7ddf2;
-background:#ebf4fb;
+border:solid 2px #F7F2EA;
+background:#E2D5BC;
 }
 #stylized h1 {
 font-size:14px;
@@ -78,197 +79,269 @@ font-size:11px;
 font-weight:bold;
 }
 </style>
+<link href="<?php echo base_url();  ?>public/css/general/redmond/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url();  ?>public/css/general/style.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo base_url();  ?>public/css/general/style2.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo base_url();  ?>public/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/library.js" ></script>
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/viewPrint.js" ></script>
+
+<!--<script type="text/javascript" language="javascript" src="<?php //echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
+<script type="text/javascript" rel="javascript">
+    var base_url="<?php echo base_url();  ?>";
+    var main_url="<?php echo base_url();  ?>";
+    // window.onerror=function(){ return true; }
+</script>
+
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/jquery-ui-custom.min.js" ></script>
+
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/common.js" ></script>
+<script type="text/javascript" language="javascript">
+function DisableBackButton() {
+window.history.forward()
+}
+DisableBackButton();
+window.onload = DisableBackButton;
+window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+window.onunload = function() { void (0) }
+</script>
 </head>
 
 <body>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-	<tr>
-		<td align="left" valign="top">&nbsp;</td>
-	</tr>
-	<tr>
-		<td align="left" valign="top">
-		<table width="85%" border="1" cellspacing="1" cellpadding="1" align="center" id="the_content" class="tabborder">
-			<tr>
-				<td align="center" valign="top" ><h1>Daily Stats  Report</h1></td>
-			</tr>
-			<tr>
-				<td align="left" valign="top" ><h4>Booking Details</h4></td>
-			</tr>
-			<tr>
-				<td align="center" valign="top" class="barheading">
-					<table width="100%" border="0" align="center">
-						<tr>
-							<td width="11%" align="left" valign="top">Operator Name:</td>
-							<td width="66%" align="left" valign="top"><strong><?php echo $user_name;?></strong></td>
-							<td width="8%" align="left" valign="top">Date:</td>
-							<td width="15%" align="left" valign="top"><?php echo $date;?></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td align="center" valign="top" class="barheading">
-					<table width="100%" border="1" cellspacing="1" cellpadding="1" align="center">
-						<?php
-						if(!empty($booked_report_arr))
-						{?>
-								<tr>
-									<td width="33%" align="left" valign="top"><strong>Room Name</strong></td>
-									<td width="17%" align="left" valign="top"><strong>Advance Amount (Rs)</strong></td>
-									<td width="20%" align="left" valign="top"><strong>Deposite Amount (Rs)</strong></td>
-									<td width="15%" align="left" valign="top"><strong>Rent Amount (Rs)</strong></td>
-									<td width="15%" align="left" valign="top"><strong>Total Amount (Rs)</strong></td>
-								</tr>
-						<?php	
-							foreach($booked_report_arr as $blocks=>$rep_values)
-							{?>
-								<tr>
-									<td align="left" colspan="5"><?php echo $blocks;?></td>
-								</tr>
-								<?php
-								foreach($rep_values as $key=>$values)
-								{
-								?>
-								<tr>
-									<td width="33%" align="left" valign="top"><?php echo $values['room_name'];?></td>
-									<td width="17%" align="right" valign="top"><?php echo $values['advance_amount'];?></td>
-									<td width="20%" align="right" valign="top"><?php echo $values['deposit_amt'];?></td>
-									<td width="15%" align="right" valign="top"><?php echo $values['rent_amount'];?></td>
-									<td width="15%" align="right" valign="top"><?php echo $values['total_amount_paid'];?></td>
-								</tr>
-							<?php	
-								}
-							}
-							?>
-								<tr>
-									<td align="right" valign="top" colspan="4"><strong>Total</strong></td>
-									<td width="15%" align="right" valign="top"><?php echo number_format($con_total_amount,2);?></td>
-								</tr>
-						<?php	
-						}
-						else
-						{ ?>
-								<tr>
-									<td align="center" colspan="5">No Bookings Done</td>
-								</tr>
-						<?php
-						}
-						?>
-					</table>
-				</td>
-			</tr>
-			<p></p>
-			<tr>
-				<td align="left" valign="top" ><h4>Refund Details</h4></td>
-			</tr>
-			<tr>
-				<td align="center" valign="top" class="barheading">
-					<table width="100%" border="1" cellspacing="1" cellpadding="1" align="center">
-						<?php
-						if(!empty($refund_report_arr))
-						{?>
-								<tr>
-									<td width="33%" align="left" valign="top"><strong>Room Name</strong></td>
-									<td width="17%" align="left" valign="top"><strong>Refund Amount (Rs)</strong></td>
-								</tr>
-						<?php	
-							foreach($refund_report_arr as $blocks=>$rep_values)
-							{?>
-								<tr>
-									<td align="left" colspan="2"><?php echo $blocks;?></td>
-								</tr>
-								<?php
-								foreach($rep_values as $key=>$values)
-								{
-								?>
-								<tr>
-									<td width="33%" align="left" valign="top"><?php echo $values['room_name'];?></td>
-									<td width="17%" align="right" valign="top"><?php echo $values['deposit_refund_amount'];?></td>
-								</tr>
-							<?php	
-								}
-							}
-							?>
-								<tr>
-									<td align="right" valign="top"><strong>Total</strong></td>
-									<td width="15%" align="right" valign="top"><?php echo number_format($con_ref_total_amount,2);//echo $con_ref_total_amount;?></td>
-								</tr>
-						<?php	
-						}
-						else
-						{ ?>
-								<tr>
-									<td align="center" colspan="5">No Refunds Done</td>
-								</tr>
-						<?php
-						}
-						?>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td align="left" valign="top" ><h4>Total Details</h4></td>
-			</tr>
-			<tr>
-				<td align="center" valign="top" class="barheading">
-					<table width="31%" border="1" cellspacing="1" cellpadding="1" align="center">
-						<tr>
-							<td align="left" valign="top" ><strong>Type</strong></td>
-							<td align="left" valign="top" ><strong>Total Amount(Rs)</strong></td>
-						</tr>
-						<tr>
-							<td align="left" valign="top" >Booking</td>
-							<td align="right" valign="top" ><?php echo number_format($con_total_amount,2);//echo $con_total_amount;?></td>
-						</tr>
-						<tr>
-							<td align="left" valign="top" >Refund</td>
-							<td align="right" valign="top" ><?php echo number_format($con_ref_total_amount,2); //echo $con_ref_total_amount;?></td>
-						</tr>
-						<tr>
-							<td align="left" valign="top" ><strong>Total</strong></td>
-							<td align="right" valign="top" >
-							<?php $diff_amt = $con_total_amount-$con_ref_total_amount; echo number_format($diff_amt,2);?>							</td>
-						</tr>
-				  </table>
-				</td>
-			</tr>
-			<tr>
-				<td align="right" valign="top" class="barheading">
-					<table width="31%" align="right">
-						<tr>
-							<td align="center" valign="top">&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="center" valign="top">&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="center" valign="top">&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="center" valign="top">&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="center" valign="top">Authorized Signature</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td align="center" valign="top">&nbsp;</td>
-	</tr>
-	<tr>
-		<td align="center" valign="top">
-		<input type="button" name="Print" value="Print" class="button" onClick="javascript:Clean4Print('the_content')"/>&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td align="left" valign="top">&nbsp;</td>
-	</tr>
-</table>
+<script language=JavaScript>
+var message="Right Click not allowed";
+function clickIE4()
+{
+    if (event.button==2)
+    {
+        alert(message);
+        return false;
+    }
+}
+function clickNS4(e)
+{
+    if (document.layers||document.getElementById&&!document.all)
+    {
+        if (e.which==2||e.which==3)
+        {
+            alert(message);
+            return false;
+        }
+    }
+}
+if (document.layers)
+{
+    document.captureEvents(Event.MOUSEDOWN);
+    document.onmousedown=clickNS4;
+}
+else if (document.all&&!document.getElementById)
+{
+    document.onmousedown=clickIE4;
+}
+document.oncontextmenu=new Function("alert(message);return false")
+</script>
 
+
+<table width="1003" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+	
+	<tr>
+					<td colspan="2" align="center" valign="bottom"></td>
+  </tr>
+				<tr>
+					<td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/header');//include("header.php"); ?></td>
+				</tr>
+    <tr>
+		<td align="center" valign="top">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+				<tr>
+					<td align="left" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="left" valign="top">
+					<table width="98%" border="1" cellspacing="1" cellpadding="1" align="center" id="the_content" class="tabborder">
+						<tr>
+							<td align="center" valign="top" ><h1>Day Stats  Report</h1></td>
+						</tr>
+						<tr>
+							<td align="left" valign="top" ><h4>Booking Details</h4></td>
+						</tr>
+						<tr>
+							<td align="center" valign="top" class="barheading">
+								<table width="100%" border="0" align="center">
+									<tr>
+										<td width="11%" align="left" valign="top">Operator Name:</td>
+										<td width="66%" align="left" valign="top"><strong><?php echo $user_name;?></strong></td>
+										<td width="8%" align="left" valign="top">Date:</td>
+										<td width="15%" align="left" valign="top"><?php echo $date;?></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td align="center" valign="top" class="barheading">
+								<table width="100%" border="1" cellspacing="1" cellpadding="1" align="center">
+									<?php
+									if(!empty($booked_report_arr))
+									{?>
+											<tr>
+												<td width="33%" align="left" valign="top"><strong>Room Name</strong></td>
+												<td width="17%" align="left" valign="top"><strong>Advance Amount (Rs)</strong></td>
+												<td width="20%" align="left" valign="top"><strong>Deposite Amount (Rs)</strong></td>
+												<td width="15%" align="left" valign="top"><strong>Rent Amount (Rs)</strong></td>
+												<td width="15%" align="left" valign="top"><strong>Total Amount (Rs)</strong></td>
+											</tr>
+									<?php	
+										foreach($booked_report_arr as $blocks=>$rep_values)
+										{?>
+											<tr>
+												<td align="left" colspan="5"><?php echo $blocks;?></td>
+											</tr>
+											<?php
+											foreach($rep_values as $key=>$values)
+											{
+											?>
+											<tr>
+												<td width="33%" align="left" valign="top"><?php echo $values['room_name'];?></td>
+												<td width="17%" align="right" valign="top"><?php echo $values['advance_amount'];?></td>
+												<td width="20%" align="right" valign="top"><?php echo $values['deposit_amt'];?></td>
+												<td width="15%" align="right" valign="top"><?php echo $values['rent_amount'];?></td>
+												<td width="15%" align="right" valign="top"><?php echo $values['total_amount_paid'];?></td>
+											</tr>
+										<?php	
+											}
+										}
+										?>
+											<tr>
+												<td align="right" valign="top" colspan="4"><strong>Total</strong></td>
+												<td width="15%" align="right" valign="top"><?php echo number_format($con_total_amount,2);?></td>
+											</tr>
+									<?php	
+									}
+									else
+									{ ?>
+											<tr>
+												<td align="center" colspan="5">No Bookings Done</td>
+											</tr>
+									<?php
+									}
+									?>
+								</table>
+							</td>
+						</tr>
+						<p></p>
+						<tr>
+							<td align="left" valign="top" ><h4>Refund Details</h4></td>
+						</tr>
+						<tr>
+							<td align="center" valign="top" class="barheading">
+								<table width="100%" border="1" cellspacing="1" cellpadding="1" align="center">
+									<?php
+									if(!empty($refund_report_arr))
+									{?>
+											<tr>
+												<td width="33%" align="left" valign="top"><strong>Room Name</strong></td>
+												<td width="17%" align="left" valign="top"><strong>Refund Amount (Rs)</strong></td>
+											</tr>
+									<?php	
+										foreach($refund_report_arr as $blocks=>$rep_values)
+										{?>
+											<tr>
+												<td align="left" colspan="2"><?php echo $blocks;?></td>
+											</tr>
+											<?php
+											foreach($rep_values as $key=>$values)
+											{
+											?>
+											<tr>
+												<td width="33%" align="left" valign="top"><?php echo $values['room_name'];?></td>
+												<td width="17%" align="right" valign="top"><?php echo $values['deposit_refund_amount'];?></td>
+											</tr>
+										<?php	
+											}
+										}
+										?>
+											<tr>
+												<td align="right" valign="top"><strong>Total</strong></td>
+												<td width="15%" align="right" valign="top"><?php echo number_format($con_ref_total_amount,2);//echo $con_ref_total_amount;?></td>
+											</tr>
+									<?php	
+									}
+									else
+									{ ?>
+											<tr>
+												<td align="center" colspan="5">No Refunds Done</td>
+											</tr>
+									<?php
+									}
+									?>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td align="left" valign="top" ><h4>Total Details</h4></td>
+						</tr>
+						<tr>
+							<td align="center" valign="top" class="barheading">
+								<table width="31%" border="1" cellspacing="1" cellpadding="1" align="center">
+									<tr>
+										<td align="left" valign="top" ><strong>Type</strong></td>
+										<td align="left" valign="top" ><strong>Total Amount(Rs)</strong></td>
+									</tr>
+									<tr>
+										<td align="left" valign="top" >Booking</td>
+										<td align="right" valign="top" ><?php echo number_format($con_total_amount,2);//echo $con_total_amount;?></td>
+									</tr>
+									<tr>
+										<td align="left" valign="top" >Refund</td>
+										<td align="right" valign="top" ><?php echo number_format($con_ref_total_amount,2); //echo $con_ref_total_amount;?></td>
+									</tr>
+									<tr>
+										<td align="left" valign="top" ><strong>Total</strong></td>
+										<td align="right" valign="top" >
+										<?php $diff_amt = $con_total_amount-$con_ref_total_amount; echo number_format($diff_amt,2);?>							</td>
+									</tr>
+							  </table>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" valign="top" class="barheading">
+								<table width="31%" align="right">
+									<tr>
+										<td align="center" valign="top">&nbsp;</td>
+									</tr>
+									<tr>
+										<td align="center" valign="top">&nbsp;</td>
+									</tr>
+									<tr>
+										<td align="center" valign="top">&nbsp;</td>
+									</tr>
+									<tr>
+										<td align="center" valign="top">&nbsp;</td>
+									</tr>
+									<tr>
+										<td align="center" valign="top">Authorized Signature</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+				<tr>
+					<td align="center" valign="top">&nbsp;</td>
+				</tr>
+				<tr>
+					<td align="center" valign="top">
+					<input type="button" name="Print" value="Print" class="button" onClick="javascript:Clean4Print('the_content')"/>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td align="left" valign="top">&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+    </tr>
+	<?php $this->load->view('common/footer'); //include("footer.php"); ?>
+</table>
 </body>
 </html>
