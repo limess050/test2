@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Untitled Document</title>
+<title>Ticket</title>
 <style>
 body{
 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -174,6 +174,12 @@ document.oncontextmenu=new Function("alert(message);return false")
 							<tr>
 								<td align="center" valign="top" class="barheading">
 									<table width="100%" border="1" cellspacing="1" cellpadding="4" align="center">
+										<tr>
+											<td width="14%" align="left" valign="top">Application Id</td>
+											<td width="38%" align="left" valign="top"><?php echo $booking_det[0]->application_id;?></td>
+											<td width="16%" align="left" valign="top">Customer ID</td>
+											<td width="32%" align="left" valign="top"><?php echo $booking_det[0]->customer_id;?></td>
+										</tr>
 										<tr>
 											<td width="14%" align="left" valign="top">Name</td>
 											<td width="38%" align="left" valign="top"><?php echo $booking_det[0]->applicant_name;?></td>

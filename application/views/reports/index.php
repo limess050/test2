@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Untitled Document</title>
+<title>Day Report</title>
 <style>
 body{
 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -168,7 +168,7 @@ document.oncontextmenu=new Function("alert(message);return false")
 										<td width="11%" align="left" valign="top">Operator Name:</td>
 										<td width="66%" align="left" valign="top"><strong><?php echo $user_name;?></strong></td>
 										<td width="8%" align="left" valign="top">Date:</td>
-										<td width="15%" align="left" valign="top"><?php echo $date;?></td>
+										<td width="15%" align="left" valign="top"><?php echo date('d/m/Y',strtotime($date));?></td>
 									</tr>
 								</table>
 							</td>

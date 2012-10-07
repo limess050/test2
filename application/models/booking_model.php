@@ -14,7 +14,23 @@ class Booking_model extends MY_Model {
     public function __construct() {
         parent::__construct();
     }
-    
+    function login($post)
+    {
+        $sql = 'SELECT id,emp_fname,emp_lname,emp_id,user_name,`password`,emp_role FROM users
+                WHERE user_name = "'.$post['username'].'" AND `password` = "'.$post['password'].'" AND `status` = 1';
+        $rs = $this->db->query($sql);
+        $data = $rs->first_row();
+        if(!empty($data))
+        {
+            $this->session->set_userdata('user_details',serialize($data));
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+	
     function save_booking($post=array())
     {
         //$post['url_key'] = str_replace(' ', '_', preg_replace('!\s+!', ' ', $post['title']));
@@ -234,7 +250,7 @@ class Booking_model extends MY_Model {
     }
 	public function getDayReport($date)
     {
-		$user_id=1;
+		$user_id=$this->user_details->id;
 		$data = array();
 		$sql = "select 
 				b.name as blockname,r.name as roomname, 
@@ -298,19 +314,46 @@ class Booking_model extends MY_Model {
 	
 	public function getBookingDetails($where_cond = 1)
     {
-		$sql = "select ad.application_id, ad.customer_id, ad.applicant_name, ad.applicant_address,
-				date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
-				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, bd.no_of_days, bd.booking_type,
+		$sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name, ad.applicant_address,
+				bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
+				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, 
+				bd.no_of_days, bd.booking_type,bd.booked_status,bd.booking_type,
 				b.name as block_name,r.name as room_name,
-				rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
+				rp.id as rcpt_id,rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
 				from application_details ad
 				left join booking_details bd on ad.id = bd.application_details_id
 				left join blocks b on bd.blocks_id = b.id
 				left join rooms r on bd.rooms_id = r.id
 				left join receipts rp on rp.application_details_id = ad.id
 				where ".$where_cond;
-		$refundreport = $this->getDBResult($sql, 'object');
+		$booking_details = $this->getDBResult($sql, 'object');
 		
-		return $refundreport;			
+		return $booking_details;			
+	}
+	
+	public function getBookingStatus($booking_id=0)
+	{
+		$sql = "select booked_status
+				from booking_details where id = ".$booking_id;
+		$booked_status = $this->getDBResult($sql, 'object');
+		return $booked_status;	
+	}
+	
+	public function updateBookingDetails($ip_array = array())
+	{
+		$return_response = false;
+		if(!empty($ip_array))
+		{
+			foreach($ip_array as $table=>$data)
+			{ 
+				$this->saveRecord(conversion($data,$table.'_lib'),$table);
+			}
+			$sql = 'insert into booking_history_details (select * from booking_details where id = '.$ip_array['booking_details']['id'].')';
+			
+			$this->db->query($sql);
+			
+			$return_response = 'success';
+		}
+		return $return_response;
 	}
 }

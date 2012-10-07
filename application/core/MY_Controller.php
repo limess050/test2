@@ -2,17 +2,19 @@
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 class MY_Controller extends CI_Controller
 {
-    private   $arrSessionLess=array('grid','login','');
+    private $arrSessionLess=array('grid','login','');
 
     function __construct()
     {
         parent::__construct();
-        /*if (!$this->db_session->userdata('userObj') and !in_array($this->uri->segment(1),$this->arrSessionLess))
+        //$data = unserialize();
+        //if (!$this->db_session->userdata('userObj') and !in_array($this->uri->segment(1),$this->arrSessionLess))
+        if (!$this->session->userdata('user_details'))
         {
             redirect('login');
         }
 
-        $this->output->enable_profiler(false);*/
+        $this->output->enable_profiler(false);
     }
     function do_upload()
     {

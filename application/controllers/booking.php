@@ -1,8 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Booking extends MY_Controller {
-    function __construct() {
+    var $user_details;
+	function __construct() {
         parent::__construct();
+		$this->user_details = unserialize($this->session->userdata('user_details'));
+		
+		//print_r($this->user_details);
+		
+		//echo $this->user_details->id;die;
     }
 
     public function index()
@@ -26,12 +32,12 @@ class Booking extends MY_Controller {
                 }
             }
             $_POST['checkout_date'] = $_POST['to_date'];
-			$_POST['created_by'] = 1;
+			$_POST['created_by'] = $this->user_details->id;
 			$_POST['created_date'] =  date("Y-m-d H:i:s");
-			$_POST['modified_by'] = 1;
+			$_POST['modified_by'] = $this->user_details->id;
 			$_POST['modified_date'] = date("Y-m-d H:i:s");
 			$_POST['ipaddress'] = ipaddress();
-			$_POST['received_by'] = 1;
+			$_POST['received_by'] = $this->user_details->id;
 			$_POST['received_date'] =  date("Y-m-d H:i:s");
 			$_POST['total_amount_paid'] =  $_POST['deposit_amt']+$_POST['rent_amount']+$_POST['advance_amount'];
 			$app_id = $this->booking_model->save_booking($_POST);
@@ -129,17 +135,17 @@ class Booking extends MY_Controller {
     {
         $date = date('Y-m-d');
 		$data = $this->booking_model->getDayReport($date);
-		$data['user_name'] = 'Kumar';
+		$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;
 		$data['date'] = $date;
 		//echo '<pre>'; print_r($data); die;
 		$this->load->view('reports/index',$data);
     }
-	public function ticket($app_id = 12)
+	public function ticket($app_id = 0)
     {
         $where_cond = ' ad.id='.$app_id;
 		$data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
 //echo '<pre>';		print_r($data);die;
-		$data['user_name'] = 'Kumar';
+		$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
 		$this->load->view('booking/ticket',$data);
     }
 	
@@ -149,13 +155,47 @@ class Booking extends MY_Controller {
     }
 	public function getBookingDetails()
     {
-        $app_id = 1231;//$_POST['application_id']
-		$booking_details = $this->booking_model->getBookingDetails($app_id);
-		$data['booking_details'] = $booking_details;
-		$this->load->view('checkout/checkout_details',$data,true);
-		echo '<pre>'; print_r($booking_details); die;
-		//$this->load->view('checkout/index');
+		$where_cond = ' ad.application_id='.$_POST['application_id'];
+		$data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
+		//echo '<pre>';		print_r($data);die;
+		$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
+		$data['app_id'] = $_POST['application_id'];
+		echo $this->load->view('checkout/checkout_details',$data,true);
     }
+	
+	public function updatecheckout()
+	{
+		$booked_status = $this->booking_model->getBookingStatus($_POST['booking_det_id']);
+		
+		//echo '<pre>'; print_r($booked_status); die; 
+		if($booked_status[0]->booked_status == '1')
+		{
+			$booking_details['id'] = $_POST['booking_det_id'];
+			$booking_details['to_date'] = date("Y-m-d H:i:s");
+			$booking_details['booked_status'] = '0';
+			$booking_details['modified_by'] = $this->user_details->id;
+			$booking_details['modified_date'] = date("Y-m-d H:i:s");
+			
+			$receipt_details['receipt_id'] = $_POST['rcpt_id'];
+			$receipt_details['deposit_refund_amount'] = $_POST['deposite_amount'];
+			$receipt_details['deposit_refund_by'] = 1;
+			$receipt_details['deposit_refund_date'] = date("Y-m-d H:i:s");
+			$receipt_details['modified_by'] = $this->user_details->id;
+			$receipt_details['modified_date'] = date("Y-m-d H:i:s");
+			$receipt_details['ipaddress'] = ipaddress();
+			
+			$ip_array = array('booking_details'=>$booking_details,'payments'=>$receipt_details);
+			//echo '<pre>'; print_r($ip_array); die;
+			$update_booked_status = $this->booking_model->updateBookingDetails($ip_array);
+			echo $update_booked_status;
+		}
+		else
+		{
+			//$response_array = array('response'=>'error','message'=>'This Booking checkout already done');
+			//echo json_encode($response_array);
+			echo 'error';
+		}
+	}
 	
 
 }

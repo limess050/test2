@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Room Checkout</title>
+<title>Home</title>
 <style>
 body{
 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -86,17 +86,6 @@ margin-left: 10px;
 <link href="<?php echo base_url();  ?>public/css/general/style.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url();  ?>public/css/general/style2.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url();  ?>public/css/style.css" rel="stylesheet" type="text/css" />
-<!--<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/library.js" ></script>-->
-<script src="<?php echo base_url();?>public/js/jquery-1.5.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/validate.js" ></script>
-<script type="text/javascript" rel="javascript">
-    var base_url="<?php echo base_url();  ?>";
-    var main_url="<?php echo base_url();  ?>";
-    // window.onerror=function(){ return true; }
-</script>
-
-<!--<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
-<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/jquery-ui-custom.min.js" ></script>
 <script type="text/javascript" language="javascript">
 function DisableBackButton() {
 window.history.forward()
@@ -152,82 +141,21 @@ document.oncontextmenu=new Function("alert(message);return false")
 					<td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/header');//include("header.php"); ?></td>
 				</tr>
     <tr>
-		<td align="center" valign="top">
-			<div id="stylized" class="myform">
-			<table width="98%" height="500" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-				<td align="left" valign="top" class="pannel_border">
-					
-					<table width="100%" height="500" border="0" cellspacing="0" cellpadding="0">
-					  <form id="check_appid" name="check_appid" method="post" action="">
-					  <tr>
-						<td align="left" valign="top" class="pannel_border">
-							<h1>Room checkout</h1>
-							<p></p>
-							<div class="iptxt">
-							  <label>Application ID:</label>
-							  <input type="text" name="application_id" id="application_id" class="required valid" />
-							</div>
-							<p></p>
-							<button type="button" name="submit" class="japp_id">Submit</button>
-						</td>
-					</tr>
-					<tr>
-						<td align="left" valign="top" class="pannel_border" id="booking_details">
-							
-						</td>
-					</tr>
-					</form>
-				  </table>
-				</td>
-			  </tr>
-			</table>
-			</div>
-		</td>
+		<td align="center" valign="top"><table width="98%" height="600" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+		    <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
+				<table width="100%" height="600" border="0" cellspacing="0" cellpadding="0">
+				  <tr>
+					<td align="center" valign="middle" class="pannel_border">
+		      			<h1>Welcome to Vemulawada Temple Room Bookings</h1>
+			  		</td>
+				</tr>
+			  </table>
+		      </div></td>
+	      </tr>
+	    </table></td>
 	</tr>
 	<?php $this->load->view('common/footer'); ?>
 </table>
-
-<script type="text/javascript">
-var base_url = '<?php echo base_url();?>';
-var site_url='<?php echo site_url()?>';
-$(document).ready(function() {
-	/////  for getting Room Checkout
-	$("#check_appid").validate({
-	rules: {
-            application_id: "required",
-        },
-        messages: {
-            application_id: "Please enter Application id",
-        },
-		errorPlacement: function(error, element) {
-		error.insertAfter(element);
-		},
-		submitHandler: function()
-		{
-			var data = $('#check_appid').serialize();
-			$.ajax({
-				type: "POST",	
-				data: data,
-				url: base_url+"booking/getBookingDetails", 
-				beforeSend : function(){
-					$('#booking_details').html('');
-				},
-				success: function(data)
-				{
-						$('#booking_details').html(data);
-				},
-				complete : function()
-				{
-					//$("#sub_grid_tbl").trigger("reloadGrid");
-				}
-			});
-		}
-	});
-	$('.japp_id').live('click',function(){
-		$("#check_appid").submit();
-	})
-});
-</script>
 </body>
 </html>
