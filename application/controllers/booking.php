@@ -2,17 +2,16 @@
 
 class Booking extends MY_Controller {
     var $user_details;
-	function __construct() {
+    function __construct() {
         parent::__construct();
-		$this->user_details = unserialize($this->session->userdata('user_details'));
-		
-		//print_r($this->user_details);
-		
-		//echo $this->user_details->id;die;
+        $this->user_details = unserialize($this->session->userdata('user_details'));
+
+    //print_r($this->user_details);
+
+    //echo $this->user_details->id;die;
     }
 
-    public function index()
-    {
+    public function index() {
         $data['today'] = date('d-m-Y');
         $data['tomorrow'] = date('d-m-Y', time()+86400);
         $data['master_data'] = $this->booking_model->getMasterData();
@@ -20,184 +19,187 @@ class Booking extends MY_Controller {
         $this->load->view('booking/index',$data);
     }
 
-    public function roomBooking()
-    {
+    public function roomBooking() {
         if (formtoken::validateToken($_POST)) {
             $date_fields_array = array('from_date','to_date');
-            foreach($date_fields_array as $val)
-            {
-                if(isset($_POST[$val]))
-                {
+            foreach($date_fields_array as $val) {
+                if(isset($_POST[$val])) {
                     $_POST[$val] = date('Y-m-d',strtotime($_POST[$val]));
                 }
             }
             $_POST['checkout_date'] = $_POST['to_date'];
-			$_POST['created_by'] = $this->user_details->id;
-			$_POST['created_date'] =  date("Y-m-d H:i:s");
-			$_POST['modified_by'] = $this->user_details->id;
-			$_POST['modified_date'] = date("Y-m-d H:i:s");
-			$_POST['ipaddress'] = ipaddress();
-			$_POST['received_by'] = $this->user_details->id;
-			$_POST['received_date'] =  date("Y-m-d H:i:s");
-			$_POST['total_amount_paid'] =  $_POST['deposit_amt']+$_POST['rent_amount']+$_POST['advance_amount'];
-			$app_id = $this->booking_model->save_booking($_POST);
-			redirect("booking/ticket/$app_id");
-			//$this->ticket($app_id);
+            $_POST['created_by'] = $this->user_details->id;
+            $_POST['created_date'] =  date("Y-m-d H:i:s");
+            $_POST['modified_by'] = $this->user_details->id;
+            $_POST['modified_date'] = date("Y-m-d H:i:s");
+            $_POST['ipaddress'] = ipaddress();
+            $_POST['received_by'] = $this->user_details->id;
+            $_POST['received_date'] =  date("Y-m-d H:i:s");
+            $_POST['total_amount_paid'] =  $_POST['deposit_amt']+$_POST['rent_amount']+$_POST['advance_amount'];
+            $app_id = $this->booking_model->save_booking($_POST);
+            redirect("booking/ticket/$app_id");
+        //$this->ticket($app_id);
         }
         else {
             die('The form is not valid or has expired.');
         }
     }
 
-    public function getAvaliableBlocksRooms()
-    {
+    public function getAvaliableBlocksRooms() {
         $data = $this->booking_model->getAvaliableBlocksRooms($_POST);
         header('content-type:application/json');
         echo json_encode($data);
     }
 
-    public function getRoomBookingDates()
-    {
+    public function getRoomBookingDates() {
         $data = $this->booking_model->getRoomBookingDates($_POST);
         header('content-type:application/json');
         echo json_encode($data);
     }
-    
-    public function libhelp()
-    {
-        //$tbl_array = array('users','users_address','users_contacts','users_ecurrencies','users_settings');
+
+    public function libhelp() {
+    //$tbl_array = array('users','users_address','users_contacts','users_ecurrencies','users_settings');
         $tbl_array = array('receipts');
         $data = $this->booking_model->gettabledetails($tbl_array);
         /*echo '<pre>';
         print_r($data);*/
-        foreach($data as $key=>$val)
-        {
+        foreach($data as $key=>$val) {
             echo 'private $'.$key.';<br>';
         }
     }
 
-    public function updateTriggerHelp()
-    {
+    public function updateTriggerHelp() {
         $rs = $this->db->query('show tables');
         echo '<pre>';
-        foreach($rs->result() as $tables)
-        {
-            //echo $tables->Tables_in_edealspot.'<br>';
+        foreach($rs->result() as $tables) {
+        //echo $tables->Tables_in_edealspot.'<br>';
             echo $this->users_model->myTriggers($tables->Tables_in_edealspot).'<br><br><br><br>';
         }
-        //die;
+    //die;
 
-        //echo $qry;
+    //echo $qry;
     }
 
-    public function insertTriggerHelp()
-    {
+    public function insertTriggerHelp() {
         $rs = $this->db->query('show tables');
         echo '<pre>';
-        foreach($rs->result() as $tables)
-        {
-            //echo $tables->Tables_in_edealspot.'<br>';
+        foreach($rs->result() as $tables) {
+        //echo $tables->Tables_in_edealspot.'<br>';
             echo $this->users_model->myTriggersInsert($tables->Tables_in_edealspot).'<br><br><br><br>';
         }
-        //die;
+    //die;
 
-        //echo $qry;
+    //echo $qry;
     }
 
-    public function deleteTriggerHelp()
-    {
+    public function deleteTriggerHelp() {
         $rs = $this->db->query('show tables');
         echo '<pre>';
-        foreach($rs->result() as $tables)
-        {
-            //echo $tables->Tables_in_edealspot.'<br>';
+        foreach($rs->result() as $tables) {
+        //echo $tables->Tables_in_edealspot.'<br>';
             echo $this->users_model->myTriggersDelete($tables->Tables_in_edealspot).'<br><br><br><br>';
         }
-        //die;
+    //die;
 
-        //echo $qry;
+    //echo $qry;
     }
 
-    public function getDates()
-    {
+    public function getDates() {
         $sql="SELECT dates FROM holidaydates";
         $result = $this->db->query($sql);
         //$chkdate = $_POST['chkdate'];
         $str='';
-        while($row = mysql_fetch_array($result))
-        {
+        while($row = mysql_fetch_array($result)) {
             $str .=$row[0].'';
         }
         echo $str;
     }
-	
-	public function getDayReport()
-    {
+
+    public function getDayReport() {
         $date = date('Y-m-d');
-		$data = $this->booking_model->getDayReport($date);
-		$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;
-		$data['date'] = $date;
-		//echo '<pre>'; print_r($data); die;
-		$this->load->view('reports/index',$data);
+        $data = $this->booking_model->getDayReport($date);
+        $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;
+        $data['date'] = $date;
+        //echo '<pre>'; print_r($data); die;
+        $this->load->view('reports/index',$data);
     }
-	public function ticket($app_id = 0)
-    {
+    public function ticket($app_id = 0) {
         $where_cond = ' ad.id='.$app_id;
-		$data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
-//echo '<pre>';		print_r($data);die;
-		$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
-		$this->load->view('booking/ticket',$data);
+        $data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
+        //echo '<pre>';		print_r($data);die;
+        $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
+        $this->load->view('booking/ticket',$data);
     }
-	
-	public function checkOut()
-    {
+
+    public function checkOut() {
         $this->load->view('checkout/index');
     }
-	public function getBookingDetails()
-    {
-		$where_cond = ' ad.application_id='.$_POST['application_id'];
-		$data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
-		//echo '<pre>';		print_r($data);die;
-		$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
-		$data['app_id'] = $_POST['application_id'];
-		echo $this->load->view('checkout/checkout_details',$data,true);
+    public function getBookingDetails() {
+        $where_cond = ' ad.application_id='.$_POST['application_id'];
+        $data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
+        //echo '<pre>';		print_r($data);die;
+        $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
+        $data['app_id'] = $_POST['application_id'];
+        echo $this->load->view('checkout/checkout_details',$data,true);
     }
-	
-	public function updatecheckout()
-	{
-		$booked_status = $this->booking_model->getBookingStatus($_POST['booking_det_id']);
-		
-		//echo '<pre>'; print_r($booked_status); die; 
-		if($booked_status[0]->booked_status == '1')
-		{
-			$booking_details['id'] = $_POST['booking_det_id'];
-			$booking_details['to_date'] = date("Y-m-d H:i:s");
-			$booking_details['booked_status'] = '0';
-			$booking_details['modified_by'] = $this->user_details->id;
-			$booking_details['modified_date'] = date("Y-m-d H:i:s");
-			
-			$receipt_details['receipt_id'] = $_POST['rcpt_id'];
-			$receipt_details['deposit_refund_amount'] = $_POST['deposite_amount'];
-			$receipt_details['deposit_refund_by'] = 1;
-			$receipt_details['deposit_refund_date'] = date("Y-m-d H:i:s");
-			$receipt_details['modified_by'] = $this->user_details->id;
-			$receipt_details['modified_date'] = date("Y-m-d H:i:s");
-			$receipt_details['ipaddress'] = ipaddress();
-			
-			$ip_array = array('booking_details'=>$booking_details,'payments'=>$receipt_details);
-			//echo '<pre>'; print_r($ip_array); die;
-			$update_booked_status = $this->booking_model->updateBookingDetails($ip_array);
-			echo $update_booked_status;
-		}
-		else
-		{
-			//$response_array = array('response'=>'error','message'=>'This Booking checkout already done');
-			//echo json_encode($response_array);
-			echo 'error';
-		}
-	}
-	
 
+    public function updatecheckout() {
+        $booked_status = $this->booking_model->getBookingStatus($_POST['booking_det_id']);
+
+        //echo '<pre>'; print_r($booked_status); die;
+        if($booked_status[0]->booked_status == '1') {
+            $booking_details['id'] = $_POST['booking_det_id'];
+            $booking_details['to_date'] = date("Y-m-d H:i:s");
+            $booking_details['booked_status'] = '0';
+            $booking_details['modified_by'] = $this->user_details->id;
+            $booking_details['modified_date'] = date("Y-m-d H:i:s");
+
+            $receipt_details['receipt_id'] = $_POST['rcpt_id'];
+            $receipt_details['deposit_refund_amount'] = $_POST['deposite_amount'];
+            $receipt_details['deposit_refund_by'] = 1;
+            $receipt_details['deposit_refund_date'] = date("Y-m-d H:i:s");
+            $receipt_details['modified_by'] = $this->user_details->id;
+            $receipt_details['modified_date'] = date("Y-m-d H:i:s");
+            $receipt_details['ipaddress'] = ipaddress();
+
+            $ip_array = array('booking_details'=>$booking_details,'payments'=>$receipt_details);
+            //echo '<pre>'; print_r($ip_array); die;
+            $update_booked_status = $this->booking_model->updateBookingDetails($ip_array);
+            echo $update_booked_status;
+        }
+        else {
+        //$response_array = array('response'=>'error','message'=>'This Booking checkout already done');
+        //echo json_encode($response_array);
+            echo 'error';
+        }
+    }
+
+    function sendEmail() {
+        $config['protocol']    = 'smtp';
+        $config['smtp_host']    = 'ssl://smtp.gmail.com';
+        $config['smtp_port']    = '465';
+        $config['smtp_timeout'] = '7';
+        $config['smtp_user']    = 'm.rajashekarreddy@gmail.com';
+        $config['smtp_pass']    = '123';
+        $config['charset']    = 'utf-8';
+        $config['newline']    = "\r\n";
+        $config['mailtype'] = 'text'; // or html
+        $config['validation'] = TRUE; // bool whether to validate email or not
+
+        $this->email->initialize($config);
+
+        $this->email->from('admin@vemulawadatemple.com', 'Vemulawada');
+        $this->email->to('m.rajashekarreddy@gmail.com');
+
+        $this->email->subject('Email Test');
+        $this->email->message('Testing the email class.');
+
+        $this->email->send();
+
+        echo $this->email->print_debugger();
+
+    //$this->load->view('email_view');
+    }
 }
 
 /* End of file welcome.php */
