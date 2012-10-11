@@ -134,7 +134,7 @@ class Booking_model extends MY_Model {
             {
                 if(!empty($rooms))
                 {
-                    $room_options = '<option value="0">Select Room</option>';
+                    $room_options = '<option value="">Select Room</option>';
                     foreach($rooms as $roomid=>$roomdetails)
                     {
                         $room_options .= '<option value="'.$roomid.'">'.$roomdetails['roomname'].'</option>';
@@ -150,7 +150,7 @@ class Booking_model extends MY_Model {
         else
         {
             //print_r($room_details[$post['blocks_id']]);
-            $room_options = '<option value="0">Select Room</option>';
+            $room_options = '<option value="">Select Room</option>';
             foreach($room_details[$post['blocks_id']] as $blockid=>$rooms)
             {
                 $room_options .= '<option value="'.$rooms['id'].'">'.$rooms['roomname'].'</option>';
