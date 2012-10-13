@@ -33,6 +33,8 @@ class Booking_model extends MY_Model {
 	
     function save_booking($post=array())
     {
+        /*echo '<pre>';
+        print_r($post);die;*/
         //$post['url_key'] = str_replace(' ', '_', preg_replace('!\s+!', ' ', $post['title']));
 
         if(!empty($post['id']))

@@ -152,6 +152,14 @@ $(function(){
             $('.apply_dob_datepicker').datepicker({dateFormat:'yy-mm-dd', changeMonth: true, changeYear: true, yearRange: '1910:2012'});
         }
 
+        if($('.jadv_fromdate').length>0){
+            $('.jadv_fromdate').datepicker({dateFormat:'dd-mm-yy'});
+        }
+
+        if($('.jadv_todate').length>0){
+            $('.jadv_todate').datepicker({dateFormat:'dd-mm-yy'});
+        }
+
         if($('.jfrom').length>0){
             $('.jfrom').datepicker({beforeShow: customRange2_Year,dateFormat:'dd-mm-yy', changeMonth: true, changeYear: true});
         }
@@ -331,7 +339,7 @@ function customRange_Year(input) {
             if(advanced_booking)
             {
                 return {
-                        minDate: (input.id == "to" ? adv_date : null)
+                        minDate: (input.id == "to" ? adv_todate : null)
                 };
             }
             else
@@ -348,11 +356,32 @@ function customRange2_Year(input) {
             to_date=$("#to").datepicker("getDate");
             //to_date.setMonth(to_date.getMonth() - 12);
             to_date.setDate(to_date.getDate() - 2);
- 
-            return {
-                    maxDate: (input.id == "from" ? $("#to").datepicker("getDate") : null),
-                    minDate: (input.id == "from" ? to_date : null)
-            };
+            
+            //alert($('.jadv_todate').val());
+            if(advanced_booking)
+            {
+                if($('.jadv_fromdate').datepicker("getDate") < to_date)
+                {
+                    return {
+                        minDate: (input.id == "from" ? to_date : null),
+                        maxDate: (input.id == "from" ? $("#to").datepicker("getDate") : null)
+                    };
+                }
+                else
+                {
+                    return {
+                        minDate: (input.id == "from" ? adv_date : null),
+                        maxDate: (input.id == "from" ? $("#to").datepicker("getDate") : null)
+                    };
+                }
+            }
+            else
+            {
+                return {
+                        maxDate: (input.id == "from" ? $("#to").datepicker("getDate") : null),
+                        minDate: (input.id == "from" ? to_date : null)
+                };
+            }
     }else{
             if(advanced_booking)
             {

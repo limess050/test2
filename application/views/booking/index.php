@@ -93,14 +93,11 @@
             .ui-state-disabled .ui-state-default {
                 background:red;
             }
-
-            .odd { background-color: red; }
-            /*#stylized input.error {
-                border: 2px solid red;
-                background-color: #FFFFD5;
-                margin: 0px;
-                color: red;
-            }*/
+            .booked, .ui-datepicker .booked span
+            {
+                 background: none #FC0000;
+                 border: 1px solid #960C44;
+            }
 
         </style>
         <link href="<?php echo base_url(); ?>uploadify/uploadify.css" rel="stylesheet" type="text/css" />
@@ -141,7 +138,8 @@
                 });
                 //$('.mydp').datepicker({dateFormat:'dd-mm-yy', changeMonth: true, changeYear: true});
                 $('.jbooktype').click(function(){
-                    adv_date = '<?php echo $tomorrow;?>';
+                    adv_date = '<?php echo $adv_date;?>';
+                    adv_todate = '<?php echo $adv_todate;?>';
                     if($(this).val() == '2')
                     {
                         advanced_booking = true;
@@ -169,7 +167,6 @@
                         blocks_rooms();
                     }
                 });
-
                 $('#from').change(function(){
                     blocks_rooms();
                 });
@@ -231,7 +228,8 @@
                     var myDate = new Date(datets);
                     if ((m == (myDate.getMonth())) && (d == (myDate.getDate())) && (y == (myDate.getFullYear())))
                     {
-                        return [false];
+                        //return [false];
+                        return ([false, 'booked', natDays[i][1]]);
                     }
                 }
                 return [true];
@@ -383,10 +381,10 @@
                                             <label>Application ID:</label>
                                             <input type="text" name="application_id" id="application_id" class="required"/>
                                         </div>
-                                        <div class="iptxt">
+                                        <!--<div class="iptxt">
                                             <label>Customer ID: </label>
                                             <input type="text" name="customer_id" id="customer_id" class="required"/>
-                                        </div>
+                                        </div>-->
                                         <div class="ipradio">
                                             <label>VIP Reference: </label>
                                             <input class="jvip_quota" type="radio" name="vip_quota" value="1" />
@@ -400,22 +398,22 @@
                                         </div>
                                         <div class="ipradio">
                                             <label>Booking Type: </label>
-                                            <input type="radio" name="booking_type" class="jbooktype" value="1" />
+                                            <input type="radio" name="booking_type" class="jbooktype" value="1" checked />
                                             Current
                                             <input type="radio" name="booking_type" class="jbooktype" value="2" />
                                             Advanced
                                         </div>
                                         <div class="iptxt jfromhtml">
                                             <label>Check-In Date:</label>
-                                            <input type="text" name="from_date" class="jfrom required" id="from" />
+                                            <input type="text" name="from_date" class="jfrom required" id="from" value="<?php echo $today;?>" />
                                         </div>
                                         <div class="iptxt jtohtml">
                                             <label>Check-Out Date:</label>
-                                            <input type="text" name="to_date" class="jto required" id="to" />
+                                            <input type="text" name="to_date" class="jto required" id="to" value="<?php echo $tomorrow;?>" />
                                         </div>
                                         <div class="iptxt">
                                             <label>Block: </label>
-                                            <select name="blocks_id" id="blocks_id" class="required">
+                                            <select name="blocks_id" id="blocks_id" class="required" style="width:206px">
                                                 <option value="">Select Block</option>
                                                 <?php
                                                 foreach($master_data['blocks'] as $block) {
@@ -426,7 +424,7 @@
                                         </div>
                                         <div class="iptxt">
                                             <label>Room: </label>
-                                            <select name="rooms_id" id="rooms_id" disabled class="required">
+                                            <select name="rooms_id" id="rooms_id" disabled class="required" style="width:206px">
                                                 <option value="">Select Room</option>
                                                 <?php
                                                 /*foreach($master_data['rooms'] as $room)
@@ -440,6 +438,7 @@
                                         <div class="iptxt jadvamt" style="display:none">
                                             <label>Advance Amount:</label>
                                             <input type="text" name="advance_amount" id="advance_amount" class="required" />
+                                            <span style="color:red; margin-left:5px">(Non-Refundable)</span>
                                         </div>
                                         <div class="iptxt">
                                             <label>Amount:</label>
@@ -448,6 +447,7 @@
                                         <div class="iptxt">
                                             <label>Deposit:</label>
                                             <input type="text" name="deposit_amt" id="deposit_amt" class="required" />
+                                            <span style="color:green; margin-left:5px">(Refundable)</span>
                                         </div>
 
                                         <div class="iptxt">
@@ -455,8 +455,16 @@
                                             <input type="text" name="applicant_name" id="applicant_name" class="required" />
                                         </div>
                                         <div class="iptxt">
+                                            <label>Phone Number: </label>
+                                            <input type="text" name="phone_no" id="phone_no"></input>
+                                        </div>
+                                        <div class="iptxt">
                                             <label>Address: </label>
                                             <textarea name="applicant_address" id="applicant_address" class="required"></textarea>
+                                        </div>
+                                        <div class="iptxt">
+                                            <label>Address Proof: </label>
+                                            <input type="text" name="address_proof" id="address_proof"></input>
                                         </div>
                                         <!--<div class="iptxt">
                                             <label>Photo: </label>
@@ -472,6 +480,8 @@
                                         <button type="submit">Submit</button>
                                         <div class="spacer"></div>
                                     </form>
+                                    <div style="display:none"><input type="text" name="jadv_fromdate" class="jadv_fromdate" value="<?php echo $adv_date;?>"/></div>
+                                    <div style="display:none"><input type="text" name="jadv_todate" class="jadv_todate" value="<?php echo $adv_todate;?>"/></div>
                                 </div></td>
                         </tr>
                     </table></td>

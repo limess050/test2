@@ -8,7 +8,9 @@ class Application_details_lib{
     private $application_id;
     private $customer_id;
     private $applicant_name;
+    private $phone_no;
     private $applicant_address;
+    private $address_proof;
     private $image_path;
     private $vip_quota;
     private $vip_ref_by;
@@ -50,12 +52,28 @@ class Application_details_lib{
         $this->applicant_name = $applicant_name;
     }
 
+    public function getPhone_no() {
+        return $this->phone_no;
+    }
+
+    public function setPhone_no($phone_no) {
+        $this->applicant_name = $phone_no;
+    }
+
     public function getApplicant_address() {
         return $this->applicant_address;
     }
 
     public function setApplicant_address($applicant_address) {
         $this->applicant_address = $applicant_address;
+    }
+
+    public function getAddress_proof() {
+        return $this->address_proof;
+    }
+
+    public function setAddress_proof($address_proof) {
+        $this->applicant_address = $address_proof;
     }
 
     public function getImage_path() {
