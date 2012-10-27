@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database', 'session', 'xmlrpc','DB_Session','Ema
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'file','form','conversion','ipaddress','json','selectbox','attachment');
+$autoload['helper'] = array('url', 'file','form','conversion','ipaddress','json','selectbox','attachment','customerid');
 
 
 /*

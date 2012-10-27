@@ -123,8 +123,20 @@
                       },
                       errorPlacement: function(error, element) { }
                 });
-
                 advanced_booking = false;
+
+                $('.jdonor').click(function(){
+                    /*if($(this).val() == 1)
+                    {
+                        $(".jfree:first").click();
+                    }
+                    else
+                    {
+                        $(".jfree:last").click();
+                    }*/
+                    roomRentDetails();
+                });
+
                 $('.jvip_quota').click(function(){
                     if($(this).val() == '1')
                     {
@@ -134,15 +146,39 @@
                     {
                         $('.jrefname').slideUp('slow');
                     }
+                    $('#deposit_amt').val('');
+                    $('#rent_amount').val('');
                     blocks_rooms();
                 });
                 //$('.mydp').datepicker({dateFormat:'dd-mm-yy', changeMonth: true, changeYear: true});
+                /*$('.jfree').click(function(){
+                    if($(this).val() == 'yes')
+                    {
+                        //$('.jpaydetails').slideUp('slow');
+                        $('#deposit_amt').val(0);
+                        $('#rent_amount').val(0);
+                        $('#advance_amount').val(0);
+                    }
+                    else
+                    {
+                        $('#deposit_amt').val('');
+                        $('#rent_amount').val('');
+                        $('#advance_amount').val('');
+                        roomRentDetails();
+                        //$('.jpaydetails').slideDown('slow');
+                    }
+
+                });*/
+
                 $('.jbooktype').click(function(){
                     adv_date = '<?php echo $adv_date;?>';
                     adv_todate = '<?php echo $adv_todate;?>';
                     if($(this).val() == '2')
                     {
                         advanced_booking = true;
+                        $('#deposit_amt').val('');
+                        $('#rent_amount').val('');
+                        $('#advance_amount').val('');
                         $('#blocks_id').val('');
                         $('#rooms_id').val('').attr('disabled','disabled');
                         $('.dpcontainer').html('<span style="float:right" class="mydp"></span>');
@@ -161,17 +197,30 @@
                     }
                     else
                     {
+                        $('#deposit_amt').val('');
+                        $('#rent_amount').val('');
+                        $('#advance_amount').val('');
                         $('.jfrom').val('<?php echo $today;?>');
                         $('.jto').val('<?php echo $tomorrow;?>');
                         $('.jadvamt').slideUp('slow');
                         blocks_rooms();
                     }
                 });
-                $('#from').change(function(){
+                $('#from').live('change',function(){ 
+                    $('#blocks_id').val('');
+                    $('#rooms_id').val('');
+                    $('#deposit_amt').val('');
+                    $('#rent_amount').val('');
+                    $('#advance_amount').val('');
                     blocks_rooms();
                 });
 
-                $('#to').change(function(){
+                $('#to').live('change',function(){ 
+                    $('#blocks_id').val('');
+                    $('#rooms_id').val('');
+                    $('#deposit_amt').val('');
+                    $('#rent_amount').val('');
+                    $('#advance_amount').val('');
                     blocks_rooms();
                 });
 
@@ -191,6 +240,7 @@
                 //natDays   = [[1,1,2012],[1,1,2013],[12,31,2012],[10,22,2012]];
                 $('#rooms_id').change(function(){
                     $('.dpcontainer').html('<span style="float:right" class="mydp"></span>');
+                    var donorRef = $('.jdonor:checked').val();
                     qry_str = 'blocks_id='+$('#blocks_id').val()+'&rooms_id='+$(this).val();
                     $.ajax({
                         type: "POST",
@@ -213,10 +263,8 @@
                             });
                         }
                     });
+                    roomRentDetails();
                 });
-
-                //$('#rooms_id').html('<option>asdf</option>');
-
             });
 
             function nationalDays(date) {
@@ -278,8 +326,7 @@
                     qry_str += 'to_date='+to_date+'&';
                 }
                 qry_str += 'blocks_id='+blocks_id;
-                //if((from_date != '') && (to_date != ''))
-                if(blocks_id != '')
+                if(((from_date != '') && (to_date != '')) || (blocks_id != ''))
                 {
                     $.ajax({
                         type: "POST",
@@ -300,6 +347,45 @@
                         },
                         complete: function(){
                             $('#rooms_id').removeAttr('disabled');
+                            roomRentDetails();
+                        }
+                    });
+                }
+            }
+
+            function roomRentDetails()
+            {
+                var blocks_id = $('#blocks_id').val();
+                var rooms_id = $('#rooms_id').val();
+                qry_str = 'blocks_id='+blocks_id+'&rooms_id='+rooms_id;
+                var from_date = $('#from').val();
+                if(from_date != '')
+                {
+                    qry_str += '&from_date='+from_date;
+                }
+                var to_date = $('#to').val();
+                if(to_date != '')
+                {
+                    qry_str += '&to_date='+to_date;
+                }
+                var donorRef = $('.jdonor:checked').val();
+                qry_str += '&donorRef='+donorRef;
+                if((blocks_id != '')&&(rooms_id != ''))
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url();?>booking/getRoomRentDetails',
+                        data: qry_str,
+                        dataType: 'json',
+                        beforeSend : function(){
+                        },
+                        success: function(resdata){
+                            $('#deposit_amt').val(resdata.deposit_amt);
+                            $('#rent_amount').val(resdata.act_rent);
+                            $('#advance_amount').val(resdata.rent_amt);
+                            $('#no_of_days').val(resdata.days);
+                        },
+                        complete: function(){
                         }
                     });
                 }
@@ -375,16 +461,19 @@
                         <tr>
                             <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
                                     <form id="bookingform" name="bookingform" method="post" action="<?php echo base_url();?>booking/roomBooking">
+                                        <input type="hidden" name="no_of_days" id="no_of_days"/>
                                         <h1>Room Booking Details</h1>
                                         <p></p>
                                         <div class="iptxt">
                                             <label>Application ID:</label>
                                             <input type="text" name="application_id" id="application_id" class="required"/>
                                         </div>
-                                        <!--<div class="iptxt">
-                                            <label>Customer ID: </label>
-                                            <input type="text" name="customer_id" id="customer_id" class="required"/>
-                                        </div>-->
+                                        <div class="ipradio">
+                                            <label>Donor: </label>
+                                            <input type="radio" class="jdonor" name="donor" value="1"/>Donor
+                                            <input type="radio" class="jdonor" name="donor" value="2"/>Authorization
+                                            <input type="radio" class="jdonor" name="donor" value="0" checked/>None
+                                        </div>
                                         <div class="ipradio">
                                             <label>VIP Reference: </label>
                                             <input class="jvip_quota" type="radio" name="vip_quota" value="1" />
@@ -411,45 +500,53 @@
                                             <label>Check-Out Date:</label>
                                             <input type="text" name="to_date" class="jto required" id="to" value="<?php echo $tomorrow;?>" />
                                         </div>
+                                        <?php
+                                        $block_options = '<option value="0">Select Block</option>';
+                                        foreach($master_data as $blockid=>$rooms) {
+                                            if(!empty($rooms)) {
+                                                $room_options = '<option value="">Select Room</option>';
+                                                foreach($rooms as $roomid=>$roomdetails) {
+                                                    $room_options .= '<option value="'.$roomid.'">'.$roomdetails['roomname'].'</option>';
+                                                    $blockname = $roomdetails['blockname'];
+                                                }
+                                                $block_options .= '<option value="'.$blockid.'">'.$blockname.'</option>';
+                                            }
+                                        }
+                                        ?>
                                         <div class="iptxt">
                                             <label>Block: </label>
                                             <select name="blocks_id" id="blocks_id" class="required" style="width:206px">
-                                                <option value="">Select Block</option>
-                                                <?php
-                                                foreach($master_data['blocks'] as $block) {
-                                                    echo '<option value="'.$block->id.'">'.$block->name.'</option>';
-                                                }
-                                                ?>
+                                                <?php echo $block_options;?>
                                             </select>
                                         </div>
                                         <div class="iptxt">
                                             <label>Room: </label>
                                             <select name="rooms_id" id="rooms_id" disabled class="required" style="width:206px">
-                                                <option value="">Select Room</option>
-                                                <?php
-                                                /*foreach($master_data['rooms'] as $room)
-                                                {
-                                                    echo '<option value="'.$room->id.'">'.$room->name.'</option>';
-                                                }*/
-                                                ?>
+                                                <?php echo $room_options;?>
                                             </select>
                                             <span class="dpcontainer"><span style="float:right" class="mydp"></span></span>
                                         </div>
-                                        <div class="iptxt jadvamt" style="display:none">
-                                            <label>Advance Amount:</label>
-                                            <input type="text" name="advance_amount" id="advance_amount" class="required" />
-                                            <span style="color:red; margin-left:5px">(Non-Refundable)</span>
+                                        <!--<div class="ipradio">
+                                            <label>Free: </label>
+                                            <input type="radio" class="jfree" name="free" value="yes">Yes
+                                            <input type="radio" class="jfree" name="free" value="no" checked>No
+                                        </div>-->
+                                        <div class="jpaydetails">
+                                            <div class="iptxt jadvamt" style="display:none">
+                                                <label>Advance Amount:</label>
+                                                <input type="text" name="advance_amount" id="advance_amount" class="required" readonly />
+                                                <span style="color:red; margin-left:5px">(Non-Refundable)</span>
+                                            </div>
+                                            <div class="iptxt">
+                                                <label>Rent Amount:</label>
+                                                <input type="text" name="rent_amount" id="rent_amount" class="required" readonly />
+                                            </div>
+                                            <div class="iptxt">
+                                                <label>Deposit:</label>
+                                                <input type="text" name="deposit_amt" id="deposit_amt" class="required" readonly />
+                                                <span style="color:green; margin-left:5px">(Refundable)</span>
+                                            </div>
                                         </div>
-                                        <div class="iptxt">
-                                            <label>Amount:</label>
-                                            <input type="text" name="rent_amount" id="rent_amount" class="required" />
-                                        </div>
-                                        <div class="iptxt">
-                                            <label>Deposit:</label>
-                                            <input type="text" name="deposit_amt" id="deposit_amt" class="required" />
-                                            <span style="color:green; margin-left:5px">(Refundable)</span>
-                                        </div>
-
                                         <div class="iptxt">
                                             <label>Name: </label>
                                             <input type="text" name="applicant_name" id="applicant_name" class="required" />
@@ -461,6 +558,7 @@
                                         <div class="iptxt">
                                             <label>Address: </label>
                                             <textarea name="applicant_address" id="applicant_address" class="required"></textarea>
+                                            <span style="float:right;display:none" class="showmyfile"></span>
                                         </div>
                                         <div class="iptxt">
                                             <label>Address Proof: </label>
@@ -506,8 +604,17 @@
                     'fileDesc'    : 'Image Files',
                     'sizeLimit'   : 1024000,
                     'removeCompleted' : false,
+                    'onCancel' : function(){
+                        $('.showmyfile').hide().html('');
+                    },
                     'onComplete'  : function(event, ID, fileObj, response, data) {
                         // Any Callback Functionality goes here.
+                        $('.showmyfile').show().html('<img height="100px" widht="100px" src="<?php echo base_url();?>uploads/'+response+'">');
+                        /*console.log(event);
+                        console.log(ID);
+                        console.log(fileObj);
+                        console.log(response);
+                        console.log(data);*/
                     }
                 });
 

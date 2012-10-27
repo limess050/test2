@@ -12,16 +12,21 @@ class Booking extends MY_Controller {
     }
 
     public function index() {
-        $data['today'] = date('d-m-Y');
-        $data['tomorrow'] = date('d-m-Y', time()+86400);
+        $data['today'] = $data['from_date'] = date('d-m-Y');
+        $data['tomorrow'] = $data['to_date'] = date('d-m-Y', time()+86400);
+        $data['php'] = true;
+        $data['master_data'] = $this->booking_model->getAvaliableBlocksRooms($data);
+        /*echo '<pre>';
+        print_r($data);die;*/
         $data['adv_date'] = date('d-m-Y', time()+(8*86400));
         $data['adv_todate'] = date('d-m-Y', time()+(10*86400));
-        $data['master_data'] = $this->booking_model->getMasterData();
         $data['session_id'] = MD5($this->session->userdata('session_id'));
         $this->load->view('booking/index',$data);
     }
 
     public function roomBooking() {
+        echo '<pre>';
+        print_r($_POST);die;
         if (formtoken::validateToken($_POST)) {
             $_POST['from_date'] = date('d-m-Y',strtotime($_POST['from_date'])-86400); // reduce one day as room will be blocked before one day
             $date_fields_array = array('from_date','to_date');
@@ -56,6 +61,12 @@ class Booking extends MY_Controller {
 
     public function getRoomBookingDates() {
         $data = $this->booking_model->getRoomBookingDates($_POST);
+        header('content-type:application/json');
+        echo json_encode($data);
+    }
+    
+    public function getRoomRentDetails() {
+        $data = $this->booking_model->getRoomRentDetails($_POST);
         header('content-type:application/json');
         echo json_encode($data);
     }

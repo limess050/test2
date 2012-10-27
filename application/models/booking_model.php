@@ -9,75 +9,64 @@
  *
  * @author RAJU
  */
-class Booking_model extends MY_Model { 
+class Booking_model extends MY_Model {
 //put your code here
     public function __construct() {
         parent::__construct();
     }
-    function login($post)
-    {
+    function login($post) {
         $sql = 'SELECT id,emp_fname,emp_lname,emp_id,user_name,`password`,emp_role FROM users
                 WHERE user_name = "'.$post['username'].'" AND `password` = "'.$post['password'].'" AND `status` = 1';
         $rs = $this->db->query($sql);
         $data = $rs->first_row();
-        if(!empty($data))
-        {
+        if(!empty($data)) {
             $this->session->set_userdata('user_details',serialize($data));
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
-	
-    function save_booking($post=array())
-    {
+
+    function save_booking($post=array()) {
         /*echo '<pre>';
         print_r($post);die;*/
-        //$post['url_key'] = str_replace(' ', '_', preg_replace('!\s+!', ' ', $post['title']));
+    //$post['url_key'] = str_replace(' ', '_', preg_replace('!\s+!', ' ', $post['title']));
 
-        if(!empty($post['id']))
-        {
+        if(!empty($post['id'])) {
             $post['application_details_id'] = $this->saveRecord(conversion($post,'application_details_lib'),'application_details',array('id'=>$post['id']));
         }
-        else
-        {
+        else {
             $post['application_details_id'] = $this->saveRecord(conversion($post,'application_details_lib'),'application_details');
         }
 
-        if($post['application_details_id']>0)
-		{
-			$this->save_other_details($post);
-			if(isset($post['original_file_name']) && !empty($post['original_file_name']) )
-			{
-				$db_file_name = $post['db_file_name'];
-				$original_file_name = $post['original_file_name'];
-				$global_id = $post['application_details_id'];
-				$_POST['attachments_id'] = $this->fileupload_model->save_attachment($db_file_name,$original_file_name,$global_id);
-			}
-		}
-		return $post['application_details_id'];
+        if($post['application_details_id']>0) {
+            $customer_id = generateCustID($post['application_details_id']);
+            $this->db->query('update application_details set customer_id = "'.$customer_id.'" where id='.$post['application_details_id']);
+            $this->save_other_details($post);
+            if(isset($post['original_file_name']) && !empty($post['original_file_name']) ) {
+                $db_file_name = $post['db_file_name'];
+                $original_file_name = $post['original_file_name'];
+                $global_id = $post['application_details_id'];
+                $_POST['attachments_id'] = $this->fileupload_model->save_attachment($db_file_name,$original_file_name,$global_id);
+            }
+        }
+        return $post['application_details_id'];
     }
 
-    function save_other_details($post)
-    {
+    function save_other_details($post) {
         $tbl_array = array('booking_details','receipts');
-        foreach($tbl_array as $table)
-        {
-            if(!empty($post['id']))
-            {
+        foreach($tbl_array as $table) {
+            if(!empty($post['id'])) {
                 $this->saveRecord(conversion($post,$table.'_lib'),$table);
             }
-            else
-            {
+            else {
                 $this->saveRecord(conversion($post,$table.'_lib'),$table,array('application_details_id'=>$post['application_details_id']));
             }
         }
     }
 
-    function getMasterData()
-    {
+    function getMasterData() {
         $blocks_sql = 'select id,name from blocks where status = "1"';
         $data['blocks'] = $this->getDBResult($blocks_sql, 'object');
         $rooms_sql = 'select id,name from rooms where status = "1"';
@@ -85,60 +74,55 @@ class Booking_model extends MY_Model {
         return $data;
     }
 
-    function getAvaliableBlocksRooms($post)
-    {
-        //print_r($post);
-        $from_date = isset($post['from_date'])?date('Y-m-d',strtotime($post['from_date'])):NULL;
+    function getAvaliableBlocksRooms($post) {
+    //print_r($post);
+        $from_date = isset($post['from_date'])?date('Y-m-d',strtotime($post['from_date'])-86400):NULL;
         $to_date = isset($post['to_date'])?date('Y-m-d',strtotime($post['to_date'])-86400):NULL;
 
         $sql = 'SELECT r.id AS id, r.name AS roomname, b.id AS blocks_id, b.name AS blockname
                 FROM rooms r
                 JOIN blocks b ON r.blocks_id = b.id';
-        if(isset($post['vip_quota']))
-        {
+        if(isset($post['vip_quota'])) {
             $sql .= ' WHERE r.vip_quota = 1';
+        }
+        else{
+            $sql .= ' WHERE r.vip_quota != 1';
         }
         $data = $this->getDBResult($sql, 'object');
         $room_details = array();
-        foreach($data as $rooms_data)
-        {
+        foreach($data as $rooms_data) {
             $room_details[$rooms_data->blocks_id][$rooms_data->id] = array('id'=>$rooms_data->id,'roomname'=>$rooms_data->roomname,'blocks_id'=>$rooms_data->blocks_id,'blockname'=>$rooms_data->blockname);
         }
-        if(($from_date != NULL) && ($to_date != NULL))
-        {
+        if(($from_date != NULL) && ($to_date != NULL)) {
             $booked_rooms_sql = 'SELECT * FROM booking_details bd
                                     WHERE "'.$from_date.'" >= bd.from_date AND "'.$from_date.'" < bd.to_date
                                     OR "'.$to_date.'" >= bd.from_date AND "'.$to_date.'" < bd.to_date';
             $booked_data = $this->getDBResult($booked_rooms_sql, 'object');
         }
         $booked_rooms = array();
-        if(!empty($booked_data))
-        {
-            foreach($booked_data as $details)
-            {
+        if(!empty($booked_data)) {
+            foreach($booked_data as $details) {
                 $booked_rooms[$details->blocks_id][$details->rooms_id] = $details->rooms_id;
             }
         }
         //print_r($booked_rooms);
         //print_r($room_details);
-        foreach($booked_rooms as $blockid=>$rooms)
-        {
-            foreach($rooms as $roomid=>$rid)
-            {
+        foreach($booked_rooms as $blockid=>$rooms) {
+            foreach($rooms as $roomid=>$rid) {
                 unset($room_details[$blockid][$roomid]);
             }
         }
-        //print_r($room_details);
-        if($post['blocks_id'] == 0)
+        if(!empty($post['php'])) // if request is from booking/index, return array
         {
+            return $room_details;
+        }
+        //print_r($room_details);
+        if($post['blocks_id'] == 0) {
             $block_options = '<option value="0">Select Block</option>';
-            foreach($room_details as $blockid=>$rooms)
-            {
-                if(!empty($rooms))
-                {
+            foreach($room_details as $blockid=>$rooms) {
+                if(!empty($rooms)) {
                     $room_options = '<option value="">Select Room</option>';
-                    foreach($rooms as $roomid=>$roomdetails)
-                    {
+                    foreach($rooms as $roomid=>$roomdetails) {
                         $room_options .= '<option value="'.$roomid.'">'.$roomdetails['roomname'].'</option>';
                         $blockname = $roomdetails['blockname'];
                     }
@@ -149,20 +133,18 @@ class Booking_model extends MY_Model {
             $ret_data['room_options'] = $room_options;
             return $ret_data;
         }
-        else
-        {
-            //print_r($room_details[$post['blocks_id']]);
+        else {
+        //print_r($room_details[$post['blocks_id']]);
             $room_options = '<option value="">Select Room</option>';
-            foreach($room_details[$post['blocks_id']] as $blockid=>$rooms)
-            {
+            foreach($room_details[$post['blocks_id']] as $blockid=>$rooms) {
                 $room_options .= '<option value="'.$rooms['id'].'">'.$rooms['roomname'].'</option>';
             }
             $ret_data['block_options'] = false;
             $ret_data['room_options'] = $room_options;
             return $ret_data;
         }
-        //echo $block_options;
-        //echo '<br>'.$room_options;
+    //echo $block_options;
+    //echo '<br>'.$room_options;
         /*$sql = 'SELECT bd.id AS bdid, r.id AS roomid, r.name AS roomname, b.id AS blockid, b.name AS blockname
                 FROM rooms r
                 LEFT JOIN booking_details bd ON r.id = bd.rooms_id
@@ -214,19 +196,15 @@ class Booking_model extends MY_Model {
         }*/
     }
 
-    function getRoomBookingDates($post)
-    {
+    function getRoomBookingDates($post) {
         $sql = 'SELECT bd.from_date, bd.to_date FROM booking_details bd
                 WHERE bd.blocks_id = "'.$post['blocks_id'].'" AND bd.rooms_id = "'.$post['rooms_id'].'"';
         $bookeddates = $this->getDBResult($sql, 'object');
-        if(!empty($bookeddates))
-        {
-            foreach($bookeddates as $dates)
-            {
+        if(!empty($bookeddates)) {
+            foreach($bookeddates as $dates) {
                 $fromdate = strtotime($dates->from_date);
                 $todate = strtotime($dates->to_date);
-                for($date = $fromdate;$date < $todate;$date=$date+86400)
-                {
+                for($date = $fromdate;$date < $todate;$date=$date+86400) {
                     $booked_dates[] = array(date('m/d/Y',$date));
                 }
             }
@@ -235,26 +213,92 @@ class Booking_model extends MY_Model {
         return $booked_dates;
     }
 
-    function gettabledetails($tablenames=array())
-    {
-        $tbl_fields = new stdclass();
-        foreach($tablenames as $tablename)
+    function getRoomRentDetails($post) {
+        $sql = 'select deposit_amt, rent_amt from rooms where id="'.$post['rooms_id'].'" limit 1';
+        $rs = $this->db->query($sql);
+        $data = $rs->first_row();
+        if(empty($data))
         {
+            $data = new stdClass();
+        }
+        $days = (strtotime($post['to_date'])-strtotime($post['from_date']))/86400;
+        $data->days = $days;
+        $data->act_rent = $data->rent_amt;
+        if($post['donorRef'] == "1")
+        {
+            $data->act_rent = 0;
+            $data->deposit_amt = 0;
+            $data->rent_amt = 0;
+        }
+        else if($post['donorRef'] == "2")
+        {
+            $nodiscount_days = array('1','7');
+            $day1->act_rent = $data->act_rent;
+            $day1->deposit_amt = $data->deposit_amt;
+            //$day1->rent_amt = $data->rent_amt;
+            $day2 = new stdClass();
+            if(!in_array(date('N',strtotime($post['from_date'])),$nodiscount_days))
+            {
+                $day1->act_rent = $data->act_rent/2;
+                $day1->deposit_amt = $data->deposit_amt/2;
+                //$day1->rent_amt = $data->rent_amt/2;
+            }
+            if($days == 2)
+            {
+                $day2->act_rent = $data->act_rent;
+                $day2->deposit_amt = $data->deposit_amt;
+                //$day2->rent_amt = $data->rent_amt;
+                if(!in_array(date('N',strtotime($post['from_date'])+86400),$nodiscount_days))
+                {
+                    $day2->act_rent = $data->act_rent/2;
+                    $day2->deposit_amt = $data->deposit_amt/2;
+                    //$day2->rent_amt = $data->rent_amt/2;
+                }
+            }
+            if(isset($day2->act_rent))
+            {
+                $data->act_rent = $day1->act_rent+$day2->act_rent;
+                $data->deposit_amt = $day1->deposit_amt;
+                /*if($day1->rent_amt > $day2->rent_amt)
+                {
+                    $data->rent_amt = $day1->rent_amt;
+                }
+                else
+                {
+                    $data->rent_amt = $day2->rent_amt;
+                }*/
+            }
+            else
+            {
+                $data->act_rent = $day1->act_rent;
+                $data->deposit_amt = $day1->deposit_amt;
+                //$data->rent_amt = $day1->rent_amt;
+            }
+            $data->rent_amt = 0;
+        }
+        else
+        {
+            $data->act_rent = $days*$data->rent_amt;
+        }
+        return $data;
+    }
+
+    function gettabledetails($tablenames=array()) {
+        $tbl_fields = new stdclass();
+        foreach($tablenames as $tablename) {
             $sql = "show columns from `".$tablename."`";
             $fields = $this->getDBResult($sql, 'object');
-            foreach($fields as $values)
-            {
+            foreach($fields as $values) {
                 $fld = $values->Field;
                 $tbl_fields->$fld = '';
             }
         }
         return $tbl_fields;
     }
-	public function getDayReport($date)
-    {
-		$user_id=$this->user_details->id;
-		$data = array();
-		$sql = "select 
+    public function getDayReport($date) {
+        $user_id=$this->user_details->id;
+        $data = array();
+        $sql = "select
 				b.name as blockname,r.name as roomname, 
 				bd.blocks_id,bd.rooms_id,rc.advance_amount,rc.deposit_amt,rc.rent_amount,
 				rc.total_amount_paid 
@@ -264,25 +308,23 @@ class Booking_model extends MY_Model {
 				left join rooms r on r.id=bd.rooms_id 
 				where rc.received_by=".$user_id." and DATE_FORMAT(rc.received_date,'%Y-%m-%d') = '".$date."' and rc.`status`=1
 				order by blockname,roomname";
-       // echo $sql; die;
-		$bookedreport = $this->getDBResult($sql, 'object');
-        
-		$booked_report_arr = array();
-		$con_total_amount = 0;
-		if(!empty($bookedreport))
-        {
-            foreach($bookedreport as $val)
-            {
+        // echo $sql; die;
+        $bookedreport = $this->getDBResult($sql, 'object');
+
+        $booked_report_arr = array();
+        $con_total_amount = 0;
+        if(!empty($bookedreport)) {
+            foreach($bookedreport as $val) {
                 $booked_report_arr[$val->blockname][] = array('room_name'=>$val->roomname,
-													   'advance_amount'=>$val->advance_amount,
-													   'deposit_amt'=>$val->deposit_amt,
-													   'rent_amount'=>$val->rent_amount,
-													   'total_amount_paid'=>$val->total_amount_paid);
-				$con_total_amount += $val->total_amount_paid;													   
+                    'advance_amount'=>$val->advance_amount,
+                    'deposit_amt'=>$val->deposit_amt,
+                    'rent_amount'=>$val->rent_amount,
+                    'total_amount_paid'=>$val->total_amount_paid);
+                $con_total_amount += $val->total_amount_paid;
             }
         }
-		
-		$sql1 = "select 
+
+        $sql1 = "select
 				b.name as blockname,r.name as roomname, 
 				bd.blocks_id,bd.rooms_id,p.deposit_refund_amount
 				from payments p 
@@ -293,30 +335,27 @@ class Booking_model extends MY_Model {
 				where p.deposit_refund_by=".$user_id." and DATE_FORMAT(p.deposit_refund_date,'%Y-%m-%d') = '".$date."' and p.`status`=1
 				order by blockname,roomname";
         //echo $sql1; die;
-		$refundreport = $this->getDBResult($sql1, 'object');
-        
-		$refund_report_arr = array();
-		$con_ref_total_amount = 0;
-		if(!empty($refundreport))
-        {
-            foreach($refundreport as $val)
-            {
+        $refundreport = $this->getDBResult($sql1, 'object');
+
+        $refund_report_arr = array();
+        $con_ref_total_amount = 0;
+        if(!empty($refundreport)) {
+            foreach($refundreport as $val) {
                 $refund_report_arr[$val->blockname][] = array('room_name'=>$val->roomname,
-													   'deposit_refund_amount'=>$val->deposit_refund_amount);
-				$con_ref_total_amount += $val->deposit_refund_amount;													   
+                    'deposit_refund_amount'=>$val->deposit_refund_amount);
+                $con_ref_total_amount += $val->deposit_refund_amount;
             }
         }
-		
-		$data['con_total_amount'] =$con_total_amount;
-		$data['booked_report_arr'] =$booked_report_arr;
-		$data['con_ref_total_amount'] =$con_ref_total_amount;
-		$data['refund_report_arr'] =$refund_report_arr;
-		return $data;
-	}
-	
-	public function getBookingDetails($where_cond = 1)
-    {
-		$sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name, ad.applicant_address,
+
+        $data['con_total_amount'] =$con_total_amount;
+        $data['booked_report_arr'] =$booked_report_arr;
+        $data['con_ref_total_amount'] =$con_ref_total_amount;
+        $data['refund_report_arr'] =$refund_report_arr;
+        return $data;
+    }
+
+    public function getBookingDetails($where_cond = 1) {
+        $sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name, ad.applicant_address,
 				bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
 				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, 
 				bd.no_of_days, bd.booking_type,bd.booked_status,bd.booking_type,
@@ -328,34 +367,30 @@ class Booking_model extends MY_Model {
 				left join rooms r on bd.rooms_id = r.id
 				left join receipts rp on rp.application_details_id = ad.id
 				where ".$where_cond;
-		$booking_details = $this->getDBResult($sql, 'object');
-		
-		return $booking_details;			
-	}
-	
-	public function getBookingStatus($booking_id=0)
-	{
-		$sql = "select booked_status
+        $booking_details = $this->getDBResult($sql, 'object');
+
+        return $booking_details;
+    }
+
+    public function getBookingStatus($booking_id=0) {
+        $sql = "select booked_status
 				from booking_details where id = ".$booking_id;
-		$booked_status = $this->getDBResult($sql, 'object');
-		return $booked_status;	
-	}
-	
-	public function updateBookingDetails($ip_array = array())
-	{
-		$return_response = false;
-		if(!empty($ip_array))
-		{
-			foreach($ip_array as $table=>$data)
-			{ 
-				$this->saveRecord(conversion($data,$table.'_lib'),$table);
-			}
-			$sql = 'insert into booking_history_details (select * from booking_details where id = '.$ip_array['booking_details']['id'].')';
-			
-			$this->db->query($sql);
-			
-			$return_response = 'success';
-		}
-		return $return_response;
-	}
+        $booked_status = $this->getDBResult($sql, 'object');
+        return $booked_status;
+    }
+
+    public function updateBookingDetails($ip_array = array()) {
+        $return_response = false;
+        if(!empty($ip_array)) {
+            foreach($ip_array as $table=>$data) {
+                $this->saveRecord(conversion($data,$table.'_lib'),$table);
+            }
+            $sql = 'insert into booking_history_details (select * from booking_details where id = '.$ip_array['booking_details']['id'].')';
+
+            $this->db->query($sql);
+
+            $return_response = 'success';
+        }
+        return $return_response;
+    }
 }

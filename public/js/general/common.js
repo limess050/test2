@@ -329,11 +329,13 @@ function customRange_Year(input) {
     if($.trim($("#from").val())!=''){
             from_date=$("#from").datepicker("getDate");
             from_date.setDate(from_date.getDate()+2);
+            min_date = $("#from").datepicker("getDate");
+            min_date.setDate(min_date.getDate()+1);
             //from_date.setMonth(from_date.getMonth() + 12);
 
             return {
                     maxDate: (input.id == "to" ? from_date : null),
-                    minDate: (input.id == "to" ? $("#from").datepicker("getDate") : null)
+                    minDate: (input.id == "to" ? min_date : null)
             };
     }else{
             if(advanced_booking)
@@ -345,7 +347,7 @@ function customRange_Year(input) {
             else
             {
                 return {
-                        minDate: (input.id == "to" ? $("#from").datepicker("getDate") : null)
+                        minDate: (input.id == "to" ? min_date : null)
                 };
             }
     }
@@ -356,7 +358,8 @@ function customRange2_Year(input) {
             to_date=$("#to").datepicker("getDate");
             //to_date.setMonth(to_date.getMonth() - 12);
             to_date.setDate(to_date.getDate() - 2);
-            
+            max_date = $("#to").datepicker("getDate");
+            max_date.setDate(max_date.getDate()-1);
             //alert($('.jadv_todate').val());
             if(advanced_booking)
             {
@@ -364,21 +367,21 @@ function customRange2_Year(input) {
                 {
                     return {
                         minDate: (input.id == "from" ? to_date : null),
-                        maxDate: (input.id == "from" ? $("#to").datepicker("getDate") : null)
+                        maxDate: (input.id == "from" ? max_date : null)
                     };
                 }
                 else
                 {
                     return {
                         minDate: (input.id == "from" ? adv_date : null),
-                        maxDate: (input.id == "from" ? $("#to").datepicker("getDate") : null)
+                        maxDate: (input.id == "from" ? max_date : null)
                     };
                 }
             }
             else
             {
                 return {
-                        maxDate: (input.id == "from" ? $("#to").datepicker("getDate") : null),
+                        maxDate: (input.id == "from" ? max_date : null),
                         minDate: (input.id == "from" ? to_date : null)
                 };
             }
