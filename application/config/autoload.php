@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('booking_model','fileupload_model');
+$autoload['model'] = array('booking_model','fileupload_model','admin_model');
 
 
 /* End of file autoload.php */

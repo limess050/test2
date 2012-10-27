@@ -198,9 +198,28 @@ document.oncontextmenu=new Function("alert(message);return false")
 											<td width="16%" align="left" valign="top">Booked To</td>
 											<td width="32%" align="left" valign="top"><?php echo $booking_det[0]->to_date;?></td>
 										</tr>
-										<tr>
+										<!--<tr>
 											<td align="right" valign="top" colspan="3">Total Amount Paid (Rs) </td>
-											<td width="32%" align="left" valign="top"><?php echo $booking_det[0]->total_amount_paid;?></td>
+											<td width="32%" align="left" valign="top"><?php //echo $booking_det[0]->total_amount_paid;?></td>
+										</tr>-->
+										<tr>
+											<td align="left" valign="top" colspan="4"><strong>Payment Details</strong></td>
+										</tr>
+										<tr>
+											<td align="right" valign="top" colspan="3">Advance Amount (Rs) </td>
+											<td width="32%" align="right" valign="top"><?php echo $booking_det[0]->advance_amount;?></td>
+										</tr>
+										<tr>
+											<td align="right" valign="top" colspan="3">Deposit Amount (Rs) </td>
+											<td width="32%" align="right" valign="top"><?php echo $booking_det[0]->deposit_amt;?></td>
+										</tr>
+										<tr>
+											<td align="right" valign="top" colspan="3">Rent Amount (Rs) </td>
+											<td width="32%" align="right" valign="top"><?php echo $booking_det[0]->rent_amount;?></td>
+										</tr>
+										<tr>
+											<td align="right" valign="top" colspan="3">Total(Rs) </td>
+											<td width="32%" align="right" valign="top"><?php echo $booking_det[0]->total_amount_paid;?></td>
 										</tr>
 									</table>
 								</td>
