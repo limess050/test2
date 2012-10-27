@@ -9,11 +9,7 @@
  *
  * @author RAJU
  */
-<<<<<<< HEAD
-class Booking_model extends MY_Model {
-=======
 class Booking_model extends MY_Model {  
->>>>>>> 6dfcc1685fe5b8b559357ad799f16e97aad772b2
 //put your code here
     public function __construct() {
         parent::__construct();
