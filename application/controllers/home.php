@@ -3,6 +3,7 @@
 class Home extends MY_Controller {
     function __construct() {
         parent::__construct();
+		$this->user_details = unserialize($this->session->userdata('user_details'));
     }
 
     public function index()

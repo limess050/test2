@@ -43,6 +43,15 @@ class MY_Controller extends CI_Controller
         print_r($data);die;*/
         return $data;
     }
+	
+	public function changepwd() {
+        $this->load->view('admin/changepwd');
+    }
+	public function changePassword()
+    {
+        $_POST['users_id'] = $this->user_details->id;
+		echo $this->admin_model->changePassword($_POST);
+    }
 
 
 }

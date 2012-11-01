@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <title>Blocks</title>
+        <title>Users</title>
         <style>
             body{
                 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -145,7 +145,7 @@
 			  });
 			jQuery("#sub_grid_tbl").jqGrid431({
 			
-				url:'<?php echo site_url();?>admin/getblocks',
+				url:'<?php echo site_url();?>admin/getusers',
 				datatype: "json",
 				mtype:'POST',
 				//height: $('#sidebar').height()-24,
@@ -154,29 +154,34 @@
 				width: 900,
 				<?php if($this->user_details->emp_role==1)
 				{?>
-				colNames:['Name','Status','Edit'],
+				colNames:['Name','Emp Id','Role','User Name','Status','Edit'],
 				colModel:[
-					{name:'name',index:'name',widht:500},
-					{name:'status',index:'status'},
-					{name:'edit',index:'edit'}
+					{name:'emp_name',index:'emp_name',width:'400px'},
+					{name:'emp_id',index:'emp_id',width:'100px'},
+					{name:'role',index:'role',width:'100px'},
+					{name:'user_name',index:'user_name',width:'200px'},
+					{name:'status',index:'status',width:'100px'},
+					{name:'edit',index:'edit',width:'100px'}
 				],
 				<?php
 				}
 				else
 				{
 				?>
-				colNames:['Name','Status'],
+				colNames:['Name','Emp Id','Role','User Name','Status'],
 				colModel:[
-					{name:'name',index:'name',widht:500},
-					{name:'status',index:'status'}
+					{name:'emp_name',index:'emp_name',width:'400px'},
+					{name:'emp_id',index:'emp_id',width:'100px'},
+					{name:'role',index:'role',width:'100px'},
+					{name:'user_name',index:'user_name',width:'200px'},
+					{name:'status',index:'status',width:'100px'}
 				],
 				<?php 
 				}?>
-				
 				rowNum:10,
 				//rowList:[10,20,30],
 				pager: '#sub_grid_pager',
-				sortname: 'name',
+				sortname: 'emp_role',
 				viewrecords: true,
 				sortorder: "asc",
 				multiselect: false,
@@ -204,17 +209,16 @@
 								<div id="stylized" class="myform">
 								<table align="center" cellpadding="0" cellspacing="0" border="0">
 									<tr>
-									<td width="106" align="left" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:16px; padding-left:inherit"><h1>Blocks List</h1></td>
+									<td width="106" align="left" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:16px; padding-left:inherit"><h1>Users List</h1></td>
 									<td width="56" align="right">
-										 <?php if($this->user_details->emp_role==1)
+										<?php if($this->user_details->emp_role==1)
 										{?>
-										 <a class="btn edit_ecur fr jadd_block" href="<?php echo site_url();?>admin/blockView">
+										 <a class="btn edit_ecur fr jadd_block" href="<?php echo site_url();?>admin/userview">
 											<span class="inner-btn">
-												<span class="label">
-												<img class="small_plus_icon" height="16" width="16" src="images/spacer.gif">Add Block</span>	
+											<span class="label"><img class="small_plus_icon" height="16" width="16" src="images/spacer.gif">Add Operator</span>
 											</span>
-										</a>
-										<?php } ?>
+										 </a>
+									<?php }?>
 									</td>
 									</tr>
 									<tr>
@@ -231,4 +235,13 @@
 <?php $this->load->view('common/footer'); //include("footer.php"); ?>
         </table>
     </body>
+<script type="text/javascript">	
+$(".japply_filter").live('click',function(){
+	var blocks_id = $('#blocks_id').val();
+	$("#sub_grid_tbl").setGridParam({
+	url: '<?php echo site_url();?>admin/getrooms',
+	postData: {"blocks_id":blocks_id}
+	}).trigger("reloadGrid");
+});
+</script>
 </html>

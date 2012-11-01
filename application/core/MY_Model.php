@@ -69,16 +69,10 @@ class MY_Model extends CI_Model {
             {
                 $this->db->query(rtrim($sql,','));
             }
-            if(!$this->checkUnique($obj, $table,true)) {
-                /*if($table == 'users_ecurrencies')
-                {
-                    echo '<pre>';
-                    print_r($obj);
-                    print_r($updated_key_value_pair);die;
-                }*/
+            //if(!$this->checkUnique($obj, $table,true)) {
                 $this->db->update($table,$obj,$updated_key_value_pair);
                 $return++;
-            }
+           // }
         }
         else {
             $exec_qry = false;

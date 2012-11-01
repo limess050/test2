@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <title>Blocks</title>
+        <title>Block Details</title>
         <style>
             body{
                 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -143,46 +143,9 @@
 				 jsonp: null,
 				 jsonpCallback: null
 			  });
-			jQuery("#sub_grid_tbl").jqGrid431({
-			
-				url:'<?php echo site_url();?>admin/getblocks',
-				datatype: "json",
-				mtype:'POST',
-				//height: $('#sidebar').height()-24,
-				//width: $('.form_prp').width()-10,
-				height: 500,
-				width: 900,
-				<?php if($this->user_details->emp_role==1)
-				{?>
-				colNames:['Name','Status','Edit'],
-				colModel:[
-					{name:'name',index:'name',widht:500},
-					{name:'status',index:'status'},
-					{name:'edit',index:'edit'}
-				],
-				<?php
-				}
-				else
-				{
-				?>
-				colNames:['Name','Status'],
-				colModel:[
-					{name:'name',index:'name',widht:500},
-					{name:'status',index:'status'}
-				],
-				<?php 
-				}?>
-				
-				rowNum:10,
-				//rowList:[10,20,30],
-				pager: '#sub_grid_pager',
-				sortname: 'name',
-				viewrecords: true,
-				sortorder: "asc",
-				multiselect: false,
-				childGrid: true,
-				childGridIndex: "rows"
-				
+
+			$('.j_u_m').live('click',function(){
+				$.unblockUI();
 			});
 			
 		});
@@ -190,7 +153,7 @@
     </head>
 
     <body>
-        <table width="1003" border="1" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+        <table width="1003" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
 
             <tr>
                 <td colspan="2" align="center" valign="bottom"></td>
@@ -198,37 +161,91 @@
             <tr>
                 <td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/adminheader');//include("header.php"); ?></td>
             </tr>
-            <tr height="600px">
-                <td align="center" valign="top" width="900">
-					
-								<div id="stylized" class="myform">
-								<table align="center" cellpadding="0" cellspacing="0" border="0">
-									<tr>
-									<td width="106" align="left" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:16px; padding-left:inherit"><h1>Blocks List</h1></td>
-									<td width="56" align="right">
-										 <?php if($this->user_details->emp_role==1)
-										{?>
-										 <a class="btn edit_ecur fr jadd_block" href="<?php echo site_url();?>admin/blockView">
-											<span class="inner-btn">
-												<span class="label">
-												<img class="small_plus_icon" height="16" width="16" src="images/spacer.gif">Add Block</span>	
-											</span>
-										</a>
-										<?php } ?>
-									</td>
-									</tr>
-									<tr>
-										<td colspan="2">
-											<table id="sub_grid_tbl" class="cs_gd" height="100%"></table>
-											<div id="sub_grid_pager"></div>
-										</td>
-									</tr>
-								</table>    
-								</div>
-							
-				</td>
+            <tr>
+                <td align="center" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
+                                    <form id="blockview" name="blockview" method="post" action="">
+									 <input type="hidden" name="id" id="id" value="<?php echo $id;?>"/>
+                                        <h1><?php echo $label;?> Block Details</h1>
+                                        <p></p>
+                                        <div class="iptxt">
+                                            <label>Block Name:</label>
+                                            <input type="text" name="name" id="name" class="required" value="<?php echo $name;?>"/>
+                                        </div>
+                                        
+                                        <div class="iptxt jrefname" >
+                                            <label>Status: </label>
+											<select name="status" id="status" style="" class="required ">
+												<option value="">Select status</option>
+												<option value="1" <?php echo $sts = ($status!='' && $status==1?'selected':'');?>>Active</option>
+												<option value="0" <?php echo $sts = ($status!='' && $status==0?'selected':'');?>>Inactive</option>    
+											</select>
+                                        </div>
+                                        
+                                        <p></p>
+                                        <input type='button' name='save' value='Save' class="jsave_block" />
+										<span class="jerror_msg" style="color:#FF0000; font-family:Arial, Helvetica, sans-serif"></span>
+                                        <div class="spacer"></div>
+                                    </form>
+                                </div></td>
+                        </tr>
+                    </table></td>
             </tr>
 <?php $this->load->view('common/footer'); //include("footer.php"); ?>
         </table>
+		
+<script type="text/javascript">
+var site_url = '<?php echo site_url();?>';
+$(document).ready(function() {
+	$("#blockview").validate({
+	highlight: function(element, errorClass, validClass) {
+		 $(element).addClass(errorClass).removeClass(validClass);
+		 $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
+	  },
+	  unhighlight: function(element, errorClass, validClass) {
+		 $(element).removeClass(errorClass).addClass(validClass);
+		 $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);
+	  },
+	  errorPlacement: function(error, element) { },
+	submitHandler: function()
+		{
+			var data = $('#blockview').serialize();
+			$.ajax({
+				type: "POST",	
+				data: data,
+				url: site_url+"admin/addBlock", 
+				beforeSend : function(){
+				},
+				success: function(data)
+				{
+					console.log(data);
+					if(data > 0)
+					{
+						var error_msg = 'Block Updated Successfully';
+						if(data > 1) error_msg = 'Block Added Successfully';
+						$('.jerror_msg').html(error_msg);
+						setTimeout(function() {
+							  window.location = site_url+'admin/blocks';
+						}, 5000);
+					}
+					else
+					{
+						var error_msg = 'Unable to process.. please check the data';
+						$('.jerror_msg').html(error_msg);
+					}
+				},
+				complete : function()
+				{
+					//$("#sub_grid_tbl").trigger("reloadGrid");
+				}
+			});
+		}
+	});
+	$('.jsave_block').live('click',function(){
+		$("#blockview").submit();
+	})
+});
+</script>		
     </body>
 </html>

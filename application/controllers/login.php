@@ -14,7 +14,11 @@ class Login extends CI_Controller {
             {
                 if($this->booking_model->login($_POST))
                 {
-                    redirect('home');
+					$this->user_details = unserialize($this->session->userdata('user_details'));
+					if($this->user_details->emp_role==4)
+					redirect('home');
+					else
+					redirect('admin');
                 }
                 else
                 {
@@ -25,7 +29,11 @@ class Login extends CI_Controller {
         }
         else
         {
-            redirect('home');
+          $this->user_details = unserialize($this->session->userdata('user_details'));
+		  if($this->user_details->emp_role==4)
+		   redirect('home');
+		  else
+		  redirect('admin'); 
         }
     }
 

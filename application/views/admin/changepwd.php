@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <title>Blocks</title>
+        <title>Change Password</title>
         <style>
             body{
                 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -109,7 +109,6 @@
         <link href="<?php echo base_url();  ?>public/css/general/style.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo base_url();  ?>public/css/general/style2.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo base_url();  ?>public/css/style.css" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" href="<?php echo base_url();?>public/css/layout.css" type="text/css" media="screen" />
         <script src="<?php echo base_url();?>public/js/jquery-1.5.2.min.js" type="text/javascript"></script>
 		<script src="<?php echo base_url();?>public/js/jqGrid-4.3.1/js/i18n/grid.locale-en.js" type="text/javascript" language="javascript"></script>
 		<script src="<?php echo base_url();?>public/js/jqGrid-4.3.1/src/grid.base.js" type="text/javascript" language="javascript"></script>
@@ -143,46 +142,9 @@
 				 jsonp: null,
 				 jsonpCallback: null
 			  });
-			jQuery("#sub_grid_tbl").jqGrid431({
-			
-				url:'<?php echo site_url();?>admin/getblocks',
-				datatype: "json",
-				mtype:'POST',
-				//height: $('#sidebar').height()-24,
-				//width: $('.form_prp').width()-10,
-				height: 500,
-				width: 900,
-				<?php if($this->user_details->emp_role==1)
-				{?>
-				colNames:['Name','Status','Edit'],
-				colModel:[
-					{name:'name',index:'name',widht:500},
-					{name:'status',index:'status'},
-					{name:'edit',index:'edit'}
-				],
-				<?php
-				}
-				else
-				{
-				?>
-				colNames:['Name','Status'],
-				colModel:[
-					{name:'name',index:'name',widht:500},
-					{name:'status',index:'status'}
-				],
-				<?php 
-				}?>
-				
-				rowNum:10,
-				//rowList:[10,20,30],
-				pager: '#sub_grid_pager',
-				sortname: 'name',
-				viewrecords: true,
-				sortorder: "asc",
-				multiselect: false,
-				childGrid: true,
-				childGridIndex: "rows"
-				
+
+			$('.j_u_m').live('click',function(){
+				$.unblockUI();
 			});
 			
 		});
@@ -190,45 +152,139 @@
     </head>
 
     <body>
-        <table width="1003" border="1" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<?php 
+$cont_link = site_url().'admin/changePassword';
+$header  = 'common/adminheader';
+if($this->user_details->emp_role==4) {$cont_link = site_url().'booking/changePassword'; $header  = 'common/header';}?>	
+        <table width="1003" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
 
             <tr>
                 <td colspan="2" align="center" valign="bottom"></td>
             </tr>
             <tr>
-                <td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/adminheader');//include("header.php"); ?></td>
+                <td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view($header);//include("header.php"); ?></td>
             </tr>
-            <tr height="600px">
-                <td align="center" valign="top" width="900">
-					
-								<div id="stylized" class="myform">
-								<table align="center" cellpadding="0" cellspacing="0" border="0">
-									<tr>
-									<td width="106" align="left" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:16px; padding-left:inherit"><h1>Blocks List</h1></td>
-									<td width="56" align="right">
-										 <?php if($this->user_details->emp_role==1)
-										{?>
-										 <a class="btn edit_ecur fr jadd_block" href="<?php echo site_url();?>admin/blockView">
-											<span class="inner-btn">
-												<span class="label">
-												<img class="small_plus_icon" height="16" width="16" src="images/spacer.gif">Add Block</span>	
-											</span>
-										</a>
-										<?php } ?>
-									</td>
-									</tr>
-									<tr>
-										<td colspan="2">
-											<table id="sub_grid_tbl" class="cs_gd" height="100%"></table>
-											<div id="sub_grid_pager"></div>
-										</td>
-									</tr>
-								</table>    
-								</div>
+            <tr>
+                <td align="center" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
+                                   <form name="chpwd_form" id="chpwd_form">
+									 <h1>Change Password</h1>
+                                        <p></p>
+										
+                                        <div class="d_fds">
+											<div class="left_fld">
+												<label for="old_pwd">Old Password:</label>
+											</div>
+											<div class="right_fld">
+												  <input type='password' name='old_pwd' id='old_pwd' value='' class="required ip"/>
+											</div>
+											<div class="cb"></div>
+										</div>
 							
-				</td>
+										<div class="d_fds">
+											<div class="left_fld">
+												<label for="new_pwd">Password:</label>
+											</div>
+											<div class="right_fld">
+												<input style="display:block" type='password' name='new_pwd' id='new_pwd' value='' class="required ip"/>
+											</div>
+											<div class="cb"></div>
+										</div>
+							
+										<div class="d_fds">
+											<div class="left_fld">
+												<label for="cnf_pwd"> Confirm Password:</label>
+											</div>
+											<div class="right_fld">
+												<input style="display:block" type='password' name='cnf_pwd' id='cnf_pwd' value='' class="required ip"/>
+											</div>
+											<div class="cb"></div>
+										</div>
+										
+                                        <p></p>
+                                        <input type='button' name='save' value='Save' class="jsave_chpwd" />
+										<span class="jerror_msg" style="color:#FF0000; font-family:Arial, Helvetica, sans-serif"></span>
+                                        <div class="spacer"></div>
+                                    </form>
+                                </div></td>
+                        </tr>
+                    </table></td>
             </tr>
 <?php $this->load->view('common/footer'); //include("footer.php"); ?>
+
         </table>
+		
+<script type="text/javascript">
+var site_url = '<?php echo site_url();?>';
+$(document).ready(function() {
+	$("#chpwd_form").validate({
+        rules: {
+            old_pwd: {
+                required: true,
+                minlength: 5
+            },
+            new_pwd: {
+                required: true,
+                minlength: 5
+            },
+            cnf_pwd: {
+                required: true,
+                minlength: 5,
+                equalTo: "#new_pwd"
+            }
+        },
+        messages: {
+            old_pwd: {
+                required: "Please provide old password",
+                minlength: "Your password must be at least 5 characters long"
+            },
+            new_pwd: {
+                required: "Please provide a password",
+                minlength: "Your password must be at least 5 characters long"
+            },
+            cnf_pwd: {
+                required: "Please provide a password",
+                minlength: "Your password must be at least 5 characters long",
+                equalTo: "Please enter the same password as above"
+            }
+        },
+        errorPlacement: function(error, element) {
+            error.insertAfter(element);
+        },
+        submitHandler: function()
+        {
+           var chpwd_data = $('#chpwd_form').serialize();
+            $.ajax({
+                type: "POST",
+                url: '<?php echo $cont_link;?>',
+                data: chpwd_data,
+                beforeSend : function(){
+                },
+                success: function(res){
+                    if(res == 'success')
+                    {
+                        $('.jerror_msg').html('Password Changed Successfully');
+						//$('.jmsg').html('Password Changed Successfully');
+                    }
+                    else if(res == 'invalid')
+                    {
+                        $('.jerror_msg').html('Incorrect old password');
+						//$('.jmsg').html('Incorrect old password').show();
+                        $('#old_pwd').focus();
+                        
+                    }
+                },
+                complete: function(){
+                }
+           });
+        }
+    });
+    $('.jsave_chpwd').live('click',function(){
+        $("#chpwd_form").submit();
+    });
+	
+});
+</script>		
     </body>
 </html>

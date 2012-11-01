@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session', 'xmlrpc','DB_Session','Email','Form_validation','encrypt','MY_encrypt','formtoken','application_details_lib','booking_details_lib','receipts_lib','attachments_lib','payments_lib');
+$autoload['libraries'] = array('database', 'session', 'xmlrpc','DB_Session','Email','Form_validation','encrypt','MY_encrypt','formtoken','application_details_lib','booking_details_lib','receipts_lib','attachments_lib','payments_lib','blocks_lib','rooms_lib','users_lib');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('booking_model','fileupload_model','admin_model');
+$autoload['model'] = array('booking_model','fileupload_model','admin_model','common_model');
 
 
 /* End of file autoload.php */

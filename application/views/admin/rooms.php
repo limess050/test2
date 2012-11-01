@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <title>Blocks</title>
+        <title>Rooms</title>
         <style>
             body{
                 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -145,7 +145,7 @@
 			  });
 			jQuery("#sub_grid_tbl").jqGrid431({
 			
-				url:'<?php echo site_url();?>admin/getblocks',
+				url:'<?php echo site_url();?>admin/getrooms',
 				datatype: "json",
 				mtype:'POST',
 				//height: $('#sidebar').height()-24,
@@ -154,9 +154,12 @@
 				width: 900,
 				<?php if($this->user_details->emp_role==1)
 				{?>
-				colNames:['Name','Status','Edit'],
+				colNames:['Name','VIP Quota','Deposite(Rs)','Rent(Rs)','Status','Edit'],
 				colModel:[
-					{name:'name',index:'name',widht:500},
+					{name:'name',index:'name'},
+					{name:'vipquota',index:'vipquota'},
+					{name:'deposit_amt',index:'deposit_amt'},
+					{name:'rent_amt',index:'rent_amt'},
 					{name:'status',index:'status'},
 					{name:'edit',index:'edit'}
 				],
@@ -165,14 +168,16 @@
 				else
 				{
 				?>
-				colNames:['Name','Status'],
+				colNames:['Name','VIP Quota','Deposite(Rs)','Rent(Rs)','Status'],
 				colModel:[
-					{name:'name',index:'name',widht:500},
+					{name:'name',index:'name'},
+					{name:'vipquota',index:'vipquota'},
+					{name:'deposit_amt',index:'deposit_amt'},
+					{name:'rent_amt',index:'rent_amt'},
 					{name:'status',index:'status'}
 				],
 				<?php 
 				}?>
-				
 				rowNum:10,
 				//rowList:[10,20,30],
 				pager: '#sub_grid_pager',
@@ -204,17 +209,35 @@
 								<div id="stylized" class="myform">
 								<table align="center" cellpadding="0" cellspacing="0" border="0">
 									<tr>
-									<td width="106" align="left" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:16px; padding-left:inherit"><h1>Blocks List</h1></td>
+									<td width="106" align="left" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:16px; padding-left:inherit"><h1>Room List</h1></td>
 									<td width="56" align="right">
-										 <?php if($this->user_details->emp_role==1)
+										<?php if($this->user_details->emp_role==1)
 										{?>
-										 <a class="btn edit_ecur fr jadd_block" href="<?php echo site_url();?>admin/blockView">
+										 <a class="btn edit_ecur fr jadd_block" href="<?php echo site_url();?>admin/roomview">
 											<span class="inner-btn">
-												<span class="label">
-												<img class="small_plus_icon" height="16" width="16" src="images/spacer.gif">Add Block</span>	
+											<span class="label"><img class="small_plus_icon" height="16" width="16" src="images/spacer.gif">Add Room</span>	
 											</span>
 										</a>
 										<?php } ?>
+									</td>
+									</tr>
+									<tr>
+									<td width="56" align="center" colspan="2">
+										<select name="blocks_id" id="blocks_id" class="required ">
+												<?php 
+												foreach($blocks as $k => $v)
+												{
+												?>
+													<option value="<?php echo $v->id;?>" <?php if($v->id == 1) echo 'selected';?>><?php echo $v->name;?></option>
+												<?php 
+												} 
+												?>
+										</select>
+										<a class="nblu_btn japply_filter">
+											<span class="inner-btn">
+												<span class="label">Show Rooms</span>
+											</span>
+										</a>
 									</td>
 									</tr>
 									<tr>
@@ -231,4 +254,13 @@
 <?php $this->load->view('common/footer'); //include("footer.php"); ?>
         </table>
     </body>
+<script type="text/javascript">	
+$(".japply_filter").live('click',function(){
+	var blocks_id = $('#blocks_id').val();
+	$("#sub_grid_tbl").setGridParam({
+	url: '<?php echo site_url();?>admin/getrooms',
+	postData: {"blocks_id":blocks_id}
+	}).trigger("reloadGrid");
+});
+</script>
 </html>

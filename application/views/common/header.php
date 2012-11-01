@@ -47,24 +47,36 @@
         </tr>
       </table></td>
 	  <td align="center" bgcolor="#BFA06B" class="footer_text">
-      <table width="147" border="0" align="right" cellpadding="0" cellspacing="0">
+      <table border="0" align="right" cellpadding="0" cellspacing="0" width="70%">
 	    <tr>
-	      <td width="5" align="left" valign="middle">&nbsp;</td>
+		  	  <?php
+				if($this->session->userdata('user_details'))
+				{
+              ?>
+			 <td width="127" align="left" valign="middle"><?php echo ucfirst($this->user_details->emp_fname).' '.$this->user_details->emp_lname?></td>
+			 <?php
+                }
+                else
+                {
+				?>
+				<td width="4" align="left" valign="middle">&nbsp;</td>
               <?php
-                if ($this->session->userdata('user_details'))
+			  	}
+                if($this->session->userdata('user_details'))
                 {
               ?>
-              <td width="142" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login/logout" class="white_bold_txt_12px jlo">LogOut</a></td>
+			  <td width="120" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>booking/changepwd" class="white_bold_txt_12px jlo">Change Password</a></td>
+              <td width="49" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login/logout" class="white_bold_txt_12px jlo">LogOut</a></td>
               <?php
                 }
                 else
                 {
               ?>
-	      <td width="142" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login" class="white_bold_txt_12px jli">Login</a></td>
+	      <td width="35" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login" class="white_bold_txt_12px jli">Login</a></td>
               <?php
                 }
               ?>
-           <td width="10" align="left" valign="middle">&nbsp;</td>
+           <td width="13" align="left" valign="middle">&nbsp;</td>
         </tr>
 	    <tr>
 	      <td height="1" colspan="2" ></td>

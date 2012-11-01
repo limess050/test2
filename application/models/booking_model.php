@@ -295,8 +295,9 @@ class Booking_model extends MY_Model {
         }
         return $tbl_fields;
     }
-    public function getDayReport($date) {
-        $user_id=$this->user_details->id;
+    public function getDayReport($ip_array) {
+        $user_id=$ip_array['user_id'];
+		$date=$ip_array['date'];
         $data = array();
         $sql = "select
 				b.name as blockname,r.name as roomname, 

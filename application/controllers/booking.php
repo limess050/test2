@@ -5,6 +5,10 @@ class Booking extends MY_Controller {
     function __construct() {
         parent::__construct();
         $this->user_details = unserialize($this->session->userdata('user_details'));
+		if($this->user_details->emp_role!=4)
+		{
+			redirect('admin');
+		}
 
     //print_r($this->user_details);
 
@@ -25,8 +29,8 @@ class Booking extends MY_Controller {
     }
 
     public function roomBooking() {
-        echo '<pre>';
-        print_r($_POST);die;
+       // echo '<pre>';
+        //print_r($_POST);die;
         if (formtoken::validateToken($_POST)) {
             $_POST['from_date'] = date('d-m-Y',strtotime($_POST['from_date'])-86400); // reduce one day as room will be blocked before one day
             $date_fields_array = array('from_date','to_date');
@@ -130,8 +134,11 @@ class Booking extends MY_Controller {
     }
 
     public function getDayReport() {
-        $date = date('Y-m-d');
-        $data = $this->booking_model->getDayReport($date);
+		$date = date('Y-m-d');
+		$ip_array = array('date'=>$date,
+						  'user_id'=>$this->user_details->id);
+        
+        $data = $this->booking_model->getDayReport($ip_array);
         $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;
         $data['date'] = $date;
         //echo '<pre>'; print_r($data); die;

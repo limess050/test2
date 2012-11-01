@@ -23,9 +23,9 @@ class Common_model extends MY_Model {
 			return false;
     }
 	
-	function getTableDetails($sel_items='id',$table='users',$where=1)
+	function getTableDetails($sel_items='id',$table='users',$where=1,$orderby='')
     {
-        $sql = 'SELECT '.$sel_items.' FROM '.$table.' where '.$where;
+        $sql = 'SELECT '.$sel_items.' FROM '.$table.' where '.$where.' '.$orderby;
         return $this->getDBResult($sql, 'object');
     }
 	function delete_attachments($global_id,$ref_id)

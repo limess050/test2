@@ -102,9 +102,9 @@
 else
 {
 ?>
-<table width="98%" border="1" cellspacing="1" cellpadding="1" align="center" class="tabborder">
+<table width="98%" border="1" cellspacing="1" cellpadding="1" align="center" class="tabborder" valign="top">
 	<tr>
-		<td align="center" style="color:#FF0000"><h1>Room Booking Details are not found with application id : <?php echo $app_id;?></h1></td>
+		<td align="center" style="color:#FF0000" valign="top"><h1>Room Booking Details are not found with application id : <?php echo $app_id;?></h1></td>
 	</tr>
 </table>
 <?php
