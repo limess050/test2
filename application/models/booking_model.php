@@ -9,7 +9,7 @@
  *
  * @author RAJU
  */
-class Booking_model extends MY_Model {  
+class Booking_model extends MY_Model {
 //put your code here
     public function __construct() {
         parent::__construct();
@@ -85,7 +85,7 @@ class Booking_model extends MY_Model {
         if(isset($post['vip_quota'])) {
             $sql .= ' WHERE r.vip_quota = 1';
         }
-        else{
+        else {
             $sql .= ' WHERE r.vip_quota != 1';
         }
         $data = $this->getDBResult($sql, 'object');
@@ -217,48 +217,41 @@ class Booking_model extends MY_Model {
         $sql = 'select deposit_amt, rent_amt from rooms where id="'.$post['rooms_id'].'" limit 1';
         $rs = $this->db->query($sql);
         $data = $rs->first_row();
-        if(empty($data))
-        {
+        if(empty($data)) {
             $data = new stdClass();
         }
         $days = (strtotime($post['to_date'])-strtotime($post['from_date']))/86400;
         $data->days = $days;
         $data->act_rent = $data->rent_amt;
-        if($post['donorRef'] == "1")
-        {
+        if($post['donorRef'] == "1") {
             $data->act_rent = 0;
             $data->deposit_amt = 0;
             $data->rent_amt = 0;
         }
-        else if($post['donorRef'] == "2")
-        {
-            $nodiscount_days = array('1','7');
-            $day1->act_rent = $data->act_rent;
-            $day1->deposit_amt = $data->deposit_amt;
-            //$day1->rent_amt = $data->rent_amt;
-            $day2 = new stdClass();
-            if(!in_array(date('N',strtotime($post['from_date'])),$nodiscount_days))
-            {
-                $day1->act_rent = $data->act_rent/2;
-                $day1->deposit_amt = $data->deposit_amt/2;
+        else if($post['donorRef'] == "2") {
+                $nodiscount_days = array('1','7');
+                $day1->act_rent = $data->act_rent;
+                $day1->deposit_amt = $data->deposit_amt;
+                //$day1->rent_amt = $data->rent_amt;
+                $day2 = new stdClass();
+                if(!in_array(date('N',strtotime($post['from_date'])),$nodiscount_days)) {
+                    $day1->act_rent = $data->act_rent/2;
+                    $day1->deposit_amt = $data->deposit_amt/2;
                 //$day1->rent_amt = $data->rent_amt/2;
-            }
-            if($days == 2)
-            {
-                $day2->act_rent = $data->act_rent;
-                $day2->deposit_amt = $data->deposit_amt;
-                //$day2->rent_amt = $data->rent_amt;
-                if(!in_array(date('N',strtotime($post['from_date'])+86400),$nodiscount_days))
-                {
-                    $day2->act_rent = $data->act_rent/2;
-                    $day2->deposit_amt = $data->deposit_amt/2;
-                    //$day2->rent_amt = $data->rent_amt/2;
                 }
-            }
-            if(isset($day2->act_rent))
-            {
-                $data->act_rent = $day1->act_rent+$day2->act_rent;
-                $data->deposit_amt = $day1->deposit_amt;
+                if($days == 2) {
+                    $day2->act_rent = $data->act_rent;
+                    $day2->deposit_amt = $data->deposit_amt;
+                    //$day2->rent_amt = $data->rent_amt;
+                    if(!in_array(date('N',strtotime($post['from_date'])+86400),$nodiscount_days)) {
+                        $day2->act_rent = $data->act_rent/2;
+                        $day2->deposit_amt = $data->deposit_amt/2;
+                    //$day2->rent_amt = $data->rent_amt/2;
+                    }
+                }
+                if(isset($day2->act_rent)) {
+                    $data->act_rent = $day1->act_rent+$day2->act_rent;
+                    $data->deposit_amt = $day1->deposit_amt;
                 /*if($day1->rent_amt > $day2->rent_amt)
                 {
                     $data->rent_amt = $day1->rent_amt;
@@ -267,19 +260,17 @@ class Booking_model extends MY_Model {
                 {
                     $data->rent_amt = $day2->rent_amt;
                 }*/
-            }
-            else
-            {
-                $data->act_rent = $day1->act_rent;
-                $data->deposit_amt = $day1->deposit_amt;
+                }
+                else {
+                    $data->act_rent = $day1->act_rent;
+                    $data->deposit_amt = $day1->deposit_amt;
                 //$data->rent_amt = $day1->rent_amt;
+                }
+                $data->rent_amt = 0;
             }
-            $data->rent_amt = 0;
-        }
-        else
-        {
-            $data->act_rent = $days*$data->rent_amt;
-        }
+            else {
+                $data->act_rent = $days*$data->rent_amt;
+            }
         return $data;
     }
 
@@ -393,5 +384,32 @@ class Booking_model extends MY_Model {
             $return_response = 'success';
         }
         return $return_response;
+    }
+
+    public function getPendingRooms() {
+        $end_datetime = date('Y-m-d H:i:s',time()+3600); // get 23hrs previous time 82800
+        $sql = 'select id,blocks_id, rooms_id, from_date, to_date from booking_details where to_date <= "'.$end_datetime.'" and  booked_status = 1';
+        $data_flds = array('blocks_id','rooms_id','from_date','to_date','<span style="color:{%color%}">{%hours%}</span>');
+        $extra_logic = true;
+        return $this->display_grid($_POST,$sql,$data_flds,$extra_logic);
+        //$rs = $this->db->query($sql);
+        /*echo '<pre>';
+        print_r($rs->result());die;*/
+    }
+
+    //users SET
+    function getusers() {
+        $sql = 'SELECT u.id,concat(u.emp_fname," ",u.emp_lname) as emp_name, u.emp_id, u.user_name, u.password, u.emp_role as emp_role,r.name as role,
+    CASE WHEN u.status =1 THEN "Active" ELSE "Inactive" END as status
+    FROM users u
+    LEFT JOIN roles r on u.emp_role = r.id
+    where u.emp_role!=1 ';
+
+        $data_flds = array('emp_name','emp_id','role','user_name','status',"<a class='btn edit_ecur' href='".site_url()."admin/userview/{%id%}' id='{%id%}'><span class='inner-btn'><span class='label'>Edit</span></span></a>");
+        return $this->display_grid($_POST,$sql,$data_flds);
+    }
+
+    function display_grid($postvals,$sql,$array_fields,$extra_logic=false) {
+        return $this->jqgrid($postvals,$sql,$array_fields,$extra_logic);
     }
 }

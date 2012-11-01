@@ -5,11 +5,15 @@ class Booking extends MY_Controller {
     function __construct() {
         parent::__construct();
         $this->user_details = unserialize($this->session->userdata('user_details'));
+<<<<<<< HEAD
 		if($this->user_details->emp_role!=4)
 		{
 			redirect('admin');
 		}
 
+=======
+        ini_set('date.timezone', 'Asia/Calcutta');
+>>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
     //print_r($this->user_details);
 
     //echo $this->user_details->id;die;
@@ -29,14 +33,28 @@ class Booking extends MY_Controller {
     }
 
     public function roomBooking() {
+<<<<<<< HEAD
        // echo '<pre>';
         //print_r($_POST);die;
+=======
+        /*echo '<pre>';
+        print_r($_POST);die;*/
+>>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
         if (formtoken::validateToken($_POST)) {
-            $_POST['from_date'] = date('d-m-Y',strtotime($_POST['from_date'])-86400); // reduce one day as room will be blocked before one day
+            if($_POST['booking_type'] == 2)
+            {
+                $_POST['from_date'] = date('d-m-Y',strtotime($_POST['from_date'])-86400); // reduce one day as room will be blocked before one day
+            }
+            else
+            {
+                $_POST['from_date'] = date('d-m-Y',strtotime($_POST['from_date']));
+                $_POST['advance_amount'] = 0; // if current booking, advance amount is 0
+            }
             $date_fields_array = array('from_date','to_date');
+            $time = date('H:i:s',time());
             foreach($date_fields_array as $val) {
                 if(isset($_POST[$val])) {
-                    $_POST[$val] = date('Y-m-d',strtotime($_POST[$val]));
+                    $_POST[$val] = date('Y-m-d '.$time,strtotime($_POST[$val]));
                 }
             }
             $_POST['checkout_date'] = $_POST['to_date'];
@@ -75,9 +93,20 @@ class Booking extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function pendingCheckout(){
+        $this->load->view('pendingcheckout/index');
+        //echo 'Rooms need to checkout';
+    }
+
+    public function getPendingCheckout()
+    {
+        $data = $this->booking_model->getPendingRooms();
+        echo $data;
+    }
+
     public function libhelp() {
     //$tbl_array = array('users','users_address','users_contacts','users_ecurrencies','users_settings');
-        $tbl_array = array('receipts');
+        $tbl_array = array('users');
         $data = $this->booking_model->gettabledetails($tbl_array);
         /*echo '<pre>';
         print_r($data);*/

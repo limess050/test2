@@ -7,13 +7,14 @@ class Login extends CI_Controller {
 
     public function index()
     {
-        if (!$this->session->userdata('user_details'))
+        if(isset($_ENV['myvar']))
         {
-            $data = array();
-            if(!empty($_POST))
+            if (!$this->session->userdata('user_details'))
             {
-                if($this->booking_model->login($_POST))
+                $data = array();
+                if(!empty($_POST))
                 {
+<<<<<<< HEAD
 					$this->user_details = unserialize($this->session->userdata('user_details'));
 					if($this->user_details->emp_role==4)
 					redirect('home');
@@ -23,17 +24,35 @@ class Login extends CI_Controller {
                 else
                 {
                     $data['msg'] = 'invalid';
+=======
+                    if($this->booking_model->login($_POST))
+                    {
+                        redirect('home');
+                    }
+                    else
+                    {
+                        $data['msg'] = 'invalid';
+                    }
+>>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
                 }
+                $this->load->view('login',$data);
             }
-            $this->load->view('login',$data);
+            else
+            {
+                redirect('home');
+            }
         }
         else
         {
+<<<<<<< HEAD
           $this->user_details = unserialize($this->session->userdata('user_details'));
 		  if($this->user_details->emp_role==4)
 		   redirect('home');
 		  else
 		  redirect('admin'); 
+=======
+            echo "You don't have access to the system, Please contanct Administrator";die;
+>>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
         }
     }
 

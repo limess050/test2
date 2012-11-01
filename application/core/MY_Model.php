@@ -123,7 +123,7 @@ class MY_Model extends CI_Model {
         }
     }
 
-    function jqgrid($postvals,$sql,$array_fields) {
+    function jqgrid($postvals,$sql,$array_fields,$extra_logic=false) {
         //array_walk_recursive($postvals, 'arrayfilterString');
         $page = isset($postvals['page'])?$postvals['page']:1; // get the requested page
         $limit =isset($postvals['rows'])?$postvals['rows']:10; // get how many rows we want to have into the grid
@@ -151,9 +151,23 @@ class MY_Model extends CI_Model {
         $responce->records = $count;
         $i = 0;
         $result3 = $result2->result();
-
         if ($result3) {
             foreach ($result3 as $row) {
+                if($extra_logic)
+                {
+                    //echo time()."\n";
+                    //echo strtotime($row->to_date)."\n";
+                    $excess_hrs = round((time()-strtotime($row->to_date))/(60*60));
+                    if($excess_hrs >= 4)
+                    {
+                        $row->color = 'red';
+                    }
+                    else
+                    {
+                        $row->color = 'green';
+                    }
+                    $row->hours = $excess_hrs;
+                }
                 $row_info=array();
                 foreach($array_fields as $k=>$v) {
                     if(array_key_exists($v,$row)) {
@@ -162,6 +176,8 @@ class MY_Model extends CI_Model {
                     else {
                         $matches = array();
                         $arr = preg_match_all('/(?<={%)[^%}]+(?=%})/', $v, $matches) ;
+                        //print_r($row);
+                        //print_r($matches);
                         if($arr) {
                             foreach($matches[0] as $l=>$m) {
                                 if(array_key_exists($m,$row)) {
@@ -181,7 +197,9 @@ class MY_Model extends CI_Model {
             $responce->rows[0]['id'] = 0;
             $responce->rows[0]['cell'] = array('', 'No Records', '', '');
         }
+        //print_r($responce);
         //echo $json->encode($responce); // coment if php 5
+        //header('Content-type: application/json');
         return json_encode($responce);
     }
 

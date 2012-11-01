@@ -57,7 +57,7 @@ class Application_details_lib{
     }
 
     public function setPhone_no($phone_no) {
-        $this->applicant_name = $phone_no;
+        $this->phone_no = $phone_no;
     }
 
     public function getApplicant_address() {
@@ -73,7 +73,7 @@ class Application_details_lib{
     }
 
     public function setAddress_proof($address_proof) {
-        $this->applicant_address = $address_proof;
+        $this->address_proof = $address_proof;
     }
 
     public function getImage_path() {
