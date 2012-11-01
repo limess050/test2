@@ -7,53 +7,41 @@ class Login extends CI_Controller {
 
     public function index()
     {
-        if(isset($_ENV['myvar']))
-        {
+		//if(isset($_ENV['myvar']))
+        //{
             if (!$this->session->userdata('user_details'))
             {
                 $data = array();
                 if(!empty($_POST))
                 {
-<<<<<<< HEAD
-					$this->user_details = unserialize($this->session->userdata('user_details'));
-					if($this->user_details->emp_role==4)
-					redirect('home');
-					else
-					redirect('admin');
-                }
-                else
-                {
-                    $data['msg'] = 'invalid';
-=======
                     if($this->booking_model->login($_POST))
                     {
-                        redirect('home');
+                        $this->user_details = unserialize($this->session->userdata('user_details'));
+						if($this->user_details->emp_role==4)
+						redirect('home');
+						else
+						redirect('admin');
                     }
                     else
                     {
                         $data['msg'] = 'invalid';
                     }
->>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
                 }
                 $this->load->view('login',$data);
             }
             else
             {
-                redirect('home');
+                $this->user_details = unserialize($this->session->userdata('user_details'));
+				if($this->user_details->emp_role==4)
+				redirect('home');
+				else
+				redirect('admin');
             }
-        }
+        /*}
         else
         {
-<<<<<<< HEAD
-          $this->user_details = unserialize($this->session->userdata('user_details'));
-		  if($this->user_details->emp_role==4)
-		   redirect('home');
-		  else
-		  redirect('admin'); 
-=======
             echo "You don't have access to the system, Please contanct Administrator";die;
->>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
-        }
+        }*/
     }
 
     public function logout()

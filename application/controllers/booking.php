@@ -1,19 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Booking extends MY_Controller {
+class Booking extends MY_Controller { 
     var $user_details;
     function __construct() {
         parent::__construct();
         $this->user_details = unserialize($this->session->userdata('user_details'));
-<<<<<<< HEAD
-		if($this->user_details->emp_role!=4)
+		if(!isset($this->user_details->id))
+		{
+			redirect('login');
+		}
+		
+		if(isset($this->user_details->emp_role) && $this->user_details->emp_role!=4)
 		{
 			redirect('admin');
 		}
-
-=======
         ini_set('date.timezone', 'Asia/Calcutta');
->>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
     //print_r($this->user_details);
 
     //echo $this->user_details->id;die;
@@ -33,13 +34,6 @@ class Booking extends MY_Controller {
     }
 
     public function roomBooking() {
-<<<<<<< HEAD
-       // echo '<pre>';
-        //print_r($_POST);die;
-=======
-        /*echo '<pre>';
-        print_r($_POST);die;*/
->>>>>>> e71692dcd27f486c29c2037427dd48a59ca50950
         if (formtoken::validateToken($_POST)) {
             if($_POST['booking_type'] == 2)
             {
