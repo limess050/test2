@@ -7,25 +7,32 @@ class Login extends CI_Controller {
 
     public function index()
     {
-        if (!$this->session->userdata('user_details'))
+        if(isset($_ENV['myvar']))
         {
-            $data = array();
-            if(!empty($_POST))
+            if (!$this->session->userdata('user_details'))
             {
-                if($this->booking_model->login($_POST))
+                $data = array();
+                if(!empty($_POST))
                 {
-                    redirect('home');
+                    if($this->booking_model->login($_POST))
+                    {
+                        redirect('home');
+                    }
+                    else
+                    {
+                        $data['msg'] = 'invalid';
+                    }
                 }
-                else
-                {
-                    $data['msg'] = 'invalid';
-                }
+                $this->load->view('login',$data);
             }
-            $this->load->view('login',$data);
+            else
+            {
+                redirect('home');
+            }
         }
         else
         {
-            redirect('home');
+            echo "You don't have access to the system, Please contanct Administrator";die;
         }
     }
 
