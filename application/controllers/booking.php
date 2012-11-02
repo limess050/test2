@@ -30,6 +30,7 @@ class Booking extends MY_Controller {
         $data['adv_date'] = date('d-m-Y', time()+(8*86400));
         $data['adv_todate'] = date('d-m-Y', time()+(10*86400));
         $data['session_id'] = MD5($this->session->userdata('session_id'));
+        //$data['penco'] = $this->getPendingRoomsCnt(false);
         $this->load->view('booking/index',$data);
     }
 
@@ -92,10 +93,29 @@ class Booking extends MY_Controller {
         //echo 'Rooms need to checkout';
     }
 
+    public function getPendingRoomsCnt($ajaxReq = true){
+        $this->after4Hours();
+        $data = $this->booking_model->getPendingRoomsCnt();
+        if($ajaxReq)
+        {
+            echo $data;
+        }
+        else
+        {
+            return $data;
+        }
+        //echo 'Rooms need to checkout';
+    }
+
     public function getPendingCheckout()
     {
         $data = $this->booking_model->getPendingRooms();
         echo $data;
+    }
+
+    public function after4Hours()
+    {
+        $data = $this->booking_model->after4Hours();
     }
 
     public function libhelp() {

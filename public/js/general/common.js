@@ -9,6 +9,10 @@ $(function(){
             }
         });
         */
+       // send request for first time
+       getPendingRoomsCnt();
+        // and repeat the action for every 10mins
+       setInterval('getPendingRoomsCnt()',600000); // send request for every 10mins
 
        $('#course,#course_id').live('change',function(){
            $('#branch, #branch_id').val('');
@@ -399,4 +403,19 @@ function customRange2_Year(input) {
                 };
             }
     }
+}
+
+function getPendingRoomsCnt()
+{
+    $.ajax({
+            url:base_url+'/booking/getPendingRoomsCnt',
+            type:'POST',
+            dataType:'',
+            beforeSend:function(){
+
+            },
+            success:function(dataR){
+                $('#penco').html('('+dataR+')');
+            }
+        });
 }

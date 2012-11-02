@@ -86,6 +86,13 @@ margin-left: 10px;
 <link href="<?php echo base_url();  ?>public/css/general/style.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url();  ?>public/css/general/style2.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url();  ?>public/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" rel="javascript">
+    var base_url="<?php echo base_url();  ?>";
+    var main_url="<?php echo base_url();  ?>";
+    // window.onerror=function(){ return true; }
+</script>
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/library.js" ></script>
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/common.js" ></script>
 <script type="text/javascript" language="javascript">
 function DisableBackButton() {
 window.history.forward()

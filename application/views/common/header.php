@@ -47,7 +47,7 @@
 			<td width="10%"><table width="160" border="0" align="left" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td width="5" align="left" valign="middle">&nbsp;</td>
-                                <td width="142" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>booking/pendingCheckout" class="white_heading_txt_16px">Pending Checkout<span style="color:#C92020">(5)</span></a></td>
+                                <td width="142" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>booking/pendingCheckout" class="white_heading_txt_16px">Pending Checkout<span id="penco" style="color:#C92020">(0)</span></a></td>
                             </tr>
                             <tr>
                                 <td height="1" colspan="2" ></td>
