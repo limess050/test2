@@ -402,6 +402,43 @@ class Booking_model extends MY_Model {
         print_r($rs->result());die;*/
     }
 
+    public function getPendingRoomsCnt() {
+        $end_datetime = date('Y-m-d H:i:s',time()+3600); // get 23hrs previous time 82800
+        $sql = 'select count(id) as cnt from booking_details where to_date <= "'.$end_datetime.'" and  booked_status = 1';
+        $rs = $this->db->query($sql);
+        $data = $rs->first_row();
+        if(!empty($data))
+        {
+            return $data->cnt;
+        }
+        else
+        {
+            return '0';
+        }
+        /*echo '<pre>';
+        print_r($rs->result());die;*/
+    }
+
+    public function after4Hours()
+    {
+        $b4hours = date('Y-m-d H:i:s',time()-4*3600); // get 23hrs previous time 82800
+        $sql = 'select id,application_details_id,to_date from booking_details where to_date <= "'.$b4hours.'" and  booked_status = 1';
+        $rs = $this->db->query($sql);
+        $result = $rs->result();
+        if ($result) {
+            foreach ($result as $row) {
+                $excess_hrs = round((time()-strtotime($row->to_date))/(60*60));
+                if($excess_hrs >= 4)
+                {
+                    $sql = 'UPDATE receipts SET rent_amount = (rent_amount+deposit_amt), deposit_amt = 0 WHERE application_details_id = '.$row->application_details_id;
+                    $sql2 = 'Update booking_details SET booked_status = "0" where id='.$row->id;
+                    $this->db->query($sql);
+                    $this->db->query($sql2);
+                }
+            }
+        }
+    }
+
     //users SET
     function getusers() {
         $sql = 'SELECT u.id,concat(u.emp_fname," ",u.emp_lname) as emp_name, u.emp_id, u.user_name, u.password, u.emp_role as emp_role,r.name as role,

@@ -86,7 +86,7 @@ margin-left: 10px;
 <link href="<?php echo base_url();  ?>public/css/general/style.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url();  ?>public/css/general/style2.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url();  ?>public/css/style.css" rel="stylesheet" type="text/css" />
-<!--<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/library.js" ></script>-->
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/library.js" ></script>
 <script src="<?php echo base_url();?>public/js/jquery-1.5.2.min.js" type="text/javascript"></script>
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/validate.js" ></script>
 <script type="text/javascript" rel="javascript">
@@ -97,6 +97,7 @@ margin-left: 10px;
 
 <!--<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/jquery-ui-custom.min.js" ></script>
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/common.js" ></script>
 <script type="text/javascript" language="javascript">
 function DisableBackButton() {
 window.history.forward()

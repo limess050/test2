@@ -89,6 +89,11 @@ font-weight:bold;
 <!--<script type="text/javascript" language="javascript" src="<?php //echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/jquery-ui-custom.min.js" ></script>
 
+<script type="text/javascript" rel="javascript">
+    var base_url="<?php echo base_url();  ?>";
+    var main_url="<?php echo base_url();  ?>";
+    // window.onerror=function(){ return true; }
+</script>
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/common.js" ></script>
 <script type="text/javascript" language="javascript">
 function DisableBackButton() {
