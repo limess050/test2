@@ -578,6 +578,7 @@
                                         <button type="submit">Submit</button>
                                         <div class="spacer"></div>
                                     </form>
+                                    <div style="display:none"><input type="text" name="jcurdate" class="jcurdate" value="<?php echo $cur_date;?>"/></div>
                                     <div style="display:none"><input type="text" name="jadv_fromdate" class="jadv_fromdate" value="<?php echo $adv_date;?>"/></div>
                                     <div style="display:none"><input type="text" name="jadv_todate" class="jadv_todate" value="<?php echo $adv_todate;?>"/></div>
                                 </div></td>
