@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Room Checkout</title>
+<title>Operator Day Report</title>
 <style>
 body{
 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -94,8 +94,7 @@ margin-left: 10px;
     var main_url="<?php echo base_url();  ?>";
     // window.onerror=function(){ return true; }
 </script>
-
-<!--<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
+<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/viewPrint.js" ></script>
 <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/jquery-ui-custom.min.js" ></script>
 <script type="text/javascript" language="javascript">
 function DisableBackButton() {
@@ -207,22 +206,22 @@ var site_url='<?php echo site_url()?>';
 $(document).ready(function() {
 	/////  for getting Room Checkout
 	$("#ope_day_rep").validate({
-	rules: {
-            application_id: "required",
-        },
-        messages: {
-            application_id: "Please enter Application id",
-        },
-		errorPlacement: function(error, element) {
-		error.insertAfter(element);
-		},
+		highlight: function(element, errorClass, validClass) {
+		 $(element).addClass(errorClass).removeClass(validClass);
+		 $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
+	  },
+	  unhighlight: function(element, errorClass, validClass) {
+		 $(element).removeClass(errorClass).addClass(validClass);
+		 $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);
+	  },
+	  errorPlacement: function(error, element) { },
 		submitHandler: function()
 		{
 			var data = $('#ope_day_rep').serialize();
 			$.ajax({
 				type: "POST",	
 				data: data,
-				url: base_url+"admin/getBookingDetails", 
+				url: base_url+"admin/getDetailDayReport", 
 				beforeSend : function(){
 					$('#booking_details').html('');
 				},

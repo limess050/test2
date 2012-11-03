@@ -311,7 +311,8 @@ class Booking_model extends MY_Model {
                     'advance_amount'=>$val->advance_amount,
                     'deposit_amt'=>$val->deposit_amt,
                     'rent_amount'=>$val->rent_amount,
-                    'total_amount_paid'=>$val->total_amount_paid);
+                    'total_amount_paid'=>$val->total_amount_paid,
+					'amt_deposit_bank'=>$val->advance_amount+$val->rent_amount);
                 $con_total_amount += $val->total_amount_paid;
             }
         }
@@ -347,7 +348,9 @@ class Booking_model extends MY_Model {
     }
 
     public function getBookingDetails($where_cond = 1) {
-        $sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name, ad.applicant_address,
+        $sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name, 
+				concat(ad.applicant_address,' ','Ph No:',ad.phone_no)as applicant_address,
+				concat(u.emp_fname,' ',u.emp_lname) as user_name,att.url as image_path,
 				bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
 				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, 
 				bd.no_of_days, bd.booking_type,bd.booked_status,bd.booking_type,
@@ -358,6 +361,8 @@ class Booking_model extends MY_Model {
 				left join blocks b on bd.blocks_id = b.id
 				left join rooms r on bd.rooms_id = r.id
 				left join receipts rp on rp.application_details_id = ad.id
+				left join users u on u.id = ad.created_by
+				left join attachments att on att.global_id = ad.id
 				where ".$where_cond;
         $booking_details = $this->getDBResult($sql, 'object');
 

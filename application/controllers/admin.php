@@ -5,6 +5,7 @@ class Admin extends MY_Controller {
     function __construct() {
         parent::__construct();
 	    $this->user_details = unserialize($this->session->userdata('user_details'));
+		$this->users= $this->common_model->getTableDetails('id,concat(emp_fname," ",emp_lname) as name','users','status=1 and emp_role=4','order by name asc');
 		if($this->user_details->emp_role==4)
 		{
 			redirect('home');
@@ -161,11 +162,40 @@ class Admin extends MY_Controller {
 	}
 	 public function getDayReport() {
 	 
-	 $data['users'] = $this->common_model->getTableDetails('id,concat(emp_fname," ",emp_lname) as name','users','status=1 and emp_role=4','order by name asc');
-	 //print_r($data); die;
-	 $this->load->view('admin/getDayReport',$data);
+	 $data['users'] = $this->users;
 	 
-		
+	//echo '<pre>'; print_r($data); die;
+	 $this->load->view('admin/getDayReport',$data);
+    }
+	 public function getDetailDayReport() {
+		$date = $_POST['rep_date'];
+		$ip_array = array('date'=>$date, 
+						  'user_id'=>$_POST['operator_id']);
+        
+        $data = $this->booking_model->getDayReport($ip_array);
+		foreach($this->users as $k=>$v)
+		{
+			if($v->id == $_POST['operator_id'])
+			{
+				 $data['user_name'] = ucfirst($v->name);
+			}
+		}
+        //$data['user_name'] = '';
+        $data['date'] = $date;
+        //echo '<pre>'; print_r($data); die;
+        $this->load->view('day_report',$data);
+    }
+	
+	 public function get_app_details() {
+        $this->load->view('admin/get_app_details');
+    }
+    public function getApplicationDetails() {
+        $where_cond = ' ad.application_id='.$_POST['application_id'];
+        $data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
+        //echo '<pre>';		print_r($data);die;
+        //$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
+        $data['app_id'] = $_POST['application_id'];
+        echo $this->load->view('admin/application_details',$data,true);
     }
 }
 

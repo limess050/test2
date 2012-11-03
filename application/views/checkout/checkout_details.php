@@ -12,7 +12,7 @@
 			<table width="100%" border="0" align="center">
 				<tr>
 					<td width="19%" align="left" valign="top">Operator Name:</td>
-					<td width="58%" align="left" valign="top"><strong><?php echo $user_name;?></strong></td>
+					<td width="58%" align="left" valign="top"><strong><?php echo ucfirst($user_name);?></strong></td>
 					<td width="8%" align="left" valign="top">Date:</td>
 					<td width="15%" align="left" valign="top"><?php echo $booking_det[0]->created_date;?></td>
 				</tr>
@@ -30,7 +30,7 @@
 				</tr>
 				<tr>
 					<td width="14%" align="left" valign="top">Name</td>
-					<td width="38%" align="left" valign="top"><?php echo $booking_det[0]->applicant_name;?></td>
+					<td width="38%" align="left" valign="top"><?php echo ucfirst($booking_det[0]->applicant_name);?></td>
 					<td width="16%" align="left" valign="top">Address</td>
 					<td width="32%" align="left" valign="top"><?php echo $booking_det[0]->applicant_address;?></td>
 				</tr>
@@ -80,6 +80,12 @@
 					<td align="right" valign="center" colspan="2">Deposit Refund (Rs) </td>
 					<td width="32%" align="left" valign="top" colspan="2">
 					<input type="text" name="deposite_amount" id="deposite_amount" class="required valid" value="<?php echo $booking_det[0]->deposit_amt;?>">
+					</td>
+				</tr>
+				<tr>
+					<td align="right" valign="center" colspan="2">Damage Charges (Rs) </td>
+					<td width="32%" align="left" valign="top" colspan="2">
+					<input type="text" name="damage_amount" id="damage_amount" class="required valid" value="<?php echo $booking_det[0]->deposit_amt;?>">
 					</td>
 				</tr>
 				
