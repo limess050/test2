@@ -145,6 +145,7 @@ class MY_Model extends CI_Model {
             $start = 0;
         $query.= " ORDER BY `" . $sidx . "` " . $sord . " LIMIT " . $start . " , " . $limit;
         //echo $query;
+		$responce = new stdclass();
         $result2 = $this->db->query($query);
         $responce->page = $page;
         $responce->total = $total_pages;

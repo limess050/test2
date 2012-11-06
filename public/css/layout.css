@@ -895,7 +895,7 @@ font-size: 14px;}
 .oc{ overflow:hidden}
 .cb{clear:both; height:0}
 .d_fds{ padding:6px 0; font-size:13px}
-.left_fld{ width:280px;margin-right:10px; float:left}
+.left_fld{ width:280px;margin-right:50px; float:left; }
 .left_fld label{ margin-top:4px;display:block; color:#565656}
 .d_fds.vm .left_fld label{ margin-top:0;}
 .right_fld{ margin-left:290px; color:#000; }

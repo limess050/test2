@@ -472,7 +472,7 @@
                                             <label>Donor: </label>
                                             <input type="radio" class="jdonor" name="donor" value="1"/>Donor
                                             <input type="radio" class="jdonor" name="donor" value="2"/>Authorization
-                                            <input type="radio" class="jdonor" name="donor" value="0" checked/>None
+                                            <input type="radio" class="jdonor" name="donor" value="0" checked/>Devote
                                         </div>
                                         <div class="ipradio">
                                             <label>VIP Reference: </label>
@@ -494,11 +494,11 @@
                                         </div>
                                         <div class="iptxt jfromhtml">
                                             <label>Check-In Date:</label>
-                                            <input type="text" name="from_date" class="jfrom required" id="from" value="<?php echo $today;?>" />
+                                            <input type="text" name="from_date" class="jfrom required" id="from" value="<?php echo $today;?>" readonly="readonly"/>
                                         </div>
                                         <div class="iptxt jtohtml">
                                             <label>Check-Out Date:</label>
-                                            <input type="text" name="to_date" class="jto required" id="to" value="<?php echo $tomorrow;?>" />
+                                            <input type="text" name="to_date" class="jto required" id="to" value="<?php echo $tomorrow;?>" readonly="readonly"/>
                                         </div>
                                         <?php
                                         $block_options = '<option value="0">Select Block</option>';
@@ -578,6 +578,7 @@
                                         <button type="submit">Submit</button>
                                         <div class="spacer"></div>
                                     </form>
+                                    <div style="display:none"><input type="text" name="jcurdate" class="jcurdate" value="<?php echo $cur_date;?>"/></div>
                                     <div style="display:none"><input type="text" name="jadv_fromdate" class="jadv_fromdate" value="<?php echo $adv_date;?>"/></div>
                                     <div style="display:none"><input type="text" name="jadv_todate" class="jadv_todate" value="<?php echo $adv_todate;?>"/></div>
                                 </div></td>

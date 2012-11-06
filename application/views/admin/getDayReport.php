@@ -151,7 +151,7 @@ document.oncontextmenu=new Function("alert(message);return false")
 					<td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/adminheader');//include("header.php"); ?></td>
 				</tr>
     <tr>
-		<td align="center" valign="top">
+		<td align="center" valign="top" bgcolor="#E2D5BC">
 			<div id="stylized" class="myform">
 			<table width="98%" height="500" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
@@ -238,7 +238,9 @@ $(document).ready(function() {
 	});
 	$('.jope_rep').live('click',function(){
 		$("#ope_day_rep").submit();
-	})
+	});
+	
+	 $('#rep_date').datepicker({dateFormat:'dd-mm-yy'});
 });
 </script>
 </body>

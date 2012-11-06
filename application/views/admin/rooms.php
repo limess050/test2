@@ -181,7 +181,7 @@
 				rowNum:10,
 				//rowList:[10,20,30],
 				pager: '#sub_grid_pager',
-				sortname: 'name',
+				sortname: 'id',
 				viewrecords: true,
 				sortorder: "asc",
 				multiselect: false,
@@ -195,7 +195,7 @@
     </head>
 
     <body>
-        <table width="1003" border="1" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+        <table width="1003" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
 
             <tr>
                 <td colspan="2" align="center" valign="bottom"></td>
@@ -203,8 +203,8 @@
             <tr>
                 <td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/adminheader');//include("header.php"); ?></td>
             </tr>
-            <tr height="600px">
-                <td align="center" valign="top" width="900">
+            <tr>
+                <td  align="center" valign="top" bgcolor="#E2D5BC">
 					
 								<div id="stylized" class="myform">
 								<table align="center" cellpadding="0" cellspacing="0" border="0">

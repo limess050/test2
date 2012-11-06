@@ -3,6 +3,7 @@ class Payments_lib {
     private $id;
     private $receipt_id;
     private $deposit_refund_amount;
+	private $damage_amount;
     private $deposit_refund_by;
     private $deposit_refund_date;
     private $status;
@@ -31,6 +32,14 @@ class Payments_lib {
 
     public function setDeposit_refund_amount($deposit_refund_amount) {
         $this->deposit_refund_amount = $deposit_refund_amount;
+    }
+	
+	public function getDamage_amount() {
+        return $this->damage_amount;
+    }
+
+    public function setDamage_amount($damage_amount) {
+        $this->damage_amount = $damage_amount;
     }
 
     public function getDeposit_refund_by() {

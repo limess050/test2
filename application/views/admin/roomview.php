@@ -162,7 +162,7 @@
                 <td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/adminheader');//include("header.php"); ?></td>
             </tr>
             <tr>
-                <td align="center" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+                <td align="center" valign="top" bgcolor="#E2D5BC"><table width="98%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
                                     <form id="roomview" name="roomview" method="post" action="">

@@ -27,6 +27,7 @@ class Booking extends MY_Controller {
         $data['master_data'] = $this->booking_model->getAvaliableBlocksRooms($data);
         /*echo '<pre>';
         print_r($data);die;*/
+		$data['cur_date'] = date('d-m-Y', time());
         $data['adv_date'] = date('d-m-Y', time()+(8*86400));
         $data['adv_todate'] = date('d-m-Y', time()+(10*86400));
         $data['session_id'] = MD5($this->session->userdata('session_id'));
@@ -220,7 +221,8 @@ class Booking extends MY_Controller {
 
             $receipt_details['receipt_id'] = $_POST['rcpt_id'];
             $receipt_details['deposit_refund_amount'] = $_POST['deposite_amount'];
-            $receipt_details['deposit_refund_by'] = 1;
+			$receipt_details['damage_amount'] = $_POST['damage_amount'];
+            $receipt_details['deposit_refund_by'] = $this->user_details->id;
             $receipt_details['deposit_refund_date'] = date("Y-m-d H:i:s");
             $receipt_details['modified_by'] = $this->user_details->id;
             $receipt_details['modified_date'] = date("Y-m-d H:i:s");

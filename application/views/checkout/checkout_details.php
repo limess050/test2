@@ -80,12 +80,13 @@
 					<td align="right" valign="center" colspan="2">Deposit Refund (Rs) </td>
 					<td width="32%" align="left" valign="top" colspan="2">
 					<input type="text" name="deposite_amount" id="deposite_amount" class="required valid" value="<?php echo $booking_det[0]->deposit_amt;?>">
+                    <input type="hidden" name="hid_deposite_amount" id="hid_deposite_amount" class="" value="<?php echo $booking_det[0]->deposit_amt;?>">
 					</td>
 				</tr>
 				<tr>
 					<td align="right" valign="center" colspan="2">Damage Charges (Rs) </td>
 					<td width="32%" align="left" valign="top" colspan="2">
-					<input type="text" name="damage_amount" id="damage_amount" class="required valid" value="<?php echo $booking_det[0]->deposit_amt;?>">
+					<input type="text" name="damage_amount" id="damage_amount" class="" value="">
 					</td>
 				</tr>
 				
@@ -167,6 +168,31 @@ $(document).ready(function() {
 	$('.jcheckout').live('click',function(){
 		$("#checkout_details").submit();
 	})
+	var timeStart = false;
 	
+	$('#damage_amount').keyup(function(){
+		$this = $(this);
+		
+			if(parseInt($this.val()) > parseInt($('#hid_deposite_amount').val()))
+			{
+				$('#deposite_amount').val(parseInt($('#hid_deposite_amount').val()))
+				alert('Damage Amount Exceeded Deposit Amount');
+				$this.val('');
+			}
+			else
+			{
+				if($this.val() == '')
+				{
+					$('#deposite_amount').val(parseInt($('#hid_deposite_amount').val()));
+				}
+				else
+				{
+					$('#deposite_amount').val(parseInt($('#hid_deposite_amount').val())-parseInt($this.val()));
+				}
+				
+			}
+		
+	});
+
 });
 </script>

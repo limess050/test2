@@ -94,12 +94,13 @@
 								<tr>
 									<td width="33%" align="left" valign="top"><strong>Room Name</strong></td>
 									<td width="17%" align="left" valign="top"><strong>Refund Amount (Rs)</strong></td>
+									<td width="17%" align="left" valign="top"><strong>Collected Damage Amount (Rs)</strong></td>
 								</tr>
 						<?php	
 							foreach($refund_report_arr as $blocks=>$rep_values)
 							{?>
 								<tr>
-									<td align="left" colspan="2"><?php echo $blocks;?></td>
+									<td align="left" colspan="3"><?php echo $blocks;?></td>
 								</tr>
 								<?php
 								foreach($rep_values as $key=>$values)
@@ -108,6 +109,7 @@
 								<tr>
 									<td width="33%" align="left" valign="top"><?php echo $values['room_name'];?></td>
 									<td width="17%" align="right" valign="top"><?php echo $values['deposit_refund_amount'];?></td>
+									<td width="17%" align="right" valign="top"><?php echo $values['damage_amount'];?></td>
 								</tr>
 							<?php	
 								}
@@ -115,7 +117,8 @@
 							?>
 								<tr>
 									<td align="right" valign="top"><strong>Total</strong></td>
-									<td width="15%" align="right" valign="top"><?php echo number_format($con_ref_total_amount,2);//echo $con_ref_total_amount;?></td>
+									<td width="15%" align="right" valign="top"><?php echo number_format($con_ref_total_amount,2);?></td>
+									<td width="15%" align="right" valign="top"><?php echo number_format($con_damage_total_amount,2);?></td>
 								</tr>
 						<?php	
 						}
@@ -141,17 +144,21 @@
 							<td align="left" valign="top" ><strong>Total Amount(Rs)</strong></td>
 						</tr>
 						<tr>
-							<td align="left" valign="top" >Booking</td>
+							<td align="left" valign="top" >Booking Amount(Rs)</td>
 							<td align="right" valign="top" ><?php echo number_format($con_total_amount,2);//echo $con_total_amount;?></td>
 						</tr>
 						<tr>
-							<td align="left" valign="top" >Refund</td>
+							<td align="left" valign="top" >Collected Damage Amount(Rs)</td>
+							<td align="right" valign="top" ><?php echo number_format($con_damage_total_amount,2);//echo $con_total_amount;?></td>
+						</tr>
+						<tr>
+							<td align="left" valign="top" >Refund Amount(Rs)</td>
 							<td align="right" valign="top" ><?php echo number_format($con_ref_total_amount,2); //echo $con_ref_total_amount;?></td>
 						</tr>
 						<tr>
-							<td align="left" valign="top" ><strong>Total</strong></td>
+							<td align="left" valign="top" ><strong>Total Amount(Rs)</strong></td>
 							<td align="right" valign="top" >
-							<?php $diff_amt = $con_total_amount-$con_ref_total_amount; echo number_format($diff_amt,2);?>							</td>
+							<?php $diff_amt = ($con_total_amount+$con_damage_total_amount)-$con_ref_total_amount; echo number_format($diff_amt,2);?>							</td>
 						</tr>
 				  </table>
 				</td>

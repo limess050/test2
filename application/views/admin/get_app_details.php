@@ -153,13 +153,13 @@ document.oncontextmenu=new Function("alert(message);return false")
 					<td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view('common/adminheader');//include("header.php"); ?></td>
 				</tr>
     <tr>
-		<td align="center" valign="top">
+		<td align="center" valign="top" bgcolor="#E2D5BC">
 			<div id="stylized" class="myform">
 			<table width="98%" height="500" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td align="left" valign="top" class="pannel_border">
 					
-					<table width="100%" height="500" border="0" cellspacing="0" cellpadding="0">
+					<table width="100%"  border="0" cellspacing="0" cellpadding="0">
 					  <form id="check_appid" name="check_appid" method="post" action="">
 					  <tr>
 						<td align="left" valign="top" class="pannel_border">

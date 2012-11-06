@@ -88,11 +88,15 @@ class Booking_model extends MY_Model {
         else {
             $sql .= ' WHERE r.vip_quota != 1';
         }
+		$sql .= ' and b.status = 1 and r.status = 1';
         $data = $this->getDBResult($sql, 'object');
         $room_details = array();
-        foreach($data as $rooms_data) {
-            $room_details[$rooms_data->blocks_id][$rooms_data->id] = array('id'=>$rooms_data->id,'roomname'=>$rooms_data->roomname,'blocks_id'=>$rooms_data->blocks_id,'blockname'=>$rooms_data->blockname);
-        }
+		if(!empty($data))
+		{
+			foreach($data as $rooms_data) {
+				$room_details[$rooms_data->blocks_id][$rooms_data->id] = array('id'=>$rooms_data->id,'roomname'=>$rooms_data->roomname,'blocks_id'=>$rooms_data->blocks_id,'blockname'=>$rooms_data->blockname);
+			}
+		}
         if(($from_date != NULL) && ($to_date != NULL)) {
             $booked_rooms_sql = 'SELECT * FROM booking_details bd
                                     WHERE "'.$from_date.'" >= bd.from_date AND "'.$from_date.'" < bd.to_date
@@ -119,9 +123,9 @@ class Booking_model extends MY_Model {
         //print_r($room_details);
         if($post['blocks_id'] == 0) {
             $block_options = '<option value="0">Select Block</option>';
+			$room_options = '<option value="">Select Room</option>';
             foreach($room_details as $blockid=>$rooms) {
                 if(!empty($rooms)) {
-                    $room_options = '<option value="">Select Room</option>';
                     foreach($rooms as $roomid=>$roomdetails) {
                         $room_options .= '<option value="'.$roomid.'">'.$roomdetails['roomname'].'</option>';
                         $blockname = $roomdetails['blockname'];
@@ -225,10 +229,11 @@ class Booking_model extends MY_Model {
         $data->act_rent = $data->rent_amt;
         if($post['donorRef'] == "1") {
             $data->act_rent = 0;
-            $data->deposit_amt = 0;
+            //$data->deposit_amt = 0;
             $data->rent_amt = 0;
         }
         else if($post['donorRef'] == "2") {
+				$day1 = new stdclass();
                 $nodiscount_days = array('1','7');
                 $day1->act_rent = $data->act_rent;
                 $day1->deposit_amt = $data->deposit_amt;
@@ -236,7 +241,7 @@ class Booking_model extends MY_Model {
                 $day2 = new stdClass();
                 if(!in_array(date('N',strtotime($post['from_date'])),$nodiscount_days)) {
                     $day1->act_rent = $data->act_rent/2;
-                    $day1->deposit_amt = $data->deposit_amt/2;
+                    //$day1->deposit_amt = $data->deposit_amt/2;
                 //$day1->rent_amt = $data->rent_amt/2;
                 }
                 if($days == 2) {
@@ -245,7 +250,7 @@ class Booking_model extends MY_Model {
                     //$day2->rent_amt = $data->rent_amt;
                     if(!in_array(date('N',strtotime($post['from_date'])+86400),$nodiscount_days)) {
                         $day2->act_rent = $data->act_rent/2;
-                        $day2->deposit_amt = $data->deposit_amt/2;
+                        //$day2->deposit_amt = $data->deposit_amt/2;
                     //$day2->rent_amt = $data->rent_amt/2;
                     }
                 }
@@ -319,7 +324,7 @@ class Booking_model extends MY_Model {
 
         $sql1 = "select
 				b.name as blockname,r.name as roomname, 
-				bd.blocks_id,bd.rooms_id,p.deposit_refund_amount
+				bd.blocks_id,bd.rooms_id,p.deposit_refund_amount,p.damage_amount
 				from payments p 
 				left join receipts rc on p.receipt_id = rc.id
 				left join booking_details bd on bd.application_details_id = rc.application_details_id
@@ -332,11 +337,14 @@ class Booking_model extends MY_Model {
 
         $refund_report_arr = array();
         $con_ref_total_amount = 0;
+		$con_damage_total_amount = 0;
         if(!empty($refundreport)) {
             foreach($refundreport as $val) {
                 $refund_report_arr[$val->blockname][] = array('room_name'=>$val->roomname,
-                    'deposit_refund_amount'=>$val->deposit_refund_amount);
+                    										  'deposit_refund_amount'=>$val->deposit_refund_amount,
+															  'damage_amount'=>$val->damage_amount);
                 $con_ref_total_amount += $val->deposit_refund_amount;
+				$con_damage_total_amount += $val->damage_amount;
             }
         }
 
@@ -344,6 +352,7 @@ class Booking_model extends MY_Model {
         $data['booked_report_arr'] =$booked_report_arr;
         $data['con_ref_total_amount'] =$con_ref_total_amount;
         $data['refund_report_arr'] =$refund_report_arr;
+		$data['con_damage_total_amount'] =$con_damage_total_amount;
         return $data;
     }
 

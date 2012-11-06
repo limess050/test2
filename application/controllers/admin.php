@@ -168,7 +168,7 @@ class Admin extends MY_Controller {
 	 $this->load->view('admin/getDayReport',$data);
     }
 	 public function getDetailDayReport() {
-		$date = $_POST['rep_date'];
+		$date = date('Y-m-d',strtotime($_POST['rep_date']));
 		$ip_array = array('date'=>$date, 
 						  'user_id'=>$_POST['operator_id']);
         

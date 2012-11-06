@@ -1,5 +1,6 @@
 var dropMenuTimer,dropMenuTimer2;
 var tempUP;
+var to_date_changed = false;
 $(function(){
         /*$('.menu_nav ul:first li').live('mouseover',function(){
             if($(this).find('.sub_menu').length>0){
@@ -156,6 +157,10 @@ $(function(){
             $('.apply_dob_datepicker').datepicker({dateFormat:'yy-mm-dd', changeMonth: true, changeYear: true, yearRange: '1910:2012'});
         }
 
+        if($('.jcurdate').length>0){
+            $('.jcurdate').datepicker({dateFormat:'dd-mm-yy'});
+        }
+        
         if($('.jadv_fromdate').length>0){
             $('.jadv_fromdate').datepicker({dateFormat:'dd-mm-yy'});
         }
@@ -330,6 +335,7 @@ function ajax_psw_form(){
 }
 
 function customRange_Year(input) {
+    to_date_changed = true;
     if($.trim($("#from").val())!=''){
             from_date=$("#from").datepicker("getDate");
             from_date.setDate(from_date.getDate()+2);
@@ -384,6 +390,16 @@ function customRange2_Year(input) {
             }
             else
             {
+                /*cur_to_date=$("#to").datepicker("getDate");
+                cur_to_date.setDate(cur_to_date.getDate() - 1);*/
+                if(to_date_changed == false)
+                {
+                    temp_to_date = $('.jcurdate').datepicker("getDate");
+                }
+                if(temp_to_date > to_date)
+				{
+					to_date = temp_to_date;
+				}
                 return {
                         maxDate: (input.id == "from" ? max_date : null),
                         minDate: (input.id == "from" ? to_date : null)

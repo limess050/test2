@@ -82,12 +82,10 @@
                 margin-left: 10px;
             }
 
-            #stylized .iptxt .error {
+            #stylized .error {
                 font-size: 12px;
-                padding: 4px 2px;
+                padding: 3px 2px;
                 border: solid 1px red;
-                width: 200px;
-                margin: 2px 0 10px 10px;
             }
 
             .ui-state-disabled .ui-state-default {
@@ -165,7 +163,7 @@ if($this->user_details->emp_role==4) {$cont_link = site_url().'booking/changePas
                 <td height="20" colspan="2" align="left" valign="bottom" ><?php $this->load->view($header);//include("header.php"); ?></td>
             </tr>
             <tr>
-                <td align="center" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+                <td align="center" valign="top" bgcolor="#E2D5BC"><table width="98%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td align="left" valign="top" class="pannel_border"><div id="stylized" class="myform">
                                    <form name="chpwd_form" id="chpwd_form">
@@ -181,17 +179,20 @@ if($this->user_details->emp_role==4) {$cont_link = site_url().'booking/changePas
 											</div>
 											<div class="cb"></div>
 										</div>
-							
+		<br />					
 										<div class="d_fds">
 											<div class="left_fld">
 												<label for="new_pwd">Password:</label>
 											</div>
+
 											<div class="right_fld">
 												<input style="display:block" type='password' name='new_pwd' id='new_pwd' value='' class="required ip"/>
 											</div>
+
 											<div class="cb"></div>
 										</div>
-							
+							<br />
+
 										<div class="d_fds">
 											<div class="left_fld">
 												<label for="cnf_pwd"> Confirm Password:</label>
@@ -202,7 +203,8 @@ if($this->user_details->emp_role==4) {$cont_link = site_url().'booking/changePas
 											<div class="cb"></div>
 										</div>
 										
-                                        <p></p>
+                                        <br />
+
                                         <input type='button' name='save' value='Save' class="jsave_chpwd" />
 										<span class="jerror_msg" style="color:#FF0000; font-family:Arial, Helvetica, sans-serif"></span>
                                         <div class="spacer"></div>
@@ -219,39 +221,15 @@ if($this->user_details->emp_role==4) {$cont_link = site_url().'booking/changePas
 var site_url = '<?php echo site_url();?>';
 $(document).ready(function() {
 	$("#chpwd_form").validate({
-        rules: {
-            old_pwd: {
-                required: true,
-                minlength: 5
-            },
-            new_pwd: {
-                required: true,
-                minlength: 5
-            },
-            cnf_pwd: {
-                required: true,
-                minlength: 5,
-                equalTo: "#new_pwd"
-            }
-        },
-        messages: {
-            old_pwd: {
-                required: "Please provide old password",
-                minlength: "Your password must be at least 5 characters long"
-            },
-            new_pwd: {
-                required: "Please provide a password",
-                minlength: "Your password must be at least 5 characters long"
-            },
-            cnf_pwd: {
-                required: "Please provide a password",
-                minlength: "Your password must be at least 5 characters long",
-                equalTo: "Please enter the same password as above"
-            }
-        },
-        errorPlacement: function(error, element) {
-            error.insertAfter(element);
-        },
+		highlight: function(element, errorClass, validClass) {
+			 $(element).addClass(errorClass).removeClass(validClass);
+			 $(element.form).closest('.d_fds').find("label[for=" + element.id + "]").addClass(errorClass);
+		  },
+		  unhighlight: function(element, errorClass, validClass) {
+			 $(element).removeClass(errorClass).addClass(validClass);
+			 $(element.form).closest('.d_fds').find("label[for=" + element.id + "]").removeClass(errorClass);
+		  },
+		  errorPlacement: function(error, element) { },
         submitHandler: function()
         {
            var chpwd_data = $('#chpwd_form').serialize();

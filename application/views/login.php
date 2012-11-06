@@ -38,7 +38,7 @@
 
 <!--<script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/public/js/general/jquery-ui-1.7.3.custom.min.js" ></script>-->
         <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/jquery-ui-custom.min.js" ></script>
-        <script type="text/javascript" language="javascript" src="<?php echo base_url();  ?>public/js/general/common.js" ></script>
+        
         <script type="text/javascript" language="javascript">
             function DisableBackButton() {
                 window.history.forward()
@@ -97,10 +97,10 @@
                 <td align="center" valign="top">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                            <td align="left" valign="top" class="pannel_border">
+                            <td align="left" valign="top" class="pannel_border" bgcolor="#E2D5BC">
                                 <div id="stylized" class="myform" style="height:400px">
                                     <form name="login" method="post" action="<?php echo base_url();?>login">
-                                        <div style="margin:150px 0 0 200px">
+                                        <div style="margin:150px 0 0 200px; background-color:#E2D5BC">
                                             <?php
                                             if(isset($msg))
                                             {?>

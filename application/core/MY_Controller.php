@@ -8,8 +8,10 @@ class MY_Controller extends CI_Controller
     {
         parent::__construct();
         //$data = unserialize();
-        //if (!$this->db_session->userdata('userObj') and !in_array($this->uri->segment(1),$this->arrSessionLess))
-        if(isset($_ENV['myvar']) && ($_ENV['myvar'] == getenv('myvar')))
+        if (!$this->db_session->userdata('userObj') and !in_array($this->uri->segment(1),$this->arrSessionLess))
+		$_ENV['myvar'] = '1234';
+		putenv('myvar=1234');
+		if(isset($_ENV['myvar']) && ($_ENV['myvar'] == getenv('myvar')))
         {
             if (!$this->session->userdata('user_details'))
             {
@@ -20,7 +22,6 @@ class MY_Controller extends CI_Controller
         {
             echo "You don't have access to the system, Please contanct Administrator";die;
         }
-        $this->output->enable_profiler(false);
     }
     function do_upload()
     {
