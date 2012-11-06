@@ -27,7 +27,7 @@ class Booking extends MY_Controller {
         $data['master_data'] = $this->booking_model->getAvaliableBlocksRooms($data);
         /*echo '<pre>';
         print_r($data);die;*/
-		$data['cur_date'] = date('d-m-Y', time());
+        $data['cur_date'] = date('d-m-Y', time());
         $data['adv_date'] = date('d-m-Y', time()+(8*86400));
         $data['adv_todate'] = date('d-m-Y', time()+(10*86400));
         $data['session_id'] = MD5($this->session->userdata('session_id'));
