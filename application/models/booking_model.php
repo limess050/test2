@@ -76,9 +76,16 @@ class Booking_model extends MY_Model {
 
     function getAvaliableBlocksRooms($post) {
     //print_r($post);
-        $from_date = isset($post['from_date'])?date('Y-m-d',strtotime($post['from_date'])-86400):NULL;
-        $to_date = isset($post['to_date'])?date('Y-m-d',strtotime($post['to_date'])-86400):NULL;
-
+        if($post['booking_type'] == 1)
+        {
+            $from_date = isset($post['from_date'])?date('Y-m-d',strtotime($post['from_date'])):NULL;
+            $to_date = isset($post['to_date'])?date('Y-m-d',strtotime($post['to_date'])):NULL;
+        }
+        else
+        {
+            $from_date = isset($post['from_date'])?date('Y-m-d',strtotime($post['from_date'])-86400):NULL;
+            $to_date = isset($post['to_date'])?date('Y-m-d',strtotime($post['to_date'])):NULL;
+        }
         $sql = 'SELECT r.id AS id, r.name AS roomname, b.id AS blocks_id, b.name AS blockname
                 FROM rooms r
                 JOIN blocks b ON r.blocks_id = b.id';
@@ -88,15 +95,14 @@ class Booking_model extends MY_Model {
         else {
             $sql .= ' WHERE r.vip_quota != 1';
         }
-		$sql .= ' and b.status = 1 and r.status = 1';
+        $sql .= ' and b.status = 1 and r.status = 1';
         $data = $this->getDBResult($sql, 'object');
         $room_details = array();
-		if(!empty($data))
-		{
-			foreach($data as $rooms_data) {
-				$room_details[$rooms_data->blocks_id][$rooms_data->id] = array('id'=>$rooms_data->id,'roomname'=>$rooms_data->roomname,'blocks_id'=>$rooms_data->blocks_id,'blockname'=>$rooms_data->blockname);
-			}
-		}
+        if(!empty($data)) {
+            foreach($data as $rooms_data) {
+                $room_details[$rooms_data->blocks_id][$rooms_data->id] = array('id'=>$rooms_data->id,'roomname'=>$rooms_data->roomname,'blocks_id'=>$rooms_data->blocks_id,'blockname'=>$rooms_data->blockname);
+            }
+        }
         if(($from_date != NULL) && ($to_date != NULL)) {
             $booked_rooms_sql = 'SELECT * FROM booking_details bd
                                     WHERE "'.$from_date.'" >= bd.from_date AND "'.$from_date.'" < bd.to_date
@@ -123,7 +129,7 @@ class Booking_model extends MY_Model {
         //print_r($room_details);
         if($post['blocks_id'] == 0) {
             $block_options = '<option value="0">Select Block</option>';
-			$room_options = '<option value="">Select Room</option>';
+            $room_options = '<option value="">Select Room</option>';
             foreach($room_details as $blockid=>$rooms) {
                 if(!empty($rooms)) {
                     foreach($rooms as $roomid=>$roomdetails) {
@@ -233,7 +239,7 @@ class Booking_model extends MY_Model {
             $data->rent_amt = 0;
         }
         else if($post['donorRef'] == "2") {
-				$day1 = new stdclass();
+                $day1 = new stdclass();
                 $nodiscount_days = array('1','7');
                 $day1->act_rent = $data->act_rent;
                 $day1->deposit_amt = $data->deposit_amt;
@@ -241,7 +247,7 @@ class Booking_model extends MY_Model {
                 $day2 = new stdClass();
                 if(!in_array(date('N',strtotime($post['from_date'])),$nodiscount_days)) {
                     $day1->act_rent = $data->act_rent/2;
-                    //$day1->deposit_amt = $data->deposit_amt/2;
+                //$day1->deposit_amt = $data->deposit_amt/2;
                 //$day1->rent_amt = $data->rent_amt/2;
                 }
                 if($days == 2) {
@@ -250,7 +256,7 @@ class Booking_model extends MY_Model {
                     //$day2->rent_amt = $data->rent_amt;
                     if(!in_array(date('N',strtotime($post['from_date'])+86400),$nodiscount_days)) {
                         $day2->act_rent = $data->act_rent/2;
-                        //$day2->deposit_amt = $data->deposit_amt/2;
+                    //$day2->deposit_amt = $data->deposit_amt/2;
                     //$day2->rent_amt = $data->rent_amt/2;
                     }
                 }
@@ -293,7 +299,7 @@ class Booking_model extends MY_Model {
     }
     public function getDayReport($ip_array) {
         $user_id=$ip_array['user_id'];
-		$date=$ip_array['date'];
+        $date=$ip_array['date'];
         $data = array();
         $sql = "select
 				b.name as blockname,r.name as roomname, 
@@ -317,7 +323,7 @@ class Booking_model extends MY_Model {
                     'deposit_amt'=>$val->deposit_amt,
                     'rent_amount'=>$val->rent_amount,
                     'total_amount_paid'=>$val->total_amount_paid,
-					'amt_deposit_bank'=>$val->advance_amount+$val->rent_amount);
+                    'amt_deposit_bank'=>$val->advance_amount+$val->rent_amount);
                 $con_total_amount += $val->total_amount_paid;
             }
         }
@@ -337,14 +343,14 @@ class Booking_model extends MY_Model {
 
         $refund_report_arr = array();
         $con_ref_total_amount = 0;
-		$con_damage_total_amount = 0;
+        $con_damage_total_amount = 0;
         if(!empty($refundreport)) {
             foreach($refundreport as $val) {
                 $refund_report_arr[$val->blockname][] = array('room_name'=>$val->roomname,
-                    										  'deposit_refund_amount'=>$val->deposit_refund_amount,
-															  'damage_amount'=>$val->damage_amount);
+                    'deposit_refund_amount'=>$val->deposit_refund_amount,
+                    'damage_amount'=>$val->damage_amount);
                 $con_ref_total_amount += $val->deposit_refund_amount;
-				$con_damage_total_amount += $val->damage_amount;
+                $con_damage_total_amount += $val->damage_amount;
             }
         }
 
@@ -352,12 +358,12 @@ class Booking_model extends MY_Model {
         $data['booked_report_arr'] =$booked_report_arr;
         $data['con_ref_total_amount'] =$con_ref_total_amount;
         $data['refund_report_arr'] =$refund_report_arr;
-		$data['con_damage_total_amount'] =$con_damage_total_amount;
+        $data['con_damage_total_amount'] =$con_damage_total_amount;
         return $data;
     }
 
     public function getBookingDetails($where_cond = 1) {
-        $sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name, 
+        $sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name,
 				concat(ad.applicant_address,' ','Ph No:',ad.phone_no)as applicant_address,
 				concat(u.emp_fname,' ',u.emp_lname) as user_name,att.url as image_path,
 				bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
@@ -406,7 +412,7 @@ class Booking_model extends MY_Model {
         $data_flds = array('blocks_id','rooms_id','from_date','to_date','<span style="color:{%color%}">{%hours%}</span>');
         $extra_logic = true;
         return $this->display_grid($_POST,$sql,$data_flds,$extra_logic);
-        //$rs = $this->db->query($sql);
+    //$rs = $this->db->query($sql);
         /*echo '<pre>';
         print_r($rs->result());die;*/
     }
@@ -416,20 +422,17 @@ class Booking_model extends MY_Model {
         $sql = 'select count(id) as cnt from booking_details where to_date <= "'.$end_datetime.'" and  booked_status = 1';
         $rs = $this->db->query($sql);
         $data = $rs->first_row();
-        if(!empty($data))
-        {
+        if(!empty($data)) {
             return $data->cnt;
         }
-        else
-        {
+        else {
             return '0';
         }
         /*echo '<pre>';
         print_r($rs->result());die;*/
     }
 
-    public function after4Hours()
-    {
+    public function after4Hours() {
         $b4hours = date('Y-m-d H:i:s',time()-4*3600); // get 23hrs previous time 82800
         $sql = 'select id,application_details_id,to_date from booking_details where to_date <= "'.$b4hours.'" and  booked_status = 1';
         $rs = $this->db->query($sql);
@@ -437,8 +440,7 @@ class Booking_model extends MY_Model {
         if ($result) {
             foreach ($result as $row) {
                 $excess_hrs = round((time()-strtotime($row->to_date))/(60*60));
-                if($excess_hrs >= 4)
-                {
+                if($excess_hrs >= 4) {
                     $sql = 'UPDATE receipts SET rent_amount = (rent_amount+deposit_amt), deposit_amt = 0 WHERE application_details_id = '.$row->application_details_id;
                     $sql2 = 'Update booking_details SET booked_status = "0" where id='.$row->id;
                     $this->db->query($sql);

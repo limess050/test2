@@ -326,6 +326,7 @@
                     qry_str += 'to_date='+to_date+'&';
                 }
                 qry_str += 'blocks_id='+blocks_id;
+                qry_str += '&booking_type='+$('.jbooktype').val();
                 if(((from_date != '') && (to_date != '')) || (blocks_id != ''))
                 {
                     $.ajax({

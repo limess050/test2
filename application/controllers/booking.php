@@ -24,6 +24,7 @@ class Booking extends MY_Controller {
         $data['today'] = $data['from_date'] = date('d-m-Y');
         $data['tomorrow'] = $data['to_date'] = date('d-m-Y', time()+86400);
         $data['php'] = true;
+        $data['booking_type'] = 1; // by default current booking
         $data['master_data'] = $this->booking_model->getAvaliableBlocksRooms($data);
         /*echo '<pre>';
         print_r($data);die;*/
