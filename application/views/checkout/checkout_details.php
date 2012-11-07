@@ -36,9 +36,9 @@
 				</tr>
 				<tr>
 					<td width="14%" align="left" valign="top">Block</td>
-					<td width="38%" align="left" valign="top"><?php echo $booking_det[0]->block_name;?></td>
-					<td width="16%" align="left" valign="top">Room</td>
-					<td width="32%" align="left" valign="top"><?php echo $booking_det[0]->room_name;?></td>
+					<td width="38%" align="left" valign="top"><strong><?php echo $booking_det[0]->block_name;?></strong></td>
+					<td width="16%" align="left" valign="top">Room No.</td>
+					<td width="32%" align="left" valign="top"><strong><?php echo $booking_det[0]->room_name;?></strong></td>
 				</tr>
 				<tr>
 					<td width="14%" align="left" valign="top">Booked From</td>

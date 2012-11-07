@@ -50,7 +50,7 @@
 								{
 								?>
 								<tr>
-									<td width="21%" align="left" valign="top"><?php echo $values['room_name'];?></td>
+									<td width="21%" align="left" valign="top"><strong><?php echo $values['room_name'];?><,strong></td>
 									<td width="14%" align="right" valign="top"><?php echo $values['advance_amount'];?></td>
 									<td width="16%" align="right" valign="top"><?php echo $values['deposit_amt'];?></td>
 									<td width="16%" align="right" valign="top"><?php echo $values['rent_amount'];?></td>

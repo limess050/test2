@@ -201,7 +201,7 @@ class Booking extends MY_Controller {
         $this->load->view('checkout/index');
     }
     public function getBookingDetails() {
-        $where_cond = ' ad.application_id='.$_POST['application_id'];
+        $where_cond = ' ad.application_id="'.$_POST['application_id'].'"';
         $data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
         //echo '<pre>';		print_r($data);die;
         $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
