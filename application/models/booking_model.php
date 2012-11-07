@@ -42,7 +42,8 @@ class Booking_model extends MY_Model {
 
         if($post['application_details_id']>0) {
             $customer_id = generateCustID($post['application_details_id']);
-            $this->db->query('update application_details set customer_id = "'.$customer_id.'" where id='.$post['application_details_id']);
+			$application_id = $_POST['application_id'].'_'.$post['application_details_id'];
+            $this->db->query('update application_details set customer_id = "'.$customer_id.'",application_id = "'.$application_id.'" where id='.$post['application_details_id']);
             $this->save_other_details($post);
             if(isset($post['original_file_name']) && !empty($post['original_file_name']) ) {
                 $db_file_name = $post['db_file_name'];
@@ -360,8 +361,8 @@ class Booking_model extends MY_Model {
         $sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name, 
 				concat(ad.applicant_address,' ','Ph No:',ad.phone_no)as applicant_address,
 				concat(u.emp_fname,' ',u.emp_lname) as user_name,att.url as image_path,
-				bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y') as from_date, date_format(bd.to_date,'%d/%m/%Y') as to_date, 
-				date_format(bd.checkout_date,'%d/%m/%Y') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, 
+				bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y %h:%i %p') as from_date, date_format(bd.to_date,'%d/%m/%Y %h:%i %p') as to_date, 
+				date_format(bd.checkout_date,'%d/%m/%Y %h:%i %p') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, 
 				bd.no_of_days, bd.booking_type,bd.booked_status,bd.booking_type,
 				b.name as block_name,r.name as room_name,
 				rp.id as rcpt_id,rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
