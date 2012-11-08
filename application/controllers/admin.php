@@ -190,7 +190,7 @@ class Admin extends MY_Controller {
         $this->load->view('admin/get_app_details');
     }
     public function getApplicationDetails() {
-        $where_cond = ' ad.application_id="'.$_POST['application_id'].'"';
+        $where_cond = ' ad.application_id="'.trim($_POST['application_id']).'"';
         $data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
         //echo '<pre>';		print_r($data);die;
         //$data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
