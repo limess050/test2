@@ -267,6 +267,45 @@ class Booking extends MY_Controller {
 
     //$this->load->view('email_view');
     }
+
+    public function replaceRoom()
+    {
+        if(isset($_POST['rooms_id']))
+        {
+            /*echo '<pre>';
+            print_r($_POST);*/
+            if($_POST['old_rooms_id'] != $_POST['rooms_id'])
+            {
+                if($this->booking_model->replaceRoom($_POST))
+                {
+                    //echo 'success';
+                }
+                else
+                {
+                    //echo 'fail';
+                }
+            }
+        }
+        $this->load->view('booking/replace_room');
+    }
+
+    public function getBookingReplaceDetails() {
+        $where_cond = ' ad.application_id="'.$_POST['application_id'].'"';
+        $data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
+        //echo '<pre>';print_r($data);die;
+        $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;
+        $data['app_id'] = $_POST['application_id'];
+        if(!empty($data['booking_det']))
+        {
+            $post = array('from_date'=>date('Y-m-d H:i:s',strtotime($data['booking_det'][0]->from_date)),
+                            'to_date'=>date('Y-m-d H:i:s',strtotime($data['booking_det'][0]->to_date)),
+                            'blocks_id'=>$data['booking_det'][0]->block_id,
+                            'rooms_id'=>$data['booking_det'][0]->room_id,
+                            'booking_type'=>1);
+            $data['rooms_opts'] = $this->booking_model->getAvaliableBlocksRooms($post);
+        }
+        echo $this->load->view('booking/replace_details',$data,true);
+    }
 }
 
 /* End of file welcome.php */

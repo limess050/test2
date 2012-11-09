@@ -76,7 +76,7 @@ class Booking_model extends MY_Model {
     }
 
     function getAvaliableBlocksRooms($post) {
-    //print_r($post);
+    //print_r($post);die;
         if($post['booking_type'] == 1)
         {
             $from_date = isset($post['from_date'])?date('Y-m-d',strtotime($post['from_date'])):NULL;
@@ -146,9 +146,19 @@ class Booking_model extends MY_Model {
         }
         else {
         //print_r($room_details[$post['blocks_id']]);
+            $rooms_id = '';
+            if(isset($post['rooms_id']))
+            {
+                $rooms_id = $post['rooms_id'];
+            }
             $room_options = '<option value="">Select Room</option>';
             foreach($room_details[$post['blocks_id']] as $blockid=>$rooms) {
-                $room_options .= '<option value="'.$rooms['id'].'">'.$rooms['roomname'].'</option>';
+                $selected = '';
+                if($rooms['id'] == $rooms_id)
+                {
+                    $selected = 'selected=selected';
+                }
+                $room_options .= '<option value="'.$rooms['id'].'" '.$selected.'>'.$rooms['roomname'].'</option>';
             }
             $ret_data['block_options'] = false;
             $ret_data['room_options'] = $room_options;
@@ -364,22 +374,22 @@ class Booking_model extends MY_Model {
     }
 
     public function getBookingDetails($where_cond = 1) {
-        $sql = "select ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name,
-				concat(ad.applicant_address,' ','Ph No:',ad.phone_no)as applicant_address,
-				concat(u.emp_fname,' ',u.emp_lname) as user_name,att.url as image_path,
-				bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y %h:%i %p') as from_date, date_format(bd.to_date,'%d/%m/%Y %h:%i %p') as to_date, 
-				date_format(bd.checkout_date,'%d/%m/%Y %h:%i %p') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date, 
-				bd.no_of_days, bd.booking_type,bd.booked_status,bd.booking_type,
-				b.name as block_name,r.name as room_name,
-				rp.id as rcpt_id,rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
-				from application_details ad
-				left join booking_details bd on ad.id = bd.application_details_id
-				left join blocks b on bd.blocks_id = b.id
-				left join rooms r on bd.rooms_id = r.id
-				left join receipts rp on rp.application_details_id = ad.id
-				left join users u on u.id = ad.created_by
-				left join attachments att on att.global_id = ad.id
-				where ".$where_cond;
+        $sql = "select b.id as block_id, r.id as room_id, ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name,
+                concat(ad.applicant_address,' ','Ph No:',ad.phone_no)as applicant_address,
+                concat(u.emp_fname,' ',u.emp_lname) as user_name,att.url as image_path,
+                bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y %h:%i %p') as from_date, date_format(bd.to_date,'%d/%m/%Y %h:%i %p') as to_date,
+                date_format(bd.checkout_date,'%d/%m/%Y %h:%i %p') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date,
+                bd.no_of_days, bd.booking_type,bd.booked_status,bd.booking_type,
+                b.name as block_name,r.name as room_name,
+                rp.id as rcpt_id,rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
+                from application_details ad
+                left join booking_details bd on ad.id = bd.application_details_id
+                left join blocks b on bd.blocks_id = b.id
+                left join rooms r on bd.rooms_id = r.id
+                left join receipts rp on rp.application_details_id = ad.id
+                left join users u on u.id = ad.created_by
+                left join attachments att on att.global_id = ad.id
+                where ".$where_cond;
         $booking_details = $this->getDBResult($sql, 'object');
 
         return $booking_details;
@@ -465,5 +475,18 @@ class Booking_model extends MY_Model {
 
     function display_grid($postvals,$sql,$array_fields,$extra_logic=false) {
         return $this->jqgrid($postvals,$sql,$array_fields,$extra_logic);
+    }
+
+    function replaceRoom($post)
+    {
+        $sql = 'UPDATE `booking_details` SET `rooms_id`='.$post['rooms_id'].' WHERE  `application_details_id`='.$post['app_det_id'].' LIMIT 1;';
+        if($this->db->query($sql))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

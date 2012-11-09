@@ -186,7 +186,7 @@ class Admin extends MY_Controller {
         $this->load->view('day_report',$data);
     }
 	
-	 public function get_app_details() {
+    public function get_app_details() {
         $this->load->view('admin/get_app_details');
     }
     public function getApplicationDetails() {
