@@ -419,8 +419,13 @@ class Booking_model extends MY_Model {
 
     public function getPendingRooms() {
         $end_datetime = date('Y-m-d H:i:s',time()+3600); // get 23hrs previous time 82800
-        $sql = 'select id,blocks_id, rooms_id, from_date, to_date from booking_details where to_date <= "'.$end_datetime.'" and  booked_status = 1';
-        $data_flds = array('blocks_id','rooms_id','from_date','to_date','<span style="color:{%color%}">{%hours%}</span>');
+        $sql = 'select bd.id,bd.blocks_id,b.name as block_name, bd.rooms_id,r.name as room_name,bd.from_date,bd.to_date, 
+				date_format(bd.from_date,"%d/%m/%Y %h:%i %p") as dis_from_date, date_format(bd.to_date,"%d/%m/%Y %h:%i %p") as dis_to_date from 
+				booking_details bd
+				LEFT JOIN blocks b on b.id = bd.blocks_id
+				LEFT JOIN rooms r ON r.id = bd.rooms_id 
+				where to_date <= "'.$end_datetime.'" and  booked_status = 1';
+        $data_flds = array('block_name','room_name','dis_from_date','dis_to_date','<span style="color:{%color%}">{%hours%}</span>');
         $extra_logic = true;
         return $this->display_grid($_POST,$sql,$data_flds,$extra_logic);
     //$rs = $this->db->query($sql);

@@ -71,12 +71,12 @@
                     //width: $('.form_prp').width()-10,
                     height: 500,
                     width: 900,
-                    colNames:['Block ID','Room Id','From Date','To Date','Excess Hours'],
+                    colNames:['Block','Room No','From Date','To Date','Excess Hours'],
                     colModel:[
-                        {name:'blocks_id',index:'blocks_id',width:'50px'},
+                        {name:'blocks_id',index:'blocks_id',width:'120px'},
                         {name:'rooms_id',index:'rooms_id',width:'50px'},
-                        {name:'from_date',index:'from_date',width:'200px'},
-                        {name:'to_date',index:'to_date',width:'200px'},
+                        {name:'from_date',index:'from_date',width:'100px'},
+                        {name:'to_date',index:'to_date',width:'100px'},
                         {name:'excess_hours',index:'excess_hours',width:'50px'}
                     ],
                     rowNum:10,

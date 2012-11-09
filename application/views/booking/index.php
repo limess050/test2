@@ -548,13 +548,17 @@
                                                 <span style="color:green; margin-left:5px">(Refundable)</span>
                                             </div>
                                         </div>
+										<div class="iptxt">
+                                            <label>No Of Persons: </label>
+                                            <input type="text" name="no_of_persons" id="no_of_persons" class="required" />
+                                        </div>
                                         <div class="iptxt">
                                             <label>Name: </label>
                                             <input type="text" name="applicant_name" id="applicant_name" class="required" />
                                         </div>
                                         <div class="iptxt">
                                             <label>Phone Number: </label>
-                                            <input type="text" name="phone_no" id="phone_no"></input>
+                                            <input type="text" name="phone_no" id="phone_no" maxlength="10"></input>
                                         </div>
                                         <div class="iptxt">
                                             <label>Address: </label>

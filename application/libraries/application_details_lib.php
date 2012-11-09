@@ -14,6 +14,7 @@ class Application_details_lib{
     private $image_path;
     private $vip_quota;
     private $vip_ref_by;
+	private $no_of_persons;
     private $created_by;
     private $created_date;
     private $modified_by;
@@ -98,6 +99,14 @@ class Application_details_lib{
 
     public function setVip_ref_by($vip_ref_by) {
         $this->vip_ref_by = $vip_ref_by;
+    }
+	
+	public function getNo_of_persons() {
+        return $this->no_of_persons;
+    }
+
+    public function setNo_of_persons($no_of_persons) {
+        $this->no_of_persons = $no_of_persons;
     }
 
     public function getCreated_by() {
