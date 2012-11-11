@@ -160,4 +160,48 @@ class Admin_model extends MY_Model {
         }
         return $tbl_fields;
     }
+	
+	function getBookingNVacancyRooms($date)
+	{
+		$booking_sql = "select count(rooms_id) as cnt,blocks_id as block from booking_details 
+						where '".$date."' between DATE_FORMAT(from_date,'%Y-%m-%d')
+						and DATE_FORMAT(to_date,'%Y-%m-%d') and booked_status=1
+						group by blocks_id";
+		$booking_data = $this->getDBResult($booking_sql, 'object');				
+
+		$vacancy_sql = "select count(r.id) as cnt,b.id  as block  from rooms r
+						LEFT JOIN blocks b on b.id = r.blocks_id
+						where r.`status`=1
+						group by r.blocks_id";
+		$vacancy_data = $this->getDBResult($vacancy_sql, 'object');	
+		
+		$booking_array = array();
+		if(!empty($booking_data))
+		{
+			foreach($booking_data as $bkey => $bvalue)
+			{
+				$booking_array[$bvalue->block] =  $bvalue->cnt;
+			}
+		}
+		
+		$vacancy_array = array();
+		if(!empty($vacancy_data))
+		{
+			foreach($vacancy_data as $vkey => $vvalue)
+			{
+				$vacancy_array[$vvalue->block] =  $vvalue->cnt;
+			}
+		}
+		
+		foreach($vacancy_array as $k=> $v)
+		{
+			$booking_rooms = 0;
+			if(isset($booking_array[$k]))
+			{
+				$booking_rooms = $booking_array[$k];
+			}
+			$total_rooms[$k] = array('BR'=>$booking_rooms,'VR'=>$v-$booking_rooms);
+		}
+		return $total_rooms;
+	}
 }

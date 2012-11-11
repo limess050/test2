@@ -6,7 +6,7 @@
 	</tr>
 	<tr>
 	  <td width="51%" align="center" bgcolor="#BFA06B" class="footer_text">
-	  <table width="72%" border="0" align="left" cellpadding="5" cellspacing="0">
+	  <table width="95%" border="0" align="left" cellpadding="5" cellspacing="0">
 	    <tr>
 	      <td width="16%"><table width="51" border="0" align="left" cellpadding="0" cellspacing="0">
 	        <tr>
@@ -47,39 +47,48 @@
 	          </tr>
           </table></td>
 		  <td width="51%">
-		  <table width="166" border="0" align="left" cellpadding="0" cellspacing="0">
+		  <table width="142" border="0" align="left" cellpadding="0" cellspacing="0">
 	        <tr>
 	          <td width="4" align="left" valign="middle">&nbsp;</td>
-	          <td width="162" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>admin/get_app_details" style="color:#FFF;"class="white_heading_txt_16px">Application  Details</a></td>
+	          <td width="138" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>admin/get_app_details" style="color:#FFF;"class="white_heading_txt_16px">Application  Details</a></td>
 	          </tr>
 	        <tr>
 	          <td height="1" colspan="2" ></td>
 	          </tr>
           </table></td>
-			
+		  <td width="51%">
+		  <table width="112" border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td width="4" align="left" valign="middle">&nbsp;</td>
+	          <td width="108" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>admin/getBookingNVacancyRooms" style="color:#FFF;"class="white_heading_txt_16px">Rooms Status</a></td>
+	          </tr>
+	        <tr>
+	          <td height="1" colspan="2" ></td>
+	          </tr>
+          </table></td>
         </tr>
       </table></td>
 	  <td width="49%" align="center" bgcolor="#BFA06B" class="footer_text">
-      <table  border="0" align="right" cellpadding="0" cellspacing="0" width="70%">
+      <table  border="0" align="right" cellpadding="0" cellspacing="0" width="90%">
 	    <tr>
-	      <td width="172" align="right" valign="middle"><?php echo ucfirst($this->user_details->emp_fname).' '.$this->user_details->emp_lname?></td>
+	      <td width="78" align="right" valign="middle"><?php echo ucfirst($this->user_details->emp_fname).' '.$this->user_details->emp_lname?></td>
 		 
               <?php
                 if ($this->session->userdata('user_details'))
                 {
               ?>
-              <td width="119" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>admin/changepwd" style="color:#FFF;" class="white_bold_txt_12px jlo">Change Password</a></td>
-			  <td width="55" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login/logout" style="color:#FFF;"class="white_bold_txt_12px jlo">LogOut</a></td>
+              <td width="151" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>admin/changepwd" style="color:#FFF;" class="white_bold_txt_12px jlo">Change Password</a></td>
+			  <td width="63" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login/logout" style="color:#FFF;"class="white_bold_txt_12px jlo">LogOut</a></td>
               <?php
                 }
                 else
                 {
               ?>
-	      <td width="40" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login" class="white_bold_txt_12px jli">Login</a></td>
+	      <td width="48" height="25" align="right" valign="middle"><a href="<?php echo base_url();?>login" class="white_bold_txt_12px jli">Login</a></td>
               <?php
                 }
               ?>
-           <td width="21" align="left" valign="middle">&nbsp;</td>
+           <td width="10" align="left" valign="middle">&nbsp;</td>
         </tr>
 	    <tr>
 	      <td height="1" colspan="2" ></td>
