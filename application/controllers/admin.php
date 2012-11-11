@@ -217,7 +217,6 @@ class Admin extends MY_Controller {
         $data['php'] = true;
         $data['booking_type'] = 1; // by default current booking
         $master_data = $this->booking_model->getAvaliableBlocksRooms($data);
-		//echo '<pre>'; print_r($master_data); die;
     }
 }
 
