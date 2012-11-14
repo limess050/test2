@@ -276,9 +276,11 @@ class Booking extends MY_Controller {
             print_r($_POST);*/
             if($_POST['old_rooms_id'] != $_POST['rooms_id'])
             {
+                $app_det_id = $this->booking_model->replaceRoom($_POST);
                 if($this->booking_model->replaceRoom($_POST))
                 {
                     //echo 'success';
+                    redirect("booking/ticket/$app_det_id");
                 }
                 else
                 {
@@ -297,8 +299,8 @@ class Booking extends MY_Controller {
         $data['app_id'] = $_POST['application_id'];
         if(!empty($data['booking_det']))
         {
-            $post = array('from_date'=>date('Y-m-d H:i:s',strtotime($data['booking_det'][0]->from_date)),
-                            'to_date'=>date('Y-m-d H:i:s',strtotime($data['booking_det'][0]->to_date)),
+            $post = array('from_date'=>str_replace('/','-',$data['booking_det'][0]->from_date),//date('Y-m-d',strtotime($data['booking_det'][0]->from_date)),
+                            'to_date'=>str_replace('/','-',$data['booking_det'][0]->to_date),//date('Y-m-d',strtotime($data['booking_det'][0]->to_date)),
                             'blocks_id'=>$data['booking_det'][0]->block_id,
                             'rooms_id'=>$data['booking_det'][0]->room_id,
                             'booking_type'=>1);

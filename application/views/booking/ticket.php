@@ -191,7 +191,7 @@ document.oncontextmenu=new Function("alert(message);return false")
 											<td width="38%" align="left" valign="top"><strong><?php echo $booking_det[0]->block_name;?></strong></td>
 											<td width="16%" align="left" valign="top">Room No</td>
 											<td width="32%" align="left" valign="top"><strong><?php echo $booking_det[0]->room_name;?>
-											<span style="padding-left:50px">No of Persons (<?php echo $booking_det[0]->no_of_persons?>)</span>
+											<span style="padding-left:50px">No of Persons (<?php echo $booking_det[0]->no_of_persons;?>)</span>
 											</strong></td>
 										</tr>
 										<tr>

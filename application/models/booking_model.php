@@ -487,7 +487,7 @@ class Booking_model extends MY_Model {
         $sql = 'UPDATE `booking_details` SET `rooms_id`='.$post['rooms_id'].' WHERE  `application_details_id`='.$post['app_det_id'].' LIMIT 1;';
         if($this->db->query($sql))
         {
-            return true;
+            return $post['app_det_id'];
         }
         else
         {
