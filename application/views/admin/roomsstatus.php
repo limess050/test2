@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Application Details</title>
+<title>Rooms Status</title>
 <style>
 body{
 font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -158,28 +158,57 @@ document.oncontextmenu=new Function("alert(message);return false")
 			<table width="98%" height="500" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td align="left" valign="top" class="pannel_border">
-					
-					<table width="100%"  border="0" cellspacing="0" cellpadding="0">
-					  <form id="check_appid" name="check_appid" method="post" action="">
-					  <tr>
-						<td align="left" valign="top" class="pannel_border">
-							<h1>Application Details</h1>
-							<p></p>
-							<div class="iptxt">
-							  <label>Application ID:</label>
-							  <input type="text" name="application_id" id="application_id" class="required valid" />
-							</div>
-							<p></p>
-							<button type="button" name="submit" class="japp_id">Submit</button>
+					<table width="70%" border="0" cellspacing="0" cellpadding="0" align="center">
+					<tr>
+						<td align="left" valign="top">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="left" valign="top">
+						
+						<table width="100%" border="1" cellspacing="0" cellpadding="1" align="center" id="the_content" class="tabborder">
+							<tr>
+								<td align="center" valign="top" colspan=2><h1>Rooms Status as on <?php echo date('d/m/Y');?></h1></td>
+							</tr>
+							<tr>
+								<td align="center" valign="top" colspan=2>
+									<table width="100%" border="1"  align="center" class="tabborder" cellpadding="3">
+									<tr>
+										<td align="center" valign="top" ><strong>Booked Rooms</strong></td>
+										<td align="center" valign="top" ><strong>Vacancy Rooms</strong></td>
+									</tr>
+									<?php
+									foreach($result as $block => $rooms)
+									{
+									?>
+										<tr>
+											<td align="left" valign="top" colspan=2><strong><?php echo $blocks[$block];?></strong></td>
+										</tr>
+										<tr>
+											<td align="center" valign="top"><?php echo $rooms['BR'];?></td>
+											<td align="center" valign="top"><?php echo $rooms['VR']?></td>
+										</tr>
+									<?php	
+									}
+									?>
+									</table>
+								</td>
+							</tr>
+						</table>
 						</td>
 					</tr>
 					<tr>
-						<td align="left" valign="top" class="pannel_border" id="booking_details">
-							
+						<td align="center" valign="top">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center" valign="top">
+						<input type="button" name="Print" value="Print" class="button" onClick="javascript:Clean4Print('the_content')"/>&nbsp;
 						</td>
 					</tr>
-					</form>
-				  </table>
+					<tr>
+						<td align="left" valign="top">&nbsp;</td>
+					</tr>
+				</table>
+					
 				</td>
 			  </tr>
 			</table>

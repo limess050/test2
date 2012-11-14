@@ -374,7 +374,8 @@ class Booking_model extends MY_Model {
     }
 
     public function getBookingDetails($where_cond = 1) {
-        $sql = "select b.id as block_id, r.id as room_id, ad.id as app_det_id,ad.application_id, ad.customer_id, ad.applicant_name,
+        $sql = "select b.id as block_id, r.id as room_id, ad.id as app_det_id,ad.application_id, ad.customer_id,
+				ad.applicant_name, ad.no_of_persons,
                 concat(ad.applicant_address,' ','Ph No:',ad.phone_no)as applicant_address,
                 concat(u.emp_fname,' ',u.emp_lname) as user_name,att.url as image_path,
                 bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y %h:%i %p') as from_date, date_format(bd.to_date,'%d/%m/%Y %h:%i %p') as to_date,

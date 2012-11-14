@@ -197,6 +197,27 @@ class Admin extends MY_Controller {
         $data['app_id'] = $_POST['application_id'];
         echo $this->load->view('admin/application_details',$data,true);
     }
+	
+	public function getBookingNVacancyRooms()
+	{
+		$date = date('Y-m-d');
+		$data['result']=$this->admin_model->getBookingNVacancyRooms($date);
+		$blocks = $this->common_model->getTableDetails('id,name','blocks','status=1');
+		foreach($blocks as $k => $v)
+		{
+			$blocks_array[$v->id] =  $v->name;
+		}
+		$data['blocks'] = $blocks_array;
+		$this->load->view('admin/roomsstatus',$data);
+		
+	}
+	public function todayAvailableRooms() {
+        $data['today'] = $data['from_date'] = date('d-m-Y');
+        $data['tomorrow'] = $data['to_date'] = date('d-m-Y', time()+86400);
+        $data['php'] = true;
+        $data['booking_type'] = 1; // by default current booking
+        $master_data = $this->booking_model->getAvaliableBlocksRooms($data);
+    }
 }
 
 /* End of file welcome.php */
