@@ -66,6 +66,16 @@
 	          <td height="1" colspan="2" ></td>
 	          </tr>
           </table></td>
+		  <td width="51%">
+		  <table width="112" border="0" align="left" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td width="4" align="left" valign="middle">&nbsp;</td>
+	          <td width="108" height="25" align="left" valign="middle"  ><a href="<?php echo base_url();?>admin/todayAvailableRooms" style="color:#FFF;"class="white_heading_txt_16px">Available Rooms</a></td>
+	          </tr>
+	        <tr>
+	          <td height="1" colspan="2" ></td>
+	          </tr>
+          </table></td>
         </tr>
       </table></td>
 	  <td width="49%" align="center" bgcolor="#BFA06B" class="footer_text">
