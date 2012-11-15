@@ -270,7 +270,7 @@ class Booking extends MY_Controller {
 
     public function replaceRoom()
     {
-        if(isset($_POST['rooms_id']))
+        if(isset($_POST['rooms_id']) && $_POST['rooms_id'] != '')
         {
             /*echo '<pre>';
             print_r($_POST);*/

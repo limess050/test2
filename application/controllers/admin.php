@@ -216,7 +216,19 @@ class Admin extends MY_Controller {
         $data['tomorrow'] = $data['to_date'] = date('d-m-Y', time()+86400);
         $data['php'] = true;
         $data['booking_type'] = 1; // by default current booking
-        $master_data = $this->booking_model->getAvaliableBlocksRooms($data);
+		
+        $result['master_data'] = $this->booking_model->getAvaliableBlocksRooms($data);
+		
+		$blocks = $this->common_model->getTableDetails('id,name','blocks','status=1');
+		foreach($blocks as $k => $v)
+		{
+			$blocks_array[$v->id] =  $v->name;
+		}
+		$result['blocks'] = $blocks_array;
+		
+		//echo '<pre>';echo count($master_data[1]);print_r($master_data);die;
+		$this->load->view('admin/availablerooms',$result);
+		
     }
 }
 
