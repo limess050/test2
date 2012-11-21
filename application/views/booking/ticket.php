@@ -188,7 +188,14 @@ document.oncontextmenu=new Function("alert(message);return false")
 										</tr>
 										<tr>
 											<td width="14%" align="left" valign="top">Block</td>
-											<td width="38%" align="left" valign="top"><strong><?php echo $booking_det[0]->block_name;?></strong></td>
+											<td width="38%" align="left" valign="top">
+												<table width="70%" border="0" cellpadding="0" cellspacing="0">
+												  <tr>
+													<td align="left" valign="middle"><strong><?php echo $booking_det[0]->block_name;?></strong></td>
+													<td align="left" valign="middle"><img src="<?php echo base_url().$booking_det[0]->telugu_name;?>"/></td>
+												  </tr>
+												</table>
+											</td>
 											<td width="16%" align="left" valign="top">Room No</td>
 											<td width="32%" align="left" valign="top"><strong><?php echo $booking_det[0]->room_name;?>
 											<span style="padding-left:50px">No of Persons (<?php echo $booking_det[0]->no_of_persons;?>)</span>
@@ -200,10 +207,6 @@ document.oncontextmenu=new Function("alert(message);return false")
 											<td width="16%" align="left" valign="top">Booked To</td>
 											<td width="32%" align="left" valign="top"><?php echo $booking_det[0]->to_date;?></td>
 										</tr>
-										<!--<tr>
-											<td align="right" valign="top" colspan="3">Total Amount Paid (Rs) </td>
-											<td width="32%" align="left" valign="top"><?php //echo $booking_det[0]->total_amount_paid;?></td>
-										</tr>-->
 										<tr>
 											<td align="left" valign="top" colspan="4"><strong>Payment Details</strong></td>
 										</tr>

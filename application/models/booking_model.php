@@ -381,7 +381,7 @@ class Booking_model extends MY_Model {
                 bd.id as booking_det_id,date_format(bd.from_date,'%d/%m/%Y %h:%i %p') as from_date, date_format(bd.to_date,'%d/%m/%Y %h:%i %p') as to_date,
                 date_format(bd.checkout_date,'%d/%m/%Y %h:%i %p') as checkout_date,date_format(ad.created_date,'%d/%m/%Y') as created_date,
                 bd.no_of_days, bd.booking_type,bd.booked_status,bd.booking_type,
-                b.name as block_name,r.name as room_name,
+                b.name as block_name,b.telugu_name,r.name as room_name,
                 rp.id as rcpt_id,rp.deposit_amt,rp.rent_amount,rp.advance_amount,rp.total_amount_paid
                 from application_details ad
                 left join booking_details bd on ad.id = bd.application_details_id
