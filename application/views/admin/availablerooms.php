@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="refresh" content="360"/>
 <title>Available Rooms</title>
 <style>
 body{
@@ -152,14 +153,14 @@ document.oncontextmenu=new Function("alert(message);return false")
 			<div id="stylized" class="myform">
 			<table width="98%" height="500" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
-				<td align="left" valign="top" class="pannel_border">
+				<td align="left" valign="top">
 					<table width="50%" border="1" align="center">
 						<tr>
 							<td align="center" valign="top"><h1>Available Rooms as on <?php echo date('d/m/Y');?></h1></td>
 						</tr>
 						<tr height="100%">
-							<td  align="center" valign="top">
-								<marquee  behavior="scroll" direction="up" scrollamount="3">
+							<td height="225" align="center" valign="top">
+								<marquee  behavior="scroll" direction="up" scrollamount="3" height="500">
 								<table width="100%" height="100%" border="1" align="center" >
 								
 								<?php

@@ -193,7 +193,7 @@ class Booking extends MY_Controller {
         $where_cond = ' ad.id='.$app_id;
         $data['booking_det'] = $this->booking_model->getBookingDetails($where_cond);
         //echo '<pre>';		print_r($data);die;
-        $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;;
+        $data['user_name'] = $this->user_details->emp_fname.' '.$this->user_details->emp_lname;
         $this->load->view('booking/ticket',$data);
     }
 
