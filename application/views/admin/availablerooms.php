@@ -158,7 +158,7 @@ document.oncontextmenu=new Function("alert(message);return false")
 							<td align="center" valign="top"><h1>Available Rooms as on <?php echo date('d/m/Y');?></h1></td>
 						</tr>
 						<tr height="100%">
-							<td height="225" align="center" valign="top">
+							<td  align="center" valign="top">
 								<marquee  behavior="scroll" direction="up" scrollamount="3">
 								<table width="100%" height="100%" border="1" align="center" >
 								
